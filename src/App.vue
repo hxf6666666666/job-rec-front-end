@@ -1,11 +1,3 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/16 18:49:42
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <n-config-provider
     class="wh-full"
@@ -20,18 +12,16 @@
           <component :is="Component" v-if="!tabStore.reloading" :key="curRoute.fullPath" />
         </KeepAlive>
       </component>
-
-      <LayoutSetting class="fixed right-12 top-1/2 z-999" />
     </router-view>
   </n-config-provider>
 </template>
 
 <script setup>
 import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
-import { LayoutSetting } from '@/components'
 import { useCssVar } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import { useAppStore, useTabStore } from '@/store'
+import { useRoute } from 'vue-router'
 
 const layouts = new Map()
 function getLayout(name) {

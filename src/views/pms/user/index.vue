@@ -1,11 +1,3 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/05 21:29:56
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <CommonPage>
     <template #action>
@@ -18,9 +10,9 @@
     <MeCrud
       ref="$table"
       v-model:query-items="queryItems"
-      :scroll-x="1200"
+      :scroll-x="1000"
       :columns="columns"
-      :get-data="api.read"
+      :my-data="myData"
     >
       <MeQueryItem label="用户名" :label-width="50">
         <n-input
@@ -31,8 +23,16 @@
         />
       </MeQueryItem>
 
-      <MeQueryItem label="性别" :label-width="50">
-        <n-select v-model:value="queryItems.gender" clearable :options="genders" />
+      <MeQueryItem label="角色" :label-width="50">
+        <n-select
+          v-model:value="queryItems.role"
+          clearable
+          :options="[
+            { label: '管理员', value: 0 },
+            { label: '招聘者', value: 1 },
+            { label: '求职者', value: 2 }
+          ]"
+        />
       </MeQueryItem>
 
       <MeQueryItem label="状态" :label-width="50">
@@ -80,17 +80,24 @@
           <n-input v-model:value="modalForm.password" />
         </n-form-item>
 
-        <n-form-item v-if="['add', 'setRole'].includes(modalAction)" label="角色" path="roleIds">
+        <n-form-item :rule="{
+            required: true,
+            message: '请选择分配角色'
+            }"
+            v-if="['add', 'setRole'].includes(modalAction)" label="角色" path="roleIds">
           <n-select
             v-model:value="modalForm.roleIds"
-            :options="roles"
-            label-field="name"
-            value-field="id"
+            :options="[
+                { label: '管理员', value: 0 },
+                { label: '招聘者', value: 1 },
+                { label: '求职者', value: 2 }
+            ]"
             clearable
             filterable
             multiple
           />
         </n-form-item>
+
         <n-form-item v-if="modalAction === 'add'" label="状态" path="enable">
           <n-switch v-model:value="modalForm.enable">
             <template #checked>启用</template>
@@ -111,10 +118,94 @@ import { formatDateTime } from '@/utils'
 import { MeCrud, MeQueryItem, MeModal } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
+import { CommonPage } from '@/components/index.js'
 
 defineOptions({ name: 'UserMgt' })
 
 const $table = ref(null)
+
+const myData = [
+    {
+      "id": 1,
+      "username": "admin",
+      "enable": true,
+      "createTime": "2023-11-18T08:18:59.150Z",
+      "roles": [
+        {
+          "id": 1,
+          "name": "管理员",
+        },
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+    {
+      "id": 2,
+      "username": "张先生",
+      "enable": true,
+      "createTime": "2024-01-18T08:28:69",
+      "roles": [
+        {
+          "id": 2,
+          "name": "招聘者",
+        }
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+    {
+      "id": 3,
+      "username": "王女士",
+      "enable": true,
+      "createTime": "2024-02-18T08:18:59",
+      "roles": [
+        {
+          "id": 1,
+          "name": "求职者",
+        },
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+    {
+      "id": 4,
+      "username": "王女士",
+      "enable": true,
+      "createTime": "2024-02-18T08:18:59",
+      "roles": [
+        {
+          "id": 2,
+          "name": "招聘者",
+        }
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+    {
+      "id": 5,
+      "username": "王女士",
+      "enable": true,
+      "createTime": "2024-02-18T08:18:59",
+      "roles": [
+        {
+          "id": 1,
+          "name": "求职者",
+        }
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+    {
+      "id": 6,
+      "username": "李先生",
+      "enable": true,
+      "createTime": "2024-02-18T08:18:59",
+      "roles": [
+        {
+          "id": 1,
+          "name": "求职者",
+        }
+      ],
+      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+    },
+];
+
+
 /** QueryBar筛选参数（可选） */
 const queryItems = ref({})
 
@@ -140,18 +231,24 @@ const columns = [
         src: avatar,
       }),
   },
-  { title: '用户名', key: 'username', width: 150, ellipsis: { tooltip: true } },
+  { title: '用户名', key: 'username', width: 130, ellipsis: { tooltip: true } },
   {
     title: '角色',
     key: 'roles',
-    width: 200,
+    width: 150,
     ellipsis: { tooltip: true },
     render: ({ roles }) => {
+      const typeMap = {
+        '管理员': 'error',
+        '招聘者': 'info',
+        '求职者': 'success',
+        // ... 其他role和type的映射
+      };
       if (roles?.length) {
         return roles.map((item, index) =>
           h(
             NTag,
-            { type: 'success', style: index > 0 ? 'margin-left: 8px;' : '' },
+            { type: typeMap[item.name], style: index > 0 ? 'margin-left: 8px;' : '' },
             { default: () => item.name }
           )
         )
@@ -159,13 +256,6 @@ const columns = [
       return '暂无角色'
     },
   },
-  {
-    title: '性别',
-    key: 'gender',
-    width: 80,
-    render: ({ gender }) => genders.find((item) => gender === item.value)?.label ?? '',
-  },
-  { title: '邮箱', key: 'email', width: 150, ellipsis: { tooltip: true } },
   {
     title: '创建时间',
     key: 'createDate',
@@ -197,9 +287,7 @@ const columns = [
   {
     title: '操作',
     key: 'actions',
-    width: 320,
-    align: 'right',
-    fixed: 'right',
+    width: 310,
     hideInExcel: true,
     render(row) {
       return [
@@ -220,7 +308,7 @@ const columns = [
           NButton,
           {
             size: 'small',
-            type: 'primary',
+            type: 'info',
             style: 'margin-left: 12px;',
             onClick: () => handleOpen({ action: 'reset', title: '重置密码', row, onOk: onSave }),
           },

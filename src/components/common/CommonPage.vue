@@ -7,12 +7,13 @@
  --------------------------------->
 
 <template>
-  <main class="h-full flex-1 overflow-hidden bg-#f5f6fb dark:bg-#121212">
+  <main class="h-full flex-1 overflow-hidden bg-[cadetblue] dark:bg-#121212">
     <div class="h-full flex-col">
       <AppCard
         v-if="showHeader"
         class="sticky top-0 z-1 min-h-60 flex items-center justify-between px-24"
         border-b="1px solid light_border dark:dark_border"
+        style="border-radius: initial;"
       >
         <slot v-if="$slots.header" name="header" />
         <template v-else>
@@ -42,7 +43,7 @@
     </div>
   </main>
 
-  <footer class="bg-#f5f6fb dark:bg-#121212">
+  <footer class="bg-[#f6f9f8ff] dark:bg-#121212">
     <slot v-if="$slots.footer" name="footer" />
     <AppCard v-else-if="showFooter" class="py-12">
       <TheFooter />

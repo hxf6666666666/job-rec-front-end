@@ -1,20 +1,13 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/16 18:50:28
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <router-link class="h-60 f-c-c" to="/">
-    <img src="@/assets/images/logo.png" class="h-40" />
-    <h2
+    <img src="/vite.svg" class="h-40" />
+    <h1
       v-show="!appStore.collapsed"
-      class="ml-10 max-w-140 flex-shrink-0 text-16 color-primary font-bold"
+      class="ml-10 max-w-140 flex-shrink-0 text-24 color-primary"
+      style="font-family: 方正姚体,serif"
     >
       {{ title }}
-    </h2>
+    </h1>
   </router-link>
 </template>
 

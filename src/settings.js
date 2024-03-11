@@ -1,12 +1,4 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/13 20:54:36
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
-export const defaultLayout = 'normal'
+export const defaultLayout = 'simple'
 
 export const naiveThemeOverrides = {
   common: {

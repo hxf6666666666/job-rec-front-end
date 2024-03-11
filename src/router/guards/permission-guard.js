@@ -1,11 +1,3 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/05 21:25:07
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
 import { useAuthStore } from '@/store'
 import api from '@/api'
 
@@ -30,8 +22,8 @@ export function createPermissionGuard(router) {
 
     // 判断是无权限还是404
     const { data: hasMenu } = await api.validateMenuPath(to.path)
-    return hasMenu
-      ? { name: '403', query: { path: to.fullPath }, state: { from: 'permission-guard' } }
+    return hasMenu ?
+      { name: '403', query: { path: to.fullPath }, state: { from: 'permission-guard' } }
       : { name: '404', query: { path: to.fullPath } }
   })
 }

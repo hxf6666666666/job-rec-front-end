@@ -1,18 +1,16 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/16 18:50:42
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div class="flex cursor-pointer items-center">
-      <n-avatar round :size="36" :src="userStore.avatar" />
+      <n-badge value="999+">
+        <n-avatar round :size="56" :src="userStore.avatar" />
+      </n-badge>
       <div v-if="userStore.userInfo" class="ml-12 flex-col flex-shrink-0 items-center">
-        <span class="text-14">{{ userStore.nickName ?? userStore.username }}</span>
-        <span class="text-12 opacity-50">[{{ userStore.currentRole?.name }}]</span>
+        <span class="text-20" style="font-family: 华文中宋; font-weight: bold">{{ userStore.nickName ?? userStore.username }}</span>
+        <span>
+          <n-tag :bordered="false" type="error" round size="medium">
+            {{ userStore.currentRole?.name }}
+          </n-tag>
+        </span>
       </div>
     </div>
   </n-dropdown>

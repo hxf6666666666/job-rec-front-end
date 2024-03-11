@@ -1,16 +1,10 @@
-/**********************************
- * @Description: 入口文件
- * @FilePath: main.js
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/04 22:41:32
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
 import '@/styles/reset.css'
 import '@/styles/global.scss'
 import 'uno.css'
+// 通用字体
+import 'vfonts/Lato.css'
+// 等宽字体
+import 'vfonts/FiraCode.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'

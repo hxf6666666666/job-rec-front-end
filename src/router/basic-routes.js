@@ -19,6 +19,15 @@ export const basicRoutes = [
   },
 
   {
+    name: 'JobSearch',
+    path: '/demo/job-search',
+    component: () => import('@/views/demo/job-search/index.vue'),
+    meta: {
+      title: '职位搜索',
+    },
+  },
+
+  {
     name: '404',
     path: '/404',
     component: () => import('@/views/error-page/404.vue'),

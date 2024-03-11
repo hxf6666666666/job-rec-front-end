@@ -1,11 +1,3 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/04 22:51:42
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <AppCard v-if="$slots.default" bordered bg="#fafafc dark:black" class="mb-30 min-h-60 rounded-4">
     <form class="flex justify-between p-16" @submit.prevent="handleSearch()">
@@ -30,7 +22,7 @@
     :loading="loading"
     :scroll-x="scrollX"
     :columns="columns"
-    :data="tableData"
+    :data="tableData ? myData : tableData"
     :row-key="(row) => row[rowKey]"
     :pagination="isPagination ? pagination : false"
     @update:checked-row-keys="onChecked"
@@ -41,6 +33,7 @@
 <script setup>
 import { NDataTable } from 'naive-ui'
 import { utils, writeFile } from 'xlsx'
+import { AppCard } from '@/components/index.js'
 
 const props = defineProps({
   /**
@@ -48,10 +41,10 @@ const props = defineProps({
    */
   remote: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   /**
-   * @remote 是否分页
+   * 是否分页
    */
   isPagination: {
     type: Boolean,
@@ -59,7 +52,7 @@ const props = defineProps({
   },
   scrollX: {
     type: Number,
-    default: 1200,
+    default: 1000,
   },
   rowKey: {
     type: String,
@@ -68,6 +61,9 @@ const props = defineProps({
   columns: {
     type: Array,
     required: true,
+  },
+  myData: {
+    type: Array,
   },
   /** queryBar中的参数 */
   queryItems: {
@@ -87,15 +83,14 @@ const props = defineProps({
    */
   getData: {
     type: Function,
-    required: true,
-  },
+  }
 })
 
 const emit = defineEmits(['update:queryItems', 'onChecked', 'onDataChange'])
 const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
-const pagination = reactive({ page: 1, pageSize: 10 })
+const pagination = reactive({ page: 1, pageSize: 6 })
 
 async function handleQuery() {
   try {

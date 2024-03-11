@@ -7,12 +7,17 @@
  --------------------------------->
 
 <template>
-  <main class="cus-scroll h-full flex-col flex-1 bg-#f5f6fb dark:bg-#121212">
+  <main class="cus-scroll h-full flex-col flex-1 bg-[cadetblue] dark:bg-#121212">
     <transition name="fade-slide" mode="out-in" appear>
       <main :class="{ 'flex-1': full }" class="m-12"><slot /></main>
     </transition>
     <slot v-if="$slots.footer" name="footer" />
-    <TheFooter v-else-if="showFooter" class="mb-12 mt-auto" />
+    <footer class="bg-[#f6f9f8ff] dark:bg-#121212">
+      <slot v-if="$slots.footer" name="footer" />
+      <AppCard v-else-if="showFooter" class="py-12">
+        <TheFooter />
+      </AppCard>
+    </footer>
     <n-back-top :bottom="20" />
   </main>
 </template>
