@@ -14,108 +14,38 @@
 
         <p class="mt-28 text-14 opacity-60">欢迎使用基于知识图谱的大学生就业能力评价和职位推荐系统！</p>
       </n-card>
-      <n-card class="ml-12 w-14% items-center" size="large" title="🔩在招职位">
+      <n-card class="ml-12 w-15% items-center" size="large" title="🔩在招职位">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="8761" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-14% items-center" size="large" title="📑简历数量">
+      <n-card class="ml-12 w-15% items-center" size="large" title="📑简历数量">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="1761" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-14% items-center" size="large" title="⭐岗位类型">
+      <n-card class="ml-12 w-15% items-center" size="large" title="⭐岗位类型">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="17" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-14% items-center" size="large" title="🏙️城市数量">
+      <n-card class="ml-12 w-15% items-center" size="large" title="🏙️城市数量">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="143" />
         </n-statistic>
       </n-card>
     </div>
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="💯 特性" segmented>
+      <n-card class="w-50%" title="🗺️职位热力地图" segmented>
         <template #header-extra>
-          <span class="opacity-90 text-highlight">👏 历经十几次重构和细节打磨</span>
+          <span class="opacity-90 text-highlight">👏 看看全国哪些地方在招职位最多吧</span>
         </template>
+        <china-map></china-map>
 
-        <ul class="opacity-90">
-          <li class="py-4">
-            🆒 使用
-            <b>Vue3</b>
-            主流技术栈:
-            <span class="text-highlight">Vite + Vue3 + Pinia</span>
-          </li>
-          <li class="py-4">
-            🍇 使用
-            <b>原子CSS</b>
-            框架:
-            <span class="text-highlight">Unocss</span>
-            ，优雅、轻量、易用
-          </li>
-          <li class="py-4">
-            🤹 使用主流的
-            <span class="text-highlight">iconify + unocss</span>
-            图标方案，支持自定义图标，支持动态渲染
-          </li>
-          <li class="py-4">
-            🎨 使用 Naive UI，
-            <span class="text-highlight">极致简洁的代码风格和清爽的页面设计</span>
-            ，审美在线，主题轻松定制
-          </li>
-          <li class="py-4">
-            👏 先进且易于理解的文件结构设计，多个模块之间
-            <b>零耦合</b>
-            ，单个业务模块删除不影响其他模块
-          </li>
-          <li class="py-4">
-            🚀
-            <span class="text-highlight">扁平化路由</span>
-            设计，每一个组件都可以是一个页面，告别多级路由 KeepAlive 难实现问题
-          </li>
 
-          <li class="py-4">
-            🍒
-            <span class="text-highlight">基于权限动态生成路由</span>
-            ，无需额外定义路由，
-            <span class="text-highlight">403和404可区分</span>
-            ，而不是无权限也跳404
-          </li>
-          <li class="py-4">
-            🔐 基于Redis集成
-            <span class="text-highlight">无感刷新</span>
-            ，用户登录态可控，安全与体验缺一不可
-          </li>
-          <li class="py-4">
-            ✨ 基于 Naive UI 封装
-            <span class="text-highlight">message</span>
-            全局工具方法，支持批量提醒，支持跨页面共享实例
-          </li>
-          <li class="py-4">
-            ⚡️ 基于 Naive UI 封装常用的业务组件，包含
-            <span class="text-highlight">Page</span>
-            组件、
-            <span class="text-highlight">CRUD</span>
-            表格组件及
-            <span class="text-highlight">Modal</span>
-            组件，减少大量重复性工作
-          </li>
-        </ul>
-
-        <n-divider class="mb-0! mt-12!">
-          <p class="text-14 opacity-60">
-            👉点击
-            <b class="mx-2 transition hover:text-primary">
-              <a href="https://isme.top" target="_blank">更多</a>
-            </b>
-            查看更多实用功能，持续开发中...
-          </p>
-        </n-divider>
       </n-card>
 
-      <n-card class="ml-12 w-50%" title="🛠️ 技术栈" segmented>
+      <n-card class="ml-12 w-50%" title="🛠️ 热门技能要求" segmented>
         <VChart :option="skillOption" autoresize />
       </n-card>
     </div>
@@ -134,6 +64,10 @@ import { BarChart, LineChart, PieChart } from 'echarts/charts'
 import { UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
+import { ToolboxComponent } from 'echarts/components';
+import { VisualMapComponent } from 'echarts/components';
+import { MapChart } from 'echarts/charts';
+import ChinaMap from '@/views/home/ChinaMap.vue'
 
 const userStore = useUserStore()
 
@@ -146,6 +80,9 @@ echarts.use([
   CanvasRenderer,
   UniversalTransition,
   PieChart,
+  ToolboxComponent,
+  VisualMapComponent,
+  MapChart
 ])
 
 const trendOption = {
@@ -218,9 +155,8 @@ const skillOption = {
   },
   series: [
     {
-      top: '12%',
       type: 'pie',
-      radius: ['35%', '90%'],
+      radius: ['25%', '65%'],
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 10,
@@ -242,8 +178,10 @@ const skillOption = {
         show: false,
       },
       data: [
-        { value: 38.5, name: 'Vue' },
-        { value: 37.0, name: 'JavaScript' },
+        { value: 18.5, name: 'Vue' },
+        { value: 10, name: 'Java' },
+        { value: 10, name: 'C++' },
+        { value: 37, name: 'JavaScript' },
         { value: 6.5, name: 'CSS' },
         { value: 6.2, name: 'HTML' },
         { value: 1.8, name: 'Other' },
@@ -253,6 +191,8 @@ const skillOption = {
 }
 
 const message = $message
+
+
 </script>
 
 <style>
