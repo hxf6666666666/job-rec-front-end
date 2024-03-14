@@ -2,7 +2,7 @@
   <n-menu
     ref="menu"
     class="side-menu"
-    :indent="18"
+    :indent="28"
     :collapsed-icon-size="22"
     :collapsed-width="64"
     :collapsed="appStore.collapsed"
@@ -10,7 +10,6 @@
     :value="activeKey"
     @update:value="handleMenuSelect"
   />
-
 </template>
 
 <script setup>
@@ -36,6 +35,7 @@ const permissions = ref([
     "show": true,
     "enable": true,
     "order": 0,
+    "path": "/",
   },
   {
     "id": 2,
