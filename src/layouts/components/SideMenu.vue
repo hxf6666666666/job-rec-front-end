@@ -101,7 +101,6 @@ const permissions = ref([
         "enable": true,
         "order": 2
       },
-
     ]
   },
   {
@@ -262,11 +261,16 @@ function handleMenuSelect(key, item) {
 </script>
 
 <style lang="scss">
+
 .side-menu:not(.n-menu--collapsed) {
-  .n-menu-item-content-header{
+  .n-menu-item-content-header {
     font-size: 15px;
   }
+  /* 选择只包含一级菜单项的元素 */
   .n-menu-item-content {
+    &:not(.n-menu-item-has-children) {
+      font-weight: 3px;
+    }
     &::before {
       left: 8px;
       right: 8px;
@@ -276,6 +280,7 @@ function handleMenuSelect(key, item) {
     }
   }
 }
+
 
 
 </style>

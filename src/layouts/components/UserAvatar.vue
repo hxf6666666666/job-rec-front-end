@@ -7,7 +7,7 @@
       <div v-if="userStore.userInfo" class="ml-12 flex-col flex-shrink-0 items-center">
         <span class="text-20" style="font-family: 华文中宋; font-weight: bold">{{ userStore.nickName ?? userStore.username }}</span>
         <span>
-          <n-tag :bordered="false" type="error" round size="medium">
+          <n-tag :bordered="false" type="warning" round size="medium">
             {{ userStore.currentRole?.name }}
           </n-tag>
         </span>

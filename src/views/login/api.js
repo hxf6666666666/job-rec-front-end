@@ -1,15 +1,7 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/05 21:28:30
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
-import { request } from '@/utils'
+import axios from 'axios'
 
 export default {
-  toggleRole: (data) => request.post('/auth/role/toggle', data),
-  login: (data) => request.post('/auth/login', data, { noNeedToken: true }),
-  getUser: () => request.get('/user/detail'),
+  toggleRole: (data) => axios.post('https://mock.apifox.com/m1/3776410-0-default/auth/role/toggle', data),
+  login: (data) => axios.post('https://mock.apifox.com/m1/3776410-0-default/auth/login', data, { noNeedToken: true }),
+  getUser: () => axios.get('https://mock.apifox.com/m1/3776410-0-default/user/detail'),
 }

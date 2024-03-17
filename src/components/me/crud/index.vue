@@ -1,5 +1,5 @@
 <template>
-  <AppCard v-if="$slots.default" bordered bg="#fafafc dark:black" class="mb-30 min-h-60 rounded-4">
+  <AppCard v-if="$slots.default" bordered bg="#fafafc dark:black" class="mb-10 min-h-60 rounded-4">
     <form class="flex justify-between p-16" @submit.prevent="handleSearch()">
       <n-space wrap :size="[32, 16]">
         <slot />
@@ -22,7 +22,7 @@
     :loading="loading"
     :scroll-x="scrollX"
     :columns="columns"
-    :data="tableData ? myData : tableData"
+    :data="tableData"
     :row-key="(row) => row[rowKey]"
     :pagination="isPagination ? pagination : false"
     @update:checked-row-keys="onChecked"
@@ -62,9 +62,6 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  myData: {
-    type: Array,
-  },
   /** queryBar中的参数 */
   queryItems: {
     type: Object,
@@ -83,6 +80,7 @@ const props = defineProps({
    */
   getData: {
     type: Function,
+    required: true
   }
 })
 
@@ -90,7 +88,7 @@ const emit = defineEmits(['update:queryItems', 'onChecked', 'onDataChange'])
 const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
-const pagination = reactive({ page: 1, pageSize: 6 })
+const pagination = reactive({ page: 1, pageSize: 7 })
 
 async function handleQuery() {
   try {
@@ -100,12 +98,14 @@ async function handleQuery() {
     if (props.isPagination && props.remote) {
       paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
     }
+
     const { data } = await props.getData({
       ...props.queryItems,
       ...paginationParams,
     })
-    tableData.value = data?.pageData || data
-    pagination.itemCount = data.total ?? data.length
+
+    tableData.value = data
+    pagination.itemCount = data.length
   } catch (error) {
     tableData.value = []
     pagination.itemCount = 0

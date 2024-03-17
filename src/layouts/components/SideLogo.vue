@@ -1,13 +1,9 @@
 <template>
   <router-link class="h-60 f-c-c" to="/">
-    <img src="/vite.svg" class="h-40" />
-    <h1
-      v-show="!appStore.collapsed"
-      class="ml-10 max-w-140 flex-shrink-0 text-24 color-primary"
-      style="font-family: 方正姚体,serif"
-    >
+    <img src="@/assets/images/logo.png" height="35" class="mr-12 mt-14 ml-12" />
+    <h3 v-show="!appStore.collapsed" class="f-c-c text-22 text-#6a6a6a font-extrabold mt-14">
       {{ title }}
-    </h1>
+    </h3>
   </router-link>
 </template>
 

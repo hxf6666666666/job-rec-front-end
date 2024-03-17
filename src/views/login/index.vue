@@ -1,11 +1,3 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/05 21:28:36
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
-
 <template>
   <div class="wh-full flex-col bg-[url(@/assets/images/login_bg.webp)] bg-cover">
     <div
@@ -96,7 +88,7 @@
       </div>
     </div>
 
-    <TheFooter class="py-12" />
+<!--    <TheFooter class="py-12" />-->
   </div>
 </template>
 
@@ -119,7 +111,7 @@ const loginInfo = ref({
 
 const captchaUrl = ref('')
 const initCaptcha = throttle(() => {
-  captchaUrl.value = '/api/auth/captcha?' + Date.now()
+  captchaUrl.value = 'https://mock.apifox.com/m1/3776410-0-default/auth/captcha?' + 'Date.now()'
 }, 500)
 
 const localLoginInfo = lStorage.get('loginInfo')
