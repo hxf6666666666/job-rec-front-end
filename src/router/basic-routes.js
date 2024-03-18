@@ -8,22 +8,25 @@ export const basicRoutes = [
       layout: 'empty',
     },
   },
+
   {
     name: 'Home',
     path: '/',
     component: () => import('@/views/home/index.vue'),
     meta: {
-      title: '简历岗位大数据', // 从权限中获取
+      title: '首页',
     },
   },
+
   {
-    name: 'UserMgt',
-    path: '/pms/user',
-    component: () => import('@/views/pms/user/index.vue'), // 注意路径
+    name: 'JobSearch',
+    path: '/demo/job-search',
+    component: () => import('@/views/demo/job-search/index.vue'),
     meta: {
-      title: '用户管理',
+      title: '职位搜索',
     },
   },
+
   {
     name: '404',
     path: '/404',
@@ -33,6 +36,7 @@ export const basicRoutes = [
       layout: 'empty',
     },
   },
+
   {
     name: '403',
     path: '/403',
@@ -42,7 +46,15 @@ export const basicRoutes = [
       layout: 'empty',
     },
   },
-  {
+    {
+    name: 'UserMgt',
+    path: '/pms/user',
+    component: () => import('@/views/pms/user/index.vue'), // 注意路径
+    meta: {
+      title: '用户管理',
+    },
+  },
+    {
     name: 'JobSearch',
     path: '/demo/job-search',
     component: () => import('@/views/demo/job-search/index.vue'),
@@ -90,4 +102,20 @@ export const basicRoutes = [
       title: '钟意人选',
     },
   },
+    {
+        name: 'tuijian',
+        path: '/tuijian',
+        component: () => import('@/views/base/tuijian.vue'),
+        meta: {
+            title: '求职者推荐',
+        },
+    },
+    {
+        name: 'zhaopinHistory',
+        path: '/zhaopinHistory',
+        component: () => import('@/views/base/zhaopinHistory.vue'),
+        meta: {
+            title: '招聘历史',
+        },
+    },
 ]

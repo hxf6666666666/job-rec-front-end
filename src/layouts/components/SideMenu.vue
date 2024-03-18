@@ -1,20 +1,20 @@
 <template>
   <n-menu
-    ref="menu"
-    class="side-menu"
-    :indent="28"
-    :collapsed-icon-size="22"
-    :collapsed-width="64"
-    :collapsed="appStore.collapsed"
-    :options="permissionStore.menus"
-    :value="activeKey"
-    @update:value="handleMenuSelect"
+      ref="menu"
+      class="side-menu"
+      :indent="28"
+      :collapsed-icon-size="22"
+      :collapsed-width="64"
+      :collapsed="appStore.collapsed"
+      :options="permissionStore.menus"
+      :value="activeKey"
+      @update:value="handleMenuSelect"
   />
 </template>
 
 <script setup>
-import { useAppStore, usePermissionStore } from '@/store'
-import { isExternal } from '@/utils'
+import {useAppStore, usePermissionStore} from '@/store'
+import {isExternal} from '@/utils'
 
 const router = useRouter()
 const route = useRoute()
@@ -101,6 +101,7 @@ const permissions = ref([
         "enable": true,
         "order": 2
       },
+
     ]
   },
   {
@@ -221,6 +222,42 @@ const permissions = ref([
       },
       {
         "id": 92,
+        "name": "推荐应聘者",
+        "code": "tuijian",
+        "type": "MENU",
+        "parentId": 9,
+        "path": "/tuijian",
+        "redirect": null,
+        "icon": "i-fe:smile",
+        "component": "/src/views/base/tuijian.vue",
+        "layout": null,
+        "keepAlive": null,
+        "method": null,
+        "description": null,
+        "show": true,
+        "enable": true,
+        "order": 1
+      },
+      {
+        "id": 93,
+        "name": "招聘历史",
+        "code": "zhaopinHistory",
+        "type": "MENU",
+        "parentId": 9,
+        "path": "/zhaopinHistory",
+        "redirect": null,
+        "icon": "i-fe:smile",
+        "component": "/src/views/base/zhaopinHistory.vue",
+        "layout": null,
+        "keepAlive": null,
+        "method": null,
+        "description": null,
+        "show": true,
+        "enable": true,
+        "order": 1
+      },
+      {
+        "id": 94,
         "name": "钟意人选",
         "code": "Icon",
         "type": "MENU",
@@ -235,7 +272,7 @@ const permissions = ref([
         "description": null,
         "show": true,
         "enable": true,
-        "order": 1
+        "order": 2
       }
     ]
   }
@@ -261,26 +298,22 @@ function handleMenuSelect(key, item) {
 </script>
 
 <style lang="scss">
-
 .side-menu:not(.n-menu--collapsed) {
   .n-menu-item-content-header {
     font-size: 15px;
   }
-  /* 选择只包含一级菜单项的元素 */
+
   .n-menu-item-content {
-    &:not(.n-menu-item-has-children) {
-      font-weight: 3px;
-    }
     &::before {
       left: 8px;
       right: 8px;
     }
+
     &.n-menu-item-content--selected::before {
       border-left: 4px solid var(--primary-color);
     }
   }
 }
-
 
 
 </style>
