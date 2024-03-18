@@ -14,7 +14,7 @@ export default {
   update: (data) => request.patch(`/role/${data.id}`, data),
   delete: (id) => request.delete(`/role/${id}`),
 
-  getAllPermissionTree: () => request.get('/permission/tree'),
+  getAllPermissionTree: () => axios.get('https://mock.apifox.com/m1/3776410-0-default/permission/tree'),
   getAllUsers: (params = {}) => request.get('/user', { params }),
   addRoleUsers: (roleId, data) => request.patch(`/role/users/add/${roleId}`, data),
   removeRoleUsers: (roleId, data) => request.patch(`/role/users/remove/${roleId}`, data),

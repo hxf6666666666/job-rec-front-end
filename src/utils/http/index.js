@@ -10,12 +10,8 @@ export function createAxios(options = {}) {
     ...defaultOptions,
     ...options,
   })
-  setupInterceptors(service)
+  // setupInterceptors(service)
   return service
 }
 
 export const request = createAxios()
-
-export const mockRequest = createAxios({
-  baseURL: '/mock-api',
-})

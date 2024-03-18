@@ -48,7 +48,7 @@
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-33%" title="🗓️求职者学历分布" segmented>
+      <n-card class="w-33%" title="🧑‍🎓求职者学历分布" segmented>
         <VChart :option="educationOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
       <n-card class="ml-12 w-33%" title="🧑‍🔧求职者专业分布" segmented>
@@ -60,10 +60,10 @@
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="⚡热门职位类别" segmented>
+      <n-card class="w-50%" title="📈职位简历趋势" segmented>
         <VChart :option="trendOption2" :init-options="{ height: 280 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-50%" title="💹职位发布与简历投递趋势" segmented>
+      <n-card class="ml-12 w-50%" title="🔥热门职位类别" segmented>
         <VChart :option="trendOption" :init-options="{ height: 280 }" autoresize />
       </n-card>
     </div>
