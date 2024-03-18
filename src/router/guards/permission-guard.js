@@ -13,7 +13,6 @@ export function createPermissionGuard(router) {
       // return { path: 'login', query: { ...to.query, redirect: to.path } }
       return true
     }
-
     // 有token的情况
     if (to.path === '/login') return { path: '/' }
     if (WHITE_LIST.includes(to.path)) return true

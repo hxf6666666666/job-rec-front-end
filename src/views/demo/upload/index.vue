@@ -1,36 +1,38 @@
 <template>
   <CommonPage title="简历上传">
     <template #action>
-      <n-button type="primary">
+      <n-button type="info">
         <i class="i-material-symbols:add mr-4 text-18" />
-        手动创建简历
+        创建在线简历
       </n-button>
     </template>
+
     <n-upload
-      class="mx-auto w-[75%] p-20 text-center"
+      class="mx-auto w-[60%] p-20 text-center"
       :custom-request="handleUpload"
       :show-file-list="false"
-      accept=".pdf,.docx,.doc"
+      accept=".pdf,.docx,.doc,.txt,.jpeg,.png"
       @before-upload="onBeforeUpload"
     >
       <n-upload-dragger>
         <div class="h-150 f-c-c flex-col">
           <i class="i-mdi:upload mb-12 text-68 color-primary" />
-          <n-text class="text-24 color-gray">点击或者拖动文件到该区域以上传简历文件</n-text>
-          <n-text class="text-16 color-primary">支持简历格式：pdf,docx/doc</n-text>
+          <n-text class="text-24 font-extrabold color-neutral">点击或者拖动文件到该区域</n-text>
+          <n-text class="text-16 color-primary">支持简历格式：PDF, DOC, DOCX, TXT, JPEG, PNG</n-text>
         </div>
       </n-upload-dragger>
     </n-upload>
 
     <MeCrud
+      ref="$table"
       :is-pagination="false"
       :columns="columns"
-      :my-data="myData"
       v-model:query-items="queryItems"
+      :get-data="api.read"
     >
       <MeQueryItem label="文件名称" :label-width="80">
         <n-input
-          v-model:value="queryItems.username"
+          v-model:value="queryItems.fileName"
           type="text"
           placeholder="请输入文件名称"
           clearable
@@ -39,7 +41,7 @@
 
       <MeQueryItem label="简历状态" :label-width="80">
         <n-select
-          v-model:value="queryItems.enable"
+          v-model:value="queryItems.resumeStatus"
           clearable
           :options="[
             { label: '待解析', value: 0 },
@@ -60,6 +62,8 @@ import { NAvatar, NButton, NSwitch, NTag } from 'naive-ui'
 import { formatDateTime } from '@/utils'
 import { MeCrud, MeQueryItem, MeModal } from '@/components'
 import { useCrud } from '@/composables'
+import api from './api'
+
 
 defineOptions({ name: 'ImgUpload' })
 
@@ -69,86 +73,62 @@ const resumeList = reactive([
 
 ])
 
+const $table = ref(null)
+
 /** QueryBar筛选参数（可选） */
 const queryItems = ref({})
 
-const myData = [
-  {
-    fileName: '张三的简历.pdf',
-    fileSize: '150KB',
-    createTime: '2023-04-01T12:34:56Z',
-    enable: [
-      { name: '待解析' },
-    ],
-  },
-  {
-    fileName: '李四的简历.docx',
-    fileSize: '250KB',
-    createTime: '2023-04-02T09:45:12Z',
-    enable: [
-      { name: '解析成功' },
-    ],
-  },
-  {
-    fileName: '王五的简历.doc',
-    fileSize: '200KB',
-    createTime: '2023-04-03T14:56:23Z',
-    enable: [
-      { name: '解析成功' },
-    ],
-  },
-  {
-    fileName: '赵六的简历.pdf',
-    fileSize: '200KB',
-    createTime: '2024-01-03T14:56:23Z',
-    enable: [
-      { name: '解析成功' },
-    ],
-  },
-  {
-    fileName: 'hello的简历.odt',
-    fileSize: '200KB',
-    createTime: '2023-04-03T14:56:23Z',
-    enable: [
-      { name: '解析出错' },
-    ],
-  },
-  // ... 可以添加更多简历数据对象
-];
+onMounted(() => {
+  $table.value?.handleSearch()
+})
 
 
 const columns = [
   { title: '文件名称', key: 'fileName', width: 280, ellipsis: { tooltip: true } },
-  { title: '文件大小', key: 'fileSize', width: 120, ellipsis: { tooltip: true } },
+  {
+    title: '文件大小',
+    key: 'fileSize',
+    width: 120,
+    ellipsis: { tooltip: true },
+    render(row) {
+      const fileSizeInMB = row.fileSize / (1024 * 1024); // 将字节转换为 MB
+      return fileSizeInMB.toFixed(2) + ' MB'; // 保留两位小数并添加单位 MB
+    },
+  },
   {
     title: '创建时间',
-    key: 'createDate',
+    key: 'uploadTime',
     width: 280,
     render(row) {
-      return h('span', formatDateTime(row['createTime']))
+      return h('span', formatDateTime(row['uploadTime']))
     },
   },
   {
     title: '简历状态',
-    key: 'enable',
-    width: 180,ellipsis: { tooltip: true },
-    render: ({enable}) => {
-      const typeMap = {
-        '待解析': 'warning',
-        '解析成功': 'success',
-        '解析出错': 'error',
-        // ... 其他role和type的映射
+    key: 'resumeStatus',
+    width: 180,
+    ellipsis: { tooltip: true },
+    render({ resumeStatus }) {
+      const statusMap = {
+        0: { text: '待解析', type: 'warning' },
+        1: { text: '解析成功', type: 'success' },
+        2: { text: '解析出错', type: 'error' },
       };
-      if (enable) {
-        return enable.map((item,index) =>
-          h(
-            NTag,
-            { type: typeMap[item.name], style: index > 0 ? 'margin-left: 8px;' : '' },
-            { default: () => item.name }
-          )
-        )
+      const status = statusMap[resumeStatus];
+      if (status) {
+        return h(
+          'div',
+          {},
+          [
+            h(
+              NTag,
+              { type: status.type },
+              { default: () => status.text }
+            )
+          ]
+        );
       }
-      return '暂无状态'
+      return '暂无状态';
     },
   },
   {
@@ -201,30 +181,60 @@ const columns = [
   },
 ]
 
-
 watch(copied, (val) => {
   val && $message.success('已复制到剪切板')
 })
 
 function onBeforeUpload({ file }) {
-  if (!file.file?.type.startsWith('')) {
-    $message.error('该格式的简历暂不支持')
-    return false
+  if (
+    !['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain', 'image/jpeg', 'image/png'].includes(file.type)) {
+    $message.error('该格式的简历暂不支持');
+    return false;
   }
-  return true
+  return true;
 }
+
+
+const {
+  modalRef,
+  modalFormRef,
+  modalForm,
+  modalAction,
+  handleDelete,
+  handleSave,
+} = useCrud({
+  name: '简历',
+  initForm: {  },
+  doDelete: api.delete,
+  refresh: () => $table.value?.handleSearch(),
+})
+
 
 async function handleUpload({ file, onFinish }) {
   if (!file || !file.type) {
     $message.error('请选择你的简历文件')
   }
 
-  // 模拟上传
-  $message.loading('简历上传中...')
-  setTimeout(() => {
-    $message.success('简历上传成功')
-    resumeList.push({ fileName: file.name, url: URL.createObjectURL(file.file) })
-    onFinish()
-  }, 1500)
+  let formData = new FormData();
+  formData.append("file", file.file);
+
+  try {
+    // 发送文件到后端
+    const response = await api.uploadResume(formData);
+
+    // 处理后端返回的响应
+    if (response.data) {
+      $table.value?.handleSearch()
+      $message.success(response.data);
+      // 这里可以根据后端返回的数据更新页面的显示状态或者做其他操作
+    } else {
+      $message.error('上传失败');
+    }
+  } catch (error) {
+    $message.error('上传失败：' + error.message);
+  } finally {
+    onFinish();
+  }
 }
 </script>

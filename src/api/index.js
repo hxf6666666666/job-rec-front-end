@@ -2,7 +2,7 @@ import { request } from '@/utils'
 
 export default {
   // 获取用户信息
-  getUser: () => axios.get('https://mock.apifox.com/m1/3776410-0-default/user/detail'),
+  getUser: () => request.get('/user/detail'),
   // 刷新token
   refreshToken: () => axios.get('https://mock.apifox.com/m1/3776410-0-default/auth/refresh/token'),
   // 登出

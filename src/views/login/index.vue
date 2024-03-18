@@ -136,7 +136,7 @@ async function handleLogin(isQuick) {
   try {
     loading.value = true
     $message.loading('正在验证，请稍后...', { key: 'login' })
-    const { data } = await api.login({ username, password: password.toString(), captcha, isQuick })
+    const { data } = await api.login({ userName: username, userPassword: password.toString()})
     if (isRemember.value) {
       lStorage.set('loginInfo', { username, password })
     } else {
@@ -165,8 +165,10 @@ async function onLoginSuccess(data = {}) {
       const path = route.query.redirect
       delete route.query.redirect
       router.push({ path, query: route.query })
+      window.location.reload();
     } else {
       router.push('/')
+      window.location.reload();
     }
   } catch (error) {
     console.error(error)

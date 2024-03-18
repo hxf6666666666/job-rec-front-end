@@ -3,16 +3,16 @@
     <div class="flex">
       <n-card class="min-w-200 w-40%">
         <div class="flex items-center">
-          <n-avatar round :size="60" :src="userStore.avatar" class="flex-shrink-0" />
+          <n-avatar round :size="60" :src="userStore.userAvatar" class="flex-shrink-0" />
           <div class="ml-20 flex-col">
             <span class="text-20">
-              Hello, {{ userStore.nickName ?? userStore.username }}
+              Hello, {{ userStore.userNickname }}
             </span>
-            <span class="mt-4 opacity-80">当前角色：{{ userStore.currentRole?.name }}</span>
+            <span class="mt-4 opacity-80">当前角色：{{ userStore.userRole }}</span>
           </div>
         </div>
 
-        <p class="mt-28 text-14 opacity-60">欢迎使用基于知识图谱的大学生就业能力评价和职位推荐系统！</p>
+        <p class="mt-28 text-14 opacity-80">欢迎使用基于知识图谱的大学生就业能力评价和职位推荐系统！</p>
       </n-card>
       <n-card class="ml-12 w-15% items-center" size="large" title="🔩在招职位">
         <n-statistic label="" tabular-nums>
@@ -83,6 +83,7 @@ import { ToolboxComponent } from 'echarts/components';
 import { VisualMapComponent } from 'echarts/components';
 import { MapChart } from 'echarts/charts';
 import ChinaMap from '@/views/home/ChinaMap.vue'
+import { AppPage } from '@/components/index.js'
 
 const userStore = useUserStore()
 

@@ -1,14 +1,14 @@
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div class="flex cursor-pointer items-center">
-      <n-badge value="999+">
-        <n-avatar round :size="56" :src="userStore.avatar" />
+      <n-badge value="99+">
+        <n-avatar round :size="56" :src="userStore.userAvatar" />
       </n-badge>
       <div v-if="userStore.userInfo" class="ml-12 flex-col flex-shrink-0 items-center">
-        <span class="text-20" style="font-family: 华文中宋; font-weight: bold">{{ userStore.nickName ?? userStore.username }}</span>
+        <span class="text-20" style="font-family: 华文中宋; font-weight: bold">{{ userStore.userNickname }}</span>
         <span>
-          <n-tag :bordered="false" type="warning" round size="medium">
-            {{ userStore.currentRole?.name }}
+          <n-tag :bordered="false" :type="getTagType(userStore.userRole)" round size="medium">
+            {{ userStore.userRole }}
           </n-tag>
         </span>
       </div>
@@ -29,6 +29,20 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const permissionStore = usePermissionStore()
 
+const getTagType = (userRole) => {
+  switch (userRole) {
+    case '超级管理员':
+      return 'warning'; // or whatever type you want
+    case '管理员':
+      return 'error'; // or whatever type you want
+    case '招聘者':
+      return 'info'; // or whatever type you want
+    default:
+      return 'success'; // or whatever type you want for other cases
+  }
+}
+
+
 const options = reactive([
   {
     label: '个人资料',
@@ -40,7 +54,7 @@ const options = reactive([
     label: '切换角色',
     key: 'toggleRole',
     icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
-    show: computed(() => userStore.roles.length > 1),
+    show: computed(() => userStore.userRole),
   },
   {
     label: '退出登录',

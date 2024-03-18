@@ -8,21 +8,21 @@ export const useUserStore = defineStore('user', {
     userId() {
       return this.userInfo?.id
     },
-    username() {
-      return this.userInfo?.username
+    userName() {
+      return this.userInfo?.userName
     },
-    nickName() {
-      return this.userInfo?.nickName
+    userNickname() {
+      return this.userInfo?.userNickname
     },
-    avatar() {
-      return this.userInfo?.avatar
+    userAvatar() {
+      return this.userInfo?.userAvatar
     },
-    currentRole() {
-      return this.userInfo?.currentRole || {}
+    userRole() {
+      return this.userInfo?.userRole || {}
     },
-    roles() {
-      return this.userInfo?.roles || []
-    },
+    isDisabled(){
+      return this.userInfo?.isDisabled
+    }
   },
   actions: {
     setUser(user) {

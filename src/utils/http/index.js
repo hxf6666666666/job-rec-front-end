@@ -10,7 +10,7 @@ export function createAxios(options = {}) {
     ...defaultOptions,
     ...options,
   })
-  // setupInterceptors(service)
+  setupInterceptors(service)
   return service
 }
 
