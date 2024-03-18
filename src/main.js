@@ -5,6 +5,8 @@ import 'uno.css'
 import 'vfonts/Lato.css'
 // 等宽字体
 import 'vfonts/FiraCode.css'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -13,8 +15,11 @@ import { setupStore } from './store'
 import { setupNaiveDiscreteApi } from './utils'
 import { setupDirectives } from './directives'
 
+
+
 async function bootstrap() {
   const app = createApp(App)
+  app.use(ElementPlus)
   setupStore(app)
   setupNaiveDiscreteApi()
   setupDirectives(app)

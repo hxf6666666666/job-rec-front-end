@@ -1,5 +1,22 @@
 <script setup>
+import {ref} from "vue";
 
+const formState = ref({
+  ZhiWeiName: 'loyal slave',//职位名称
+  GongSiName: 'UpFlow 506',//公司名称
+  job_description: '来了就遵守忠诚宣言吧，每个人都有棉花摘，每个人都能找到意义',//职位详情
+  job_lowestXueLi: '不限',//最低学历要求
+  exp:3,
+  zhaopinzhe:'老杨',
+  SuYangKeyWorlds: ['抗压', '爱老杨','爱建模','带人来','团队','上流'],//素养关键词
+  job_skills: ['数学建模','计算机','中医药','医学信息学','卫生统计学','软件工程'],//职业技术栈
+  job_type: '全职',//职业类型实习或全职
+  job_address: '江苏省南京市',//岗位地址
+  job_address_detail: '仙林大道138号南京中医药大学 B6-506',//详细地址
+  salary_range: [50, 70],
+
+  salary_type: 0,//工资种类
+})
 const title = ref("网络工程师")
 const exp = ref('3年以上')
 const edu = ref('大专')
@@ -15,36 +32,36 @@ const characters = ref(['积极','学习能力','沟通','分析','团队','合�
 
 <template>
   <div class="flex" style="width: 1000px">
-    <n-card class="mt-20 w-[100%]" :title="title">
+    <n-card class="mt-20 w-[100%]" :title="formState.ZhiWeiName">
       <template #header-extra>
         <n-button type="primary">
           <i class="i-fe:message-circle mr-4" />
-          立即沟通
+          查看招聘情况
         </n-button>
       </template>
       <n-list hoverable clickable>
         <n-list-item>
           <n-space align="center" class="mb-12">
             <div class="items-center">
-              <span class="text-18 color-error">12-20K</span>
+              <span class="text-18 color-error">{{`${formState.salary_range[0]}-${formState.salary_range[1]}K`}}</span>
               <span class="text-18 ml-12">
                   <n-tag :bordered="false">
-                    {{ exp }}
+                    {{ formState.exp+'年及以上工作经历'}}
                   </n-tag>
                 </span>
               <span class="text-18 ml-12">
                   <n-tag :bordered="false">
-                    {{ edu }}
+                    {{ formState.job_lowestXueLi }}
                   </n-tag>
                 </span>
               <span class="text-18 ml-12">
                   <n-tag :bordered="false" type="success">
-                    {{ city }}
+                    {{ formState.job_address }}
                   </n-tag>
                 </span>
               <span class="text-18 ml-12">
                   <n-tag :bordered="false" type="info">
-                    {{ type1 }}
+                    {{ formState.job_type }}
                   </n-tag>
                  </span>
             </div>
@@ -52,25 +69,22 @@ const characters = ref(['积极','学习能力','沟通','分析','团队','合�
 
           <n-space align="center" class="mb-12">
             <div class="items-center">
-              <n-tag v-for="skill in skills" class="mr-4" :bordered="false" round size="small" type="success">
+              <n-tag v-for="skill in formState.job_skills" class="mr-4" :bordered="false" round size="small" type="success">
                 {{ skill }}
               </n-tag>
-              <n-tag v-for="knowledge in knowledges" class="mr-4" :bordered="false" round size="small" type="warning">
-                {{ knowledge }}
-              </n-tag>
-              <n-tag v-for="character in characters" class="mr-4" :bordered="false" round size="small" type="error">
+              <n-tag v-for="character in formState.SuYangKeyWorlds" class="mr-4" :bordered="false" round size="small" type="error">
                 {{ character }}
               </n-tag>
             </div>
           </n-space>
 
           <n-space align="center" >
-            <img object-contain size="45" src="/src/assets/images/logo.png"  alt=""/>
+            <img object-contain size="80" src="/src/assets/images/ywg.jpg"  alt=""/>
             <div class="ml-20">
               <div class="items-center">
-                <span class="text-16 mr-12">{{ company }}</span>
-                <span class="text-14">{{ zhaopinzhe }}</span>
-                <p class="opacity-60">{{ address }}</p>
+                <span class="text-16 mr-12">{{ formState.GongSiName }}</span>
+                <span class="text-14">{{ formState.zhaopinzhe }}</span>
+                <p class="opacity-60">{{ formState.job_address+formState.job_address_detail }}</p>
               </div>
             </div>
           </n-space>
