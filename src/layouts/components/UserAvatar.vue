@@ -1,7 +1,7 @@
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div class="flex cursor-pointer items-center">
-      <n-badge value="99+">
+      <n-badge value="">
         <n-avatar round :size="56" :src="userStore.userAvatar" />
       </n-badge>
       <div v-if="userStore.userInfo" class="ml-12 flex-col flex-shrink-0 items-center">
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { useUserStore, useAuthStore, usePermissionStore } from '@/store'
+import { useAuthStore, usePermissionStore, useUserStore } from '@/store'
 import { RoleSelect } from '@/layouts/components'
 import { initUserAndPermissions } from '@/router'
 import api from '@/api'

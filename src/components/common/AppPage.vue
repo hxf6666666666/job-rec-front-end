@@ -7,7 +7,7 @@
  --------------------------------->
 
 <template>
-  <main class="cus-scroll h-full flex-col flex-1 bg-[cadetblue] dark:bg-#121212">
+  <main class="cus-scroll h-full flex-col flex-1 bg-[#e9e9e9bf] dark:bg-#121212">
     <transition name="fade-slide" mode="out-in" appear>
       <main :class="{ 'flex-1': full }" class="m-12"><slot /></main>
     </transition>

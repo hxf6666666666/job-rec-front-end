@@ -1,7 +1,7 @@
 <template xmlns:i-fe="http://www.w3.org/1999/xhtml">
   <AppPage show-footer>
     <div class="flex">
-      <n-card class="min-w-200 w-40%">
+      <n-card class="min-w-200 w-40%" hoverable>
         <div class="flex items-center">
           <n-avatar round :size="60" :src="userStore.userAvatar" class="flex-shrink-0" />
           <div class="ml-20 flex-col">
@@ -14,56 +14,56 @@
 
         <p class="mt-28 text-14 opacity-80">欢迎使用基于知识图谱的大学生就业能力评价和职位推荐系统！</p>
       </n-card>
-      <n-card class="ml-12 w-15% items-center" size="large" title="🔩在招职位">
+      <n-card class="ml-12 w-15% items-center" hoverable size="large" title="🔩在招职位">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="8761" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-15% items-center" size="large" title="📑简历数量">
+      <n-card class="ml-12 w-15% items-center" hoverable size="large" title="📑简历数量">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="1761" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-15% items-center" size="large" title="⭐岗位类型">
+      <n-card class="ml-12 w-15% items-center" hoverable size="large" title="⭐岗位类型">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="17" />
         </n-statistic>
       </n-card>
-      <n-card class="ml-12 w-15% items-center" size="large" title="🏙️城市数量">
+      <n-card class="ml-12 w-15% items-center" hoverable size="large" title="🏙️城市数量">
         <n-statistic label="" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="143" />
         </n-statistic>
       </n-card>
     </div>
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="🗺️职位热力地图" segmented>
+      <n-card class="w-50%" hoverable segmented title="🗺️职位热力地图">
         <template #header-extra>
           <span class="opacity-90 text-highlight">👏 看看全国哪些地方在招职位最多吧</span>
         </template>
         <china-map></china-map>
       </n-card>
-      <n-card class="ml-12 w-50%" title="🛠️热门技能要求" segmented>
+      <n-card class="ml-12 w-50%" hoverable segmented title="🛠️热门技能要求">
         <VChart :option="skillOption" autoresize />
       </n-card>
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-33%" title="🧑‍🎓求职者学历分布" segmented>
+      <n-card class="w-33%" hoverable segmented title="🧑‍🎓求职者学历分布">
         <VChart :option="educationOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-33%" title="🧑‍🔧求职者专业分布" segmented>
+      <n-card class="ml-12 w-33%" hoverable segmented title="🧑‍🔧求职者专业分布">
         <VChart :option="majorOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-33%" title="💰职位薪资分布" segmented>
+      <n-card class="ml-12 w-33%" hoverable segmented title="💰职位薪资分布">
         <VChart :option="salaryFunnelOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="📈职位简历趋势" segmented>
+      <n-card class="w-50%" hoverable segmented title="📈职位简历趋势">
         <VChart :option="trendOption2" :init-options="{ height: 280 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-50%" title="🔥热门职位类别" segmented>
+      <n-card class="ml-12 w-50%" hoverable segmented title="🔥热门职位类别">
         <VChart :option="trendOption" :init-options="{ height: 280 }" autoresize />
       </n-card>
     </div>
@@ -74,14 +74,17 @@
 <script setup>
 import { useUserStore } from '@/store'
 import * as echarts from 'echarts/core'
-import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
-import { BarChart, LineChart, PieChart } from 'echarts/charts'
+import {
+  GridComponent,
+  LegendComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  VisualMapComponent
+} from 'echarts/components'
+import { BarChart, LineChart, MapChart, PieChart } from 'echarts/charts'
 import { UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import { ToolboxComponent } from 'echarts/components';
-import { VisualMapComponent } from 'echarts/components';
-import { MapChart } from 'echarts/charts';
 import ChinaMap from '@/views/home/ChinaMap.vue'
 import { AppPage } from '@/components/index.js'
 

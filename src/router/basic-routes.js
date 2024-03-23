@@ -97,7 +97,7 @@ export const basicRoutes = [
   {
     name: 'Icon',
     path: '/base/icon',
-    component: () => import('@/views/base/unocss-icon.vue'),
+    component: () => import('@/components/common/KnowledgeGraph.vue'),
     meta: {
       title: '钟意人选',
     },

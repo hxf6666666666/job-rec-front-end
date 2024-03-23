@@ -25,7 +25,7 @@
 
     <MeCrud
       ref="$table"
-      :is-pagination="false"
+      :is-pagination="true"
       :columns="columns"
       v-model:query-items="queryItems"
       :get-data="api.read"
@@ -58,9 +58,9 @@
 <script setup>
 import { useClipboard } from '@vueuse/core'
 import { CommonPage } from '@/components/index.js'
-import { NAvatar, NButton, NSwitch, NTag } from 'naive-ui'
+import { NButton, NTag } from 'naive-ui'
 import { formatDateTime } from '@/utils'
-import { MeCrud, MeQueryItem, MeModal } from '@/components'
+import { MeCrud, MeQueryItem } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
 

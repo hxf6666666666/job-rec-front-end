@@ -1,5 +1,5 @@
 <script setup>
-import { AppPage, CommonPage } from '@/components/index.js'
+import { AppPage } from '@/components/index.js'
 import JobCard from '@/components/common/JobCard.vue'
 
 defineOptions({ name: 'tuijian' })
@@ -247,7 +247,7 @@ const cities = ref([
 </script>
 
 <template>
-<CommonPage title="推荐求职者" show-footer>
+  <AppPage show-footer title="推荐求职者">
     <div style="width: 1000px">
       <n-card class="mt-10 mr-10" title="">
         <n-input-group>
@@ -300,7 +300,7 @@ const cities = ref([
     <job-card></job-card>
 
 
-  </CommonPage>
+  </AppPage>
 </template>
 
 <style scoped>

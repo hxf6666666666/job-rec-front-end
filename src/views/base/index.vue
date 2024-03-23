@@ -1,5 +1,5 @@
 <template>
-  <CommonPage title="职位发布" show-footer>
+  <AppPage show-footer title="职位发布">
     <div class="flex">
       <n-card class="w-50%" title="招聘信息填写">
         <n-form>
@@ -81,12 +81,13 @@
         </n-form>
       </n-card>
     </div>
-  </CommonPage>
+  </AppPage>
 </template>
 
 <script setup>
-import {sleep} from '@/utils'
-import {ref} from 'vue'
+import { sleep } from '@/utils'
+import { ref } from 'vue'
+
 defineOptions({ name: 'BaseComponents' })
 
 const options = ref([

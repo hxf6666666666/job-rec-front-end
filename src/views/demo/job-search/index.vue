@@ -1,5 +1,5 @@
 <script setup>
-import { AppPage, CommonPage } from '@/components/index.js'
+import { AppPage } from '@/components/index.js'
 import JobCard from '@/components/common/JobCard.vue'
 
 defineOptions({ name: 'JobSearch' })
@@ -247,9 +247,9 @@ const cities = ref([
 </script>
 
 <template>
-  <AppPage class="items-center">
+  <AppPage class="items-center" title="职位搜索">
     <div style="width: 1000px">
-      <n-card class="mt-10 mr-10" title="">
+      <n-card class="mt-10 mr-10" embedded title="">
         <n-input-group>
           <n-input round size="large" placeholder="请输入职位、公司">
             <template #prefix>

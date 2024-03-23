@@ -17,6 +17,7 @@
     </aside>
 
     <article class="w-0 flex-col flex-1">
+      <AppHeader class="h-60 flex-shrink-0" />
       <slot />
     </article>
   </div>
@@ -25,6 +26,7 @@
 <script setup>
 import { useAppStore } from '@/store'
 import SideBar from './sidebar/index.vue'
+import AppHeader from '@/layouts/normal/header/index.vue'
 
 const appStore = useAppStore()
 </script>

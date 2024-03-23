@@ -5,8 +5,6 @@ import 'uno.css'
 import 'vfonts/Lato.css'
 // 等宽字体
 import 'vfonts/FiraCode.css'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -14,16 +12,21 @@ import { setupRouter } from './router'
 import { setupStore } from './store'
 import { setupNaiveDiscreteApi } from './utils'
 import { setupDirectives } from './directives'
-
+import PDFObjectPlugin from 'pdfobject-vue'
+import print from 'vue3-print-nb'
+import CanvasPainter from 'zrender/lib/canvas/Painter' // 引入 Canvas 绘制器
+import * as zrender from 'zrender' // 引入 zrender 绘制器
+zrender.registerPainter('canvas', CanvasPainter) // 注册绘制器
 
 
 async function bootstrap() {
   const app = createApp(App)
-  app.use(ElementPlus)
   setupStore(app)
   setupNaiveDiscreteApi()
   setupDirectives(app)
   await setupRouter(app)
+  app.use(PDFObjectPlugin)
+  app.use(print)
   app.mount('#app')
 }
 

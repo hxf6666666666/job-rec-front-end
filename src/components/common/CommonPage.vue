@@ -7,7 +7,7 @@
  --------------------------------->
 
 <template>
-  <main class="h-full flex-1 overflow-hidden bg-[cadetblue] dark:bg-#121212">
+  <main class="h-full flex-1 overflow-hidden bg-[#e9e9e9bf] dark:bg-#121212">
     <div class="h-full flex-col">
       <AppCard
         v-if="showHeader"

@@ -1,0 +1,216 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "relations": [
+      {
+        "id": "2730",
+        "name": "编号",
+        "semantic_type": "编号",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 0,
+        "relation_node": {
+          "id": "2c29f5249cf211ebbc710242c0a8c409",
+          "name": "01-0072",
+          "semantic_type": "编号",
+          "labels": [
+            "Concept",
+            "编号"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2677",
+        "name": "性别",
+        "semantic_type": "性别",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8f2d01129c1011eb892ad31672d12132",
+          "name": "男",
+          "semantic_type": "性别",
+          "labels": [
+            "Concept",
+            "性别"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2649",
+        "name": "出生年月",
+        "semantic_type": "出生年月",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8e8922369c1011eb892ad31672d12132",
+          "name": "1927/8/1",
+          "semantic_type": "出生年月",
+          "labels": [
+            "Concept",
+            "出生年月"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2672",
+        "name": "项目名录",
+        "semantic_type": "项目名录",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8f0c21689c1011eb892ad31672d12132",
+          "name": "剪纸（乐清细纹刻纸）",
+          "semantic_type": "项目名录",
+          "labels": [
+            "Concept",
+            "项目名录"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2662",
+        "name": "级别",
+        "semantic_type": "级别",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8eec11d49c1011eb892ad31672d12132",
+          "name": "国家级",
+          "semantic_type": "级别",
+          "labels": [
+            "Concept",
+            "级别"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2660",
+        "name": "门类",
+        "semantic_type": "门类",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8ed52bcc9c1011eb892ad31672d12132",
+          "name": "传统美术",
+          "semantic_type": "门类",
+          "labels": [
+            "Concept",
+            "门类"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2636",
+        "name": "批次",
+        "semantic_type": "批次",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8ebdb2d09c1011eb892ad31672d12132",
+          "name": "一",
+          "semantic_type": "批次",
+          "labels": [
+            "Concept",
+            "批次"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2621",
+        "name": "出生地",
+        "semantic_type": "出生地",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "84417f449c1011eb892ad31672d12132",
+          "name": "乐清市",
+          "semantic_type": "出生地",
+          "labels": [
+            "Concept",
+            "出生地"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      },
+      {
+        "id": "2553",
+        "name": "公布时间",
+        "semantic_type": "公布时间",
+        "properties": {
+          "scenes": "allinmd",
+          "status": 1
+        },
+        "direction": 1,
+        "relation_node": {
+          "id": "8ef701fc9c1011eb892ad31672d12132",
+          "name": "2007/6/9",
+          "semantic_type": "公布时间",
+          "labels": [
+            "Concept",
+            "公布时间"
+          ],
+          "properties": {
+            "scenes": "allinmd",
+            "status": 1
+          }
+        }
+      }
+    ]
+  }
+}
+

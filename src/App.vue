@@ -17,11 +17,19 @@
 </template>
 
 <script setup>
-import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
+import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { useCssVar } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import { useAppStore, useTabStore } from '@/store'
 import { useRoute } from 'vue-router'
+
+onMounted(() => {
+  window.addEventListener('mousewheel', function(event) {
+    if (event.ctrlKey === true || event.metaKey) {
+      event.preventDefault()
+    }
+  }, { passive: false })
+})
 
 const layouts = new Map()
 function getLayout(name) {
