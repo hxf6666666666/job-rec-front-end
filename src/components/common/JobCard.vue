@@ -15,12 +15,9 @@ const characters = ref(['积极', '学习能力', '沟通', '分析', '团队', 
 
 <template>
   <div class="flex" style="width: 1000px">
-    <n-card :title="title" class="mt-20 w-[100%]" embedded hoverable>
+    <n-card :title="title" size="small" class="mt-20 w-[100%]" embedded hoverable>
       <template #header-extra>
-        <n-button type="primary">
-          <i class="i-fe:message-circle mr-4" />
-          立即沟通
-        </n-button>
+        <n-rate size="large" count="1" clearable/>
       </template>
       <n-list hoverable clickable>
         <n-list-item>

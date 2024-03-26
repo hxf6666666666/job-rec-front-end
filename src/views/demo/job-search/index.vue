@@ -1,6 +1,7 @@
 <script setup>
 import { AppPage } from '@/components/index.js'
 import JobCard from '@/components/common/JobCard.vue'
+import SeekerCard from '@/components/common/SeekerCard.vue'
 
 defineOptions({ name: 'JobSearch' })
 
@@ -57,10 +58,6 @@ const salaries = ref([
   },
 ])
 const exps = ref([
-  {
-    value: "在校生",
-    label: "在校生"
-  },
   {
     value: "应届生",
     label: "应届生"
@@ -298,7 +295,6 @@ const cities = ref([
     <job-card></job-card>
     <job-card></job-card>
     <job-card></job-card>
-
 
   </AppPage>
 </template>

@@ -36,34 +36,34 @@
       </n-card>
     </div>
     <div class="mt-12 flex">
-      <n-card class="w-50%" hoverable segmented title="🗺️职位热力地图">
+      <n-card class="w-50%" hoverable title="🗺️职位热力地图" size="small">
         <template #header-extra>
           <span class="opacity-90 text-highlight">👏 看看全国哪些地方在招职位最多吧</span>
         </template>
         <china-map></china-map>
       </n-card>
-      <n-card class="ml-12 w-50%" hoverable segmented title="🛠️热门技能要求">
+      <n-card class="ml-12 w-50%" hoverable title="🛠️热门技能要求" size="small">
         <VChart :option="skillOption" autoresize />
       </n-card>
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-33%" hoverable segmented title="🧑‍🎓求职者学历分布">
+      <n-card class="w-33%" hoverable title="🧑‍🎓求职者学历分布" size="small">
         <VChart :option="educationOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-33%" hoverable segmented title="🧑‍🔧求职者专业分布">
+      <n-card class="ml-12 w-33%" hoverable title="🧑‍🔧求职者专业分布" size="small">
         <VChart :option="majorOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-33%" hoverable segmented title="💰职位薪资分布">
+      <n-card class="ml-12 w-33%" hoverable title="💰职位薪资分布" size="small">
         <VChart :option="salaryFunnelOption" :init-options="{ height: 200 }" autoresize />
       </n-card>
     </div>
 
     <div class="mt-12 flex">
-      <n-card class="w-50%" hoverable segmented title="📈职位简历趋势">
+      <n-card class="w-50%" hoverable title="📈职位简历趋势" size="small">
         <VChart :option="trendOption2" :init-options="{ height: 280 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-50%" hoverable segmented title="🔥热门职位类别">
+      <n-card class="ml-12 w-50%" hoverable title="🔥热门职位类别" size="small">
         <VChart :option="trendOption" :init-options="{ height: 280 }" autoresize />
       </n-card>
     </div>

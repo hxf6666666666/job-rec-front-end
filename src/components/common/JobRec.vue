@@ -1,5 +1,6 @@
 <script setup>
 import JobCard from '@/components/common/JobCard.vue'
+import { NButton, NRate } from 'naive-ui'
 
 const city_value = ref('全国')
 const type_value1 = ref('不限')
@@ -243,7 +244,7 @@ const cities = ref([
   <div style="width: 1000px">
     <n-card class="mt-10 mr-10" embedded hoverable title="">
       <div class="flex justify-center mt-15">
-        <n-alert closable type="info">
+        <n-alert type="info" :bordered="false">
           由简历信息自动生成推荐职位，可进行筛选和反馈，也可修改简历重新推荐！
         </n-alert>
       </div>
@@ -288,6 +289,13 @@ const cities = ref([
   <job-card></job-card>
   <job-card></job-card>
   <job-card></job-card>
+  <div class="flex mt-15">
+    <n-card title="推荐反馈" size="small">
+      <n-alert type="info" title="该推荐结果是否令您满意？">
+        <n-rate size="small" /><n-button class="ml-10" type="info" size="tiny">提交反馈</n-button>
+      </n-alert>
+    </n-card>
+  </div>
 </template>
 
 <style scoped>

@@ -54,7 +54,7 @@ export const basicRoutes = [
       title: '用户管理',
     },
   },
-    {
+  {
     name: 'JobSearch',
     path: '/demo/job-search',
     component: () => import('@/views/demo/job-search/index.vue'),
@@ -87,9 +87,9 @@ export const basicRoutes = [
     },
   },
   {
-    name: 'BaseComponents',
-    path: '/base/components',
-    component: () => import('@/views/base/index.vue'),
+    name: 'JobUpload',
+    path: '/job-upload',
+    component: () => import('@/views/base/upload/index.vue'),
     meta: {
       title: '职位发布',
     },
@@ -102,20 +102,20 @@ export const basicRoutes = [
       title: '钟意人选',
     },
   },
-    {
-        name: 'tuijian',
-        path: '/tuijian',
-        component: () => import('@/views/base/tuijian.vue'),
-        meta: {
-            title: '求职者推荐',
-        },
-    },
-    {
-        name: 'zhaopinHistory',
-        path: '/zhaopinHistory',
-        component: () => import('@/views/base/zhaopinHistory.vue'),
-        meta: {
-            title: '招聘历史',
-        },
-    },
+  {
+      name: 'SeekerSearch',
+      path: '/seeker-search',
+      component: () => import('@/views/base/seek-search/index.vue'),
+      meta: {
+          title: '人才推荐',
+      },
+  },
+  {
+      name: 'CVDetail',
+      path: '/CVDetail',
+      component: () => import('@/views/base/CVDetail.vue'),
+      meta: {
+          title: '简历详情',
+      },
+  },
 ]

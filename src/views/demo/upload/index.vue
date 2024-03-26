@@ -137,19 +137,11 @@ const columns = [
     width: 310,
     hideInExcel: true,
     render(row) {
+      // 根据简历状态决定是否显示查看按钮和解析按钮
+      const showViewButton = row.resumeStatus === 1; // 解析成功时显示
+      const showParseButton = row.resumeStatus !== 1; // 非解析成功状态时显示
+
       return [
-        h(
-          NButton,
-          {
-            size: 'small',
-            type: 'primary',
-            onClick: () => handleOpenRolesSet(row),
-          },
-          {
-            default: () => '查看',
-            icon: () => h('i', { class: 'i-carbon:view text-14' }),
-          }
-        ),
         h(
           NButton,
           {
@@ -163,11 +155,24 @@ const columns = [
             icon: () => h('i', { class: 'i-material-symbols:delete-outline text-14' }),
           }
         ),
-        h(
+        showViewButton && h(
           NButton,
           {
             size: 'small',
-            type: 'info',
+            type: 'success',
+            style: 'margin-left: 12px;',
+            onClick: () => handleOpenRolesSet(row),
+          },
+          {
+            default: () => '查看',
+            icon: () => h('i', { class: 'i-carbon:view text-14' }),
+          }
+        ),
+        showParseButton && h(
+          NButton,
+          {
+            size: 'small',
+            type: 'warning',
             style: 'margin-left: 12px;',
             onClick: () => handleOpen({ action: 'reset', title: '重置密码', row, onOk: onSave }),
           },
@@ -176,7 +181,7 @@ const columns = [
             icon: () => h('i', { class: 'i-fe:slack text-14' }),
           }
         ),
-      ]
+      ].filter(Boolean); // 过滤掉undefined值，只显示实际的按钮
     },
   },
 ]

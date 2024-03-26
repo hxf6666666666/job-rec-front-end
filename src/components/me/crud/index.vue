@@ -88,7 +88,7 @@ const emit = defineEmits(['update:queryItems', 'onChecked', 'onDataChange'])
 const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
-const pagination = reactive({ page: 1, pageSize: 7 })
+const pagination = reactive({ page: 1, pageSize: 6 })
 
 async function handleQuery() {
   try {
