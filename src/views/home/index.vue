@@ -448,11 +448,6 @@ const trendOption2 = {
   legend: {
     data: ['职位发布数', '简历投递数', '简历通过数']
   },
-  toolbox: {
-    feature: {
-      saveAsImage: {}
-    }
-  },
   grid: {
     left: '3%',
     right: '4%',
