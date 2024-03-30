@@ -1,18 +1,5 @@
 <template>
-  <CommonPage title="职位发布">
-    <template #action>
-      <n-button type="info" @click="handleAdd()">
-        <i class="i-material-symbols:add mr-4 text-18" />
-        发布新职位
-      </n-button>
-    </template>
-
-    <div class="flex justify-center mt-15 mb-15">
-      <n-alert type="info" :bordered="false">
-        点击“发布新职位”即可发布职位，系统自动完成职位解析！
-      </n-alert>
-    </div>
-
+  <CommonPage title="职位管理">
     <MeCrud
       ref="$table"
       :is-pagination="true"
@@ -37,85 +24,6 @@
         />
       </MeQueryItem>
     </MeCrud>
-
-    <MeModal ref="modalRef">
-      <n-form>
-        <div class="flex">
-          <n-form-item class="w-50%" label="职位名称">
-            <n-input v-model:value="formState.ZhiWeiName"/>
-          </n-form-item>
-          <n-form-item class="w-50% ml-15" label="职位类别">
-            <n-select class="ml-12" clearable placeholder="职位类型" v-model:value="type_value2" multiple :options="types2" />
-          </n-form-item>
-        </div>
-        <n-form-item label="职位描述">
-          <n-input v-model:value="formState.job_description" type="textarea"/>
-        </n-form-item>
-
-        <div class="flex">
-          <n-form-item class="w-33%" label="最低学历要求">
-            <n-select v-model:value="formState.job_lowestXueLi" :options="options"/>
-          </n-form-item>
-
-          <n-form-item class="w-33% ml-15" label="最低工作年限要求">
-            <n-select clearable placeholder="工作经验" v-model:value="exp_value" multiple :options="exps" />
-          </n-form-item>
-
-          <n-form-item class="w-33% ml-15" label="职业类型">
-            <n-radio-group v-model:value="formState.job_type" name="radiogroup">
-              <n-space>
-                <n-radio v-for="song in songs" :key="song.value" :value="song.value">
-                  {{ song.label }}
-                </n-radio>
-              </n-space>
-            </n-radio-group>
-          </n-form-item>
-
-        </div>
-        <n-form-item label="公司名称">
-          <n-input v-model:value="formState.GongSiName"/>
-        </n-form-item>
-        <n-form-item label="岗位地址">
-          <n-space vertical  placeholder="输入详细地址">
-            <n-cascader
-              v-model:value="formState.job_address"
-              placeholder="请选择省份和城市"
-              :expand-trigger="hoverTrigger ? 'hover' : 'click'"
-              :options="options2"
-              :check-strategy="checkStrategyIsChild ? 'child' : 'all'"
-              :show-path="showPath"
-              :filterable="filterable"
-              @update:value="handleUpdateValue"
-            />
-          </n-space>
-          <n-input class="ml-15" v-model:value="formState.job_address_detail" placeholder="输入详细地址"/>
-        </n-form-item>
-        <div class="flex">
-          <n-form-item class="w-65%" label="工资上下限（单位：K）">
-            <n-space vertical>
-              <n-slider v-model:value="formState.salary_range" range :step="1"/>
-              <n-space>
-                <n-input-number v-model:value="formState.salary_range[0]" size="small"/>
-                <n-input-number v-model:value="formState.salary_range[1]" size="small"/>
-              </n-space>
-            </n-space>
-          </n-form-item>
-          <n-form-item class="w-35% ml-10" label="工资种类">
-            <n-space vertical>
-              <n-radio-group class="mt-20" v-model:value="formState.salary_type" name="radiobuttongroup1">
-                <n-radio-button
-                  v-for="song in songs2"
-                  :key="song.value"
-                  :value="song.value"
-                  :label="song.label"
-                />
-              </n-radio-group>
-            </n-space>
-          </n-form-item>
-        </div>
-      </n-form>
-    </MeModal>
-
   </CommonPage>
 </template>
 
@@ -175,7 +83,7 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'error',
             style: 'margin-left: 12px;',
             onClick: () => handleDelete(row.id),
@@ -188,7 +96,7 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'success',
             style: 'margin-left: 12px;',
             onClick: () => handleOpenRolesSet(row),

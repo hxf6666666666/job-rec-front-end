@@ -101,7 +101,6 @@ const permissions = ref([
         "enable": true,
         "order": 2
       },
-
     ]
   },
   {
@@ -134,30 +133,14 @@ const permissions = ref([
       },
       {
         "id": 62,
-        "name": "简历上传",
-        "code": "ImgUpload",
-        "type": "MENU",
-        "parentId": 6,
-        "path": "/demo/upload",
-        "redirect": null,
-        "icon": "i-fe:upload",
-        "component": "/src/views/demo/upload/index.vue",
-        "layout": "simple",
-        "keepAlive": true,
-        "show": true,
-        "enable": true,
-        "order": 1
-      },
-      {
-        "id": 63,
-        "name": "简历详情",
+        "name": "职位推荐",
         "code": "CVDetail",
         "type": "MENU",
         "parentId": 9,
         "path": "/CVDetail",
         "redirect": null,
         "icon": "i-fe:file-text",
-        "component": "/src/views/base/CVDetail.vue",
+        "component": "/src/views/base/demo/CVDetail/CVDetail.vue",
         "layout": null,
         "keepAlive": null,
         "method": null,
@@ -168,14 +151,14 @@ const permissions = ref([
       },
       {
         "id": 64,
-        "name": "求职记录",
+        "name": "我的职位",
         "code": "MyLove",
         "type": "MENU",
         "parentId": 6,
-        "path": "/demo/mylove",
+        "path": "/myjob",
         "redirect": null,
         "icon": "i-fe:star",
-        "component": "/src/views/demo/upload/index.vue",
+        "component": "/src/views/demo/upload(弃用)/index.vue",
         "layout": "simple",
         "keepAlive": true,
         "show": true,
@@ -240,14 +223,14 @@ const permissions = ref([
       },
       {
         "id": 92,
-        "name": "人才搜索",
-        "code": "SeekerSearch",
+        "name": "职位详情",
+        "code": "JobDetail",
         "type": "MENU",
         "parentId": 9,
-        "path": "/seeker-search",
+        "path": "/JobDetail",
         "redirect": null,
-        "icon": "i-fe:search",
-        "component": "/src/views/base/seek-search.vue",
+        "icon": "i-fe:file-text",
+        "component": "/src/views/base/JobDetail.vue",
         "layout": null,
         "keepAlive": null,
         "method": null,
@@ -255,24 +238,6 @@ const permissions = ref([
         "show": true,
         "enable": true,
         "order": 1
-      },
-      {
-        "id": 94,
-        "name": "钟意人选",
-        "code": "Icon",
-        "type": "MENU",
-        "parentId": 9,
-        "path": "/base/icon",
-        "redirect": null,
-        "icon": "i-fe:smile",
-        "component": "/src/views/base/unocss-icon.vue",
-        "layout": "",
-        "keepAlive": null,
-        "method": null,
-        "description": null,
-        "show": true,
-        "enable": true,
-        "order": 2
       }
     ]
   }

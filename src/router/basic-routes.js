@@ -46,14 +46,34 @@ export const basicRoutes = [
       layout: 'empty',
     },
   },
-    {
+
+  {
     name: 'UserMgt',
     path: '/pms/user',
-    component: () => import('@/views/pms/user/index.vue'), // 注意路径
+    component: () => import('@/views/pms/user/index.vue'),
     meta: {
       title: '用户管理',
     },
   },
+
+  {
+    name: 'ResumeMgt',
+    path: '/pms/resume',
+    component: () => import('@/views/pms/resume/index.vue'),
+    meta: {
+      title: '简历管理',
+    },
+  },
+
+  {
+    name: 'JobMgt',
+    path: '/pms/job',
+    component: () => import('@/views/pms/job/index.vue'),
+    meta: {
+      title: '职位管理',
+    },
+  },
+
   {
     name: 'JobSearch',
     path: '/demo/job-search',
@@ -64,17 +84,18 @@ export const basicRoutes = [
   },
   {
     name: 'ImgUpload',
-    path: '/demo/upload',
-    component: () => import('@/views/demo/upload/index.vue'),
+    path: '/demo/upload(弃用)',
+    component: () => import('@/views/demo/upload(弃用)/index.vue'),
     meta: {
       title: '简历上传',
     },
   },
   {
-    name: 'MyLove',
-    path: '/demo/mylove',
+    name: 'MyJob',
+    path: '/myjob',
+    component: () => import('@/views/demo/MyJob/index.vue'),
     meta: {
-      title: '我的收藏',
+      title: '我的职位',
     },
   },
   {
@@ -95,6 +116,14 @@ export const basicRoutes = [
     },
   },
   {
+    name: 'JobDetail',
+    path: '/JobDetail',
+    component: () => import('@/views/base/JobDetail.vue'),
+    meta: {
+      title: '职位详情',
+    },
+  },
+  {
     name: 'Icon',
     path: '/base/icon',
     component: () => import('@/components/common/KnowledgeGraph.vue'),
@@ -105,7 +134,7 @@ export const basicRoutes = [
   {
       name: 'SeekerSearch',
       path: '/seeker-search',
-      component: () => import('@/views/base/seek-search/index.vue'),
+      component: () => import('@/views/base/seeker-collection/index.vue'),
       meta: {
           title: '人才推荐',
       },
@@ -113,9 +142,9 @@ export const basicRoutes = [
   {
       name: 'CVDetail',
       path: '/CVDetail',
-      component: () => import('@/views/base/CVDetail.vue'),
+      component: () => import('@/views/demo/CVDetail/CVDetail.vue'),
       meta: {
-          title: '简历详情',
+          title: '职位推荐',
       },
   },
 ]

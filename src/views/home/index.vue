@@ -35,15 +35,16 @@
         </n-statistic>
       </n-card>
     </div>
+
     <div class="mt-12 flex">
-      <n-card class="w-50%" hoverable title="🗺️职位热力地图" size="small">
+      <n-card class="w-50%" hoverable segmented title="🗺️城市热度">
         <template #header-extra>
           <span class="opacity-90 text-highlight">👏 看看全国哪些地方在招职位最多吧</span>
         </template>
-        <china-map></china-map>
+        <VChart :option="word_option"  :init-options="{ height: 270 }" autoresize />
       </n-card>
-      <n-card class="ml-12 w-50%" hoverable title="🛠️热门技能要求" size="small">
-        <VChart :option="skillOption" autoresize />
+      <n-card class="ml-12 w-50%" hoverable segmented title="🛠️热门技能要求">
+        <VChart :option="word_option2"  :init-options="{ height: 270 }" autoresize />
       </n-card>
     </div>
 
@@ -85,8 +86,10 @@ import { BarChart, LineChart, MapChart, PieChart } from 'echarts/charts'
 import { UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
-import ChinaMap from '@/views/home/ChinaMap.vue'
 import { AppPage } from '@/components/index.js'
+import { FunnelChart } from 'echarts/charts';
+import 'echarts-wordcloud';
+
 
 const userStore = useUserStore()
 
@@ -101,8 +104,144 @@ echarts.use([
   PieChart,
   ToolboxComponent,
   VisualMapComponent,
-  MapChart
+  MapChart,
+  FunnelChart
 ])
+
+const word_option  = {
+  series: [{
+    type: 'wordCloud',
+    shape: 'circle',
+    keepAspect: false,
+    // maskImage: maskImage,
+    width: '100%',
+    height: '100%',
+    right: null,
+    bottom: null,
+    sizeRange: [12, 100],
+    rotationRange: [-45, 45],
+    rotationStep: 45,
+    gridSize: 8,
+    drawOutOfBound: false,
+    layoutAnimation: true,
+    textStyle: {
+      fontFamily: 'sans-serif',
+      fontWeight: 'bold',
+      color: function () {
+        return 'rgb(' + [
+          Math.round(Math.random() * 160),
+          Math.round(Math.random() * 160),
+          Math.round(Math.random() * 160)
+        ].join(',') + ')';
+      }
+    },
+    emphasis: {
+      // focus: 'self',
+      textStyle: {
+        textShadowBlur: 3,
+        textShadowColor: '#333'
+      }
+    },
+    //data属性中的value值却大，权重就却大，展示字体就却大
+    data: [
+      { name: '泰安', value: 952 },
+      { name: '上海', value: 837 },
+      { name: '广州', value: 754 },
+      { name: '深圳', value: 680 },
+      { name: '天津', value: 510 },
+      { name: '成都', value: 485 },
+      { name: '武汉', value: 462 },
+      { name: '杭州', value: 439 },
+      { name: '重庆', value: 424 },
+      { name: '西安', value: 402 },
+      { name: '苏州', value: 387 },
+      { name: '南京', value: 366 },
+      { name: '郑州', value: 349 },
+      { name: '长沙', value: 338 },
+      { name: '沈阳', value: 312 },
+      { name: '青岛', value: 301 },
+      { name: '大连', value: 290 },
+      { name: '东莞', value: 285 },
+      { name: '宁波', value: 278 },
+      { name: '厦门', value: 271 },
+      { name: '北京', value: 265 }
+    ]
+  }]
+}
+
+const word_option2  = {
+  series: [{
+    type: 'wordCloud',
+    shape: 'circle',
+    keepAspect: false,
+    // maskImage: maskImage,
+    width: '100%',
+    height: '100%',
+    right: null,
+    bottom: null,
+    sizeRange: [12, 100],
+    rotationRange: [-45, 45],
+    rotationStep: 45,
+    gridSize: 8,
+    drawOutOfBound: false,
+    layoutAnimation: true,
+    textStyle: {
+      fontFamily: 'sans-serif',
+      fontWeight: 'bold',
+      color: function () {
+        return 'rgb(' + [
+          Math.round(Math.random() * 160),
+          Math.round(Math.random() * 160),
+          Math.round(Math.random() * 160)
+        ].join(',') + ')';
+      }
+    },
+    emphasis: {
+      // focus: 'self',
+      textStyle: {
+        textShadowBlur: 3,
+        textShadowColor: '#333'
+      }
+    },
+    //data属性中的value值却大，权重就却大，展示字体就却大
+    data: [
+      { name: 'JavaScript', value: 952 },
+      { name: 'HTML', value: 837 },
+      { name: 'CSS', value: 754 },
+      { name: 'React', value: 680 },
+      { name: 'Node.js', value: 510 },
+      { name: 'Vue.js', value: 485 },
+      { name: '数据挖掘', value: 462 },
+      { name: 'Python', value: 439 },
+      { name: 'Java', value: 424 },
+      { name: 'TypeScript', value: 402 },
+      { name: 'Django', value: 387 },
+      { name: 'Spring', value: 366 },
+      { name: 'Express', value: 349 },
+      { name: '云计算', value: 338 },
+      { name: 'PHP', value: 312 },
+      { name: 'C#', value: 301 },
+      { name: 'Ruby', value: 290 },
+      { name: '大数据', value: 285 },
+      { name: 'Swift', value: 278 },
+      { name: 'Kotlin', value: 271 },
+      { name: 'Go', value: 265 },
+      { name: 'Rust', value: 250 },
+      { name: 'SQL', value: 235 },
+      { name: 'NoSQL', value: 220 },
+      { name: 'MongoDB', value: 205 },
+      { name: '人工智能', value: 190 },
+      { name: 'MySQL', value: 175 },
+      { name: 'Redis', value: 160 },
+      { name: 'Docker', value: 145 },
+      { name: '机器学习', value: 130 },
+      { name: 'AWS', value: 115 },
+      { name: 'Azure', value: 100 },
+      { name: 'Git', value: 85 }
+    ]
+  }]
+}
+
 
 const trendOption = {
   tooltip: {
@@ -157,54 +296,6 @@ const trendOption = {
         show: true,
         position: 'right' // 将标签显示在条形图右侧
       }
-    },
-  ],
-}
-
-
-const skillOption = {
-  tooltip: {
-    trigger: 'item',
-    formatter({ name, value }) {
-      return `${name} ${value}%`
-    },
-  },
-  legend: {
-    left: 'center',
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: ['25%', '65%'],
-      avoidLabelOverlap: true,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2,
-      },
-      label: {
-        show: false,
-        position: 'center',
-      },
-      emphasis: {
-        label: {
-          show: true,
-          fontSize: 36,
-          fontWeight: 'bold',
-        },
-      },
-      labelLine: {
-        show: false,
-      },
-      data: [
-        { value: 18.5, name: 'Vue' },
-        { value: 10, name: 'Java' },
-        { value: 10, name: 'C++' },
-        { value: 37, name: 'JavaScript' },
-        { value: 6.5, name: 'CSS' },
-        { value: 6.2, name: 'HTML' },
-        { value: 1.8, name: 'Other' },
-      ],
     },
   ],
 }

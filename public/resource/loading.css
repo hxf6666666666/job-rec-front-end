@@ -39,7 +39,7 @@
 	position: absolute;
   height: 16px;
   width: 16px;
-	background-color: var(--primary-color);
+	background-color: #eb8004;
   border-radius: 8px;
   -webkit-animation: loadingPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   animation: loadingPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -81,5 +81,5 @@
 .loading-title {
   font-size: 28px;
 	font-weight: 500;
-  color: var(--primary-color);
+  color: #eb8004;
 }

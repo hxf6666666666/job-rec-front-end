@@ -1,5 +1,7 @@
 <script setup>
 import { useUserStore } from '@/store/index.js'
+import JobDetailCard from '@/components/common/JobDetailCard.vue'
+import ResumeCard from '@/components/common/ResumeCard.vue'
 const userStore = useUserStore()
 const tags = [
   { text: 'CET6', type: 'info' },
@@ -10,13 +12,20 @@ const tags = [
   { text: '善于合作', type: 'error' },
   // 更多标签...
 ];
+const isApplied = ref(false)
+const show = ref(false)
 
 </script>
 
 <template>
-  <n-card id="resume" title=" " class="mt-15" size="small" embedded hoverable>
+  <n-card id="resume" title=" " class="mt-15" size="small" embedded hoverable @click="show=!show">
     <template #header-extra>
-      <n-rate size="large" count="1" clearable/>
+      <n-button size="tiny" :type="isApplied ? 'error' : 'info'" @click.stop="isApplied = !isApplied" class="mr-12">
+        {{ isApplied ? '取消' : '发放offer' }}
+      </n-button>
+      <div @click.stop>
+        <n-rate size="large" count="1" clearable/>
+      </div>
     </template>
     <div class="flex">
       <n-avatar :size="100" :src="userStore.userAvatar" class="mt-15 ml-15" round />
@@ -78,6 +87,11 @@ const tags = [
       </div>
     </div>
   </n-card>
+  <n-drawer v-model:show="show" :width="760" show-mask="true">
+    <n-drawer-content :native-scrollbar="false">
+      <resume-card></resume-card>
+    </n-drawer-content>
+  </n-drawer>
 </template>
 
 <style scoped>

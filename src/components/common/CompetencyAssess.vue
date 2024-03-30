@@ -42,7 +42,7 @@
   <div class="flex mt-15">
     <n-card hoverable size="small" title="提升建议" embedded>
       <n-alert type="info" :bordered="false">
-        以下内容由AI大模型根据简历内容及能力评价结果自动生成，仅供参考！
+        以下内容根据简历内容及能力评价结果自动生成，仅供参考！
       </n-alert>
       <n-divider></n-divider>
       <n-alert class="mt-10" type="success" :bordered="false">

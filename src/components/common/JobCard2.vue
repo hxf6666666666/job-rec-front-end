@@ -20,14 +20,6 @@ const show = ref(false)
 <template>
   <div class="flex" style="width: 1000px">
     <n-card :title="title" size="small" class="mt-20 w-[100%]" embedded hoverable @click="show=!show">
-      <template #header-extra>
-        <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="isApplied = !isApplied" class="mr-12">
-          {{ isApplied ? '取消' : '投递' }}
-        </n-button>
-        <div @click.stop>
-          <n-rate size="large" count="1" clearable/>
-        </div>
-      </template>
       <n-space align="center" class="mb-12">
         <div class="items-center">
           <span class="text-18 color-error">12-20K</span>

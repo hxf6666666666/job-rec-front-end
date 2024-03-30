@@ -130,7 +130,6 @@ const genders = [
   { label: '女', value: 2 },
 ]
 const roles = ref([])
-// api.getAllRoles().then(({ data = [] }) => (roles.value = data))
 
 const columns = [
   {
@@ -139,7 +138,7 @@ const columns = [
     width: 80,
     render: ({ userAvatar }) =>
       h(NAvatar, {
-        size: 'medium',
+        size: 'small',
         src: userAvatar,
       }),
   },
@@ -159,7 +158,7 @@ const columns = [
       if (userRole) {
         return h(
           NTag,
-          { type: typeMap[userRole] || 'default', bordered: false, round: true},
+          { type: typeMap[userRole] || 'default', round: true, size: "small"},
           { default: () => userRole }
         );
       } else {
@@ -205,7 +204,7 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'primary',
             secondary: true,
             onClick: () => handleOpenRolesSet(row),
@@ -218,7 +217,7 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'info',
             style: 'margin-left: 12px;',
             onClick: () => handleOpen({ action: 'reset', title: '重置密码', row, onOk: onSave }),
@@ -232,7 +231,7 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'error',
             style: 'margin-left: 12px;',
             onClick: () => handleDelete(row.id),
