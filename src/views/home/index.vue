@@ -90,7 +90,6 @@ import { AppPage } from '@/components/index.js'
 import { FunnelChart } from 'echarts/charts';
 import 'echarts-wordcloud';
 
-
 const userStore = useUserStore()
 
 echarts.use([

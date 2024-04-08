@@ -7,7 +7,7 @@
       </n-button>
     </template>
 
-    <div class="flex justify-center mt-15 mb-15">
+    <div class="flex justify-center mb-15">
       <n-alert type="info" :bordered="false">
         点击“发布新职位”即可发布职位，系统自动完成职位解析！
       </n-alert>
@@ -31,90 +31,105 @@
 
       <MeQueryItem label="职位类别" :label-width="80">
         <n-select
-          v-model:value="queryItems.jobType"
+          v-model:value="queryItems.industryId"
           clearable
-          :options="types2"
+          :options="type2"
         />
       </MeQueryItem>
     </MeCrud>
 
     <MeModal ref="modalRef">
-      <n-form>
-        <div class="flex">
-          <n-form-item class="w-50%" label="职位名称">
-            <n-input v-model:value="formState.ZhiWeiName"/>
-          </n-form-item>
-          <n-form-item class="w-50% ml-15" label="职位类别">
-            <n-select class="ml-12" clearable placeholder="职位类型" v-model:value="type_value2" multiple :options="types2" />
-          </n-form-item>
-        </div>
-        <n-form-item label="职位描述">
-          <n-input v-model:value="formState.job_description" type="textarea"/>
-        </n-form-item>
+      <n-scrollbar style="max-height: 490px">
+        <n-alert type="info">必填项填完才可以发布成功哦！</n-alert>
+        <n-form class="mt-15">
+          <div class="flex">
+            <n-form-item class="w-50%" label="职位名称（必填）" :rule="{ required: true }">
+              <n-input v-model:value="modalForm.jobName"/>
+            </n-form-item>
 
-        <div class="flex">
-          <n-form-item class="w-33%" label="最低学历要求">
-            <n-select v-model:value="formState.job_lowestXueLi" :options="options"/>
-          </n-form-item>
+            <n-form-item class="w-50% ml-15" label="职位类别（必填）" :rule="{ required: true }">
+              <n-select class="ml-12" clearable placeholder="职位类别" v-model:value="modalForm.industryId" :options="type2" />
+            </n-form-item>
+          </div>
 
-          <n-form-item class="w-33% ml-15" label="最低工作年限要求">
-            <n-select clearable placeholder="工作经验" v-model:value="exp_value" multiple :options="exps" />
-          </n-form-item>
+          <div class="flex">
+            <n-form-item class="w-33%" label="最低学历要求">
+              <n-select v-model:value="modalForm.educationType" placeholder="学历要求" :options="options"/>
+            </n-form-item>
 
-          <n-form-item class="w-33% ml-15" label="职业类型">
-            <n-radio-group v-model:value="formState.job_type" name="radiogroup">
-              <n-space>
-                <n-radio v-for="song in songs" :key="song.value" :value="song.value">
-                  {{ song.label }}
-                </n-radio>
-              </n-space>
-            </n-radio-group>
-          </n-form-item>
+            <n-form-item class="w-33% ml-15" label="最低工作年限要求">
+              <n-select clearable placeholder="工作经验" v-model:value="modalForm.workTimeType" :options="exps" />
+            </n-form-item>
 
-        </div>
-        <n-form-item label="公司名称">
-          <n-input v-model:value="formState.GongSiName"/>
-        </n-form-item>
-        <n-form-item label="岗位地址">
-          <n-space vertical  placeholder="输入详细地址">
-            <n-cascader
-              v-model:value="formState.job_address"
-              placeholder="请选择省份和城市"
-              :expand-trigger="hoverTrigger ? 'hover' : 'click'"
-              :options="options2"
-              :check-strategy="checkStrategyIsChild ? 'child' : 'all'"
-              :show-path="showPath"
-              :filterable="filterable"
-              @update:value="handleUpdateValue"
-            />
-          </n-space>
-          <n-input class="ml-15" v-model:value="formState.job_address_detail" placeholder="输入详细地址"/>
-        </n-form-item>
-        <div class="flex">
-          <n-form-item class="w-65%" label="工资上下限（单位：K）">
-            <n-space vertical>
-              <n-slider v-model:value="formState.salary_range" range :step="1"/>
-              <n-space>
-                <n-input-number v-model:value="formState.salary_range[0]" size="small"/>
-                <n-input-number v-model:value="formState.salary_range[1]" size="small"/>
-              </n-space>
-            </n-space>
-          </n-form-item>
-          <n-form-item class="w-35% ml-10" label="工资种类">
-            <n-space vertical>
-              <n-radio-group class="mt-20" v-model:value="formState.salary_type" name="radiobuttongroup1">
-                <n-radio-button
-                  v-for="song in songs2"
-                  :key="song.value"
-                  :value="song.value"
-                  :label="song.label"
-                />
+            <n-form-item class="w-33% ml-15" label="是否实习（必填）" :rule="{ required: true }">
+              <n-radio-group v-model:value="modalForm.jobType" name="radiogroup">
+                <n-space>
+                  <n-radio v-for="song in songs" :key="song.value" :value="song.value">
+                    {{ song.label }}
+                  </n-radio>
+                </n-space>
               </n-radio-group>
-            </n-space>
+            </n-form-item>
+          </div>
+
+          <div class="flex">
+            <n-form-item class="w-65%" label="工资上下限（单位：K）（必填）" :rule="{ required: true }">
+              <n-space vertical>
+                <n-space>
+                  <n-input-number v-model:value="modalForm.salaryLower" size="small" :min="0" :max="100" placeholder="下限"/>
+                  <n-input-number v-model:value="modalForm.salaryUpper" size="small" :min="0" :max="100" placeholder="上限"/>
+                </n-space>
+              </n-space>
+            </n-form-item>
+            <n-form-item class="w-35% ml-10" label="薪数">
+              <n-input-number v-model:value="modalForm.salaryUnit" size="small" :min="12" placeholder="薪数，默认12"/>
+            </n-form-item>
+          </div>
+
+          <n-form-item label="职位描述（必填）" :rule="{ required: true }">
+            <n-input v-model:value="modalForm.jobDescription" type="textarea"
+                     maxlength="1000" show-count clearable
+                     :autosize="{ minRows: 6 }"
+            />
           </n-form-item>
-        </div>
-      </n-form>
+
+          <n-form-item label="公司名称">
+            <n-input v-model:value="modalForm.companyName"/>
+          </n-form-item>
+
+          <n-form-item label="原始链接">
+            <n-input v-model:value="modalForm.link"/>
+          </n-form-item>
+
+          <n-form-item label="岗位地址">
+            <n-input v-model:value="modalForm.job_address_detail" placeholder="输入城市名"/>
+            <n-input class="ml-15" v-model:value="modalForm.jobAddress" placeholder="输入详细地址"/>
+          </n-form-item>
+
+        </n-form>
+      </n-scrollbar>
     </MeModal>
+
+    <n-drawer v-model:show="show" :width="760" show-mask="true">
+      <n-drawer-content class="m-0" :native-scrollbar="false">
+        <job-detail-card
+          :title="job.title"
+          :exp="job.exp"
+          :edu="job.edu"
+          :city="job.city"
+          :type1="job.type1"
+          :industry="job.industry"
+          :company="job.company"
+          :address="job.address"
+          :skills="job.skills"
+          :discription="job.discription"
+          :characters="job.characters"
+          :salaryLower="job.salaryLower"
+          :salaryUpper="job.salaryUpper"
+          :salaryUnit="job.salaryUnit">
+        </job-detail-card>
+      </n-drawer-content>
+    </n-drawer>
 
   </CommonPage>
 </template>
@@ -127,7 +142,10 @@ import { formatDateTime, sleep } from '@/utils'
 import { MeCrud, MeQueryItem } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
-import { ref } from 'vue'
+import { defineProps, ref } from 'vue'
+import { useUserStore } from '@/store/index.js'
+import JobDetailCard from '@/components/common/JobDetailCard.vue'
+import JobCard from '@/components/common/JobCard.vue'
 
 defineOptions({ name: 'JobUpload' })
 
@@ -142,28 +160,77 @@ onMounted(() => {
   $table.value?.handleSearch()
 })
 
+const show = ref(false)
+const handleOpenJobCard = (row)=>{
+  show.value = !show.value
+  // 使用解构赋值将row中的值赋给job
+  job.title = row.jobName;
+  job.exp = row.workTimeType;
+  job.edu = row.educationType;
+  job.city = row.city;
+  job.type1 = row.jobType;
+  job.company = row.companyName;
+  job.address = row.jobAddress;
+  job.skills = row.jobSkills;
+  job.discription = row.jobDescription;
+  job.characters = row.jobPersonality;
+  job.industry = row.industryId;
+  job.salaryLower = row.salaryLower;
+  job.salaryUpper = row.salaryUpper;
+  job.salaryUnit = row.salaryUnit;
+}
+const job = {
+  title: String,
+  exp: Number,
+  edu: Number,
+  city: String,
+  type1: Number,
+  company: String,
+  address: String,
+  skills: String,
+  discription: String,
+  characters: String,
+  industry: Number,
+  salaryLower: String,
+  salaryUpper: String,
+  salaryUnit: String,
+};
+
 
 const columns = [
-  { title: '职位名称', key: 'jobName', width: 280, ellipsis: { tooltip: true } },
+  { title: '职位id', key: 'id', width: 80, ellipsis: { tooltip: true } },
+  { title: '职位名称', key: 'jobName', width: 200, ellipsis: { tooltip: true } },
   {
     title: '职位类别',
     key: 'jobType',
-    width: 120,
+    width: 330,
     ellipsis: { tooltip: true },
+    render(row) {
+      const category = type2.find(cat => cat.value === row.industryId);
+      return category ? category.label : '暂无分类';
+    }
   },
   {
     title: '职位薪资',
     key: 'jobSalary',
     width: 120,
     ellipsis: { tooltip: true },
+    render(row) {
+      const { salaryLower, salaryUpper, salaryUnit } = row;
+      const salaryString = `${salaryLower}-${salaryUpper}K·${salaryUnit}薪`;
+      return h('span', {
+        style: `color: red;`, // 设置红色字体样式
+      }, salaryString);
+    }
   },
   {
-    title: '创建时间',
-    key: 'uploadTime',
-    width: 280,
+    title: '发布时间',
+    key: 'createTime',
+    width: 180,
     render(row) {
-      return h('span', formatDateTime(row['uploadTime']))
+      return h('span', formatDateTime(row['createTime']))
     },
+    sortOrder: false,
   },
   {
     title: '操作',
@@ -175,9 +242,8 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
             type: 'error',
-            style: 'margin-left: 12px;',
             onClick: () => handleDelete(row.id),
           },
           {
@@ -188,10 +254,22 @@ const columns = [
         h(
           NButton,
           {
-            size: 'small',
+            size: 'tiny',
+            type: 'info',
+            style: 'margin-left: 12px;'
+          },
+          {
+            default: () => '招人',
+            icon: () => h('i', { class: 'i-fe:users text-14' }),
+          }
+        ),
+        h(
+          NButton,
+          {
+            size: 'tiny',
             type: 'success',
             style: 'margin-left: 12px;',
-            onClick: () => handleOpenRolesSet(row),
+            onClick: () => handleOpenJobCard(row),
           },
           {
             default: () => '查看',
@@ -207,6 +285,8 @@ watch(copied, (val) => {
   val && $message.success('已复制到剪切板')
 })
 
+const userStore = useUserStore()
+
 
 const {
   modalRef,
@@ -218,125 +298,47 @@ const {
   handleSave,
 } = useCrud({
   name: '职位',
-  initForm: {  },
+  initForm: { userId: userStore.userId  },
+  doCreate: api.create,
   doDelete: api.delete,
   refresh: () => $table.value?.handleSearch(),
 })
 
-const types2 = ref([
-  {
-    value: 'C++', label: 'C++'
-  },
-  {
-    value: 'Java', label: 'Java'
-  },
-  {
-    value: 'Python', label: 'Python'
-  },
-  {
-    value: '软件工程师', label: '软件工程师'
-  },
-  {
-    value: '前端', label: '前端'
-  },
-  {
-    value: '网络/系统安全', label: '网络/系统安全'
-  },
-  {
-    value: '运维/技术支持', label: '运维/技术支持'
-  },
-  {
-    value: '教师', label: '教师'
-  },
-  {
-    value: '算法', label: '算法'
-  },
-  {
-    value: '测试', label: '测试'
-  },
-  {
-    value: '硬件', label: '硬件'
-  },
-  {
-    value: '销售', label: '销售'
-  },
-  {
-    value: '电气', label: '电气'
-  },
-  {
-    value: '实施', label: '实施'
-  },
-  {
-    value: '移动端', label: '移动端'
-  },
-  {
-    value: '数据', label: '数据'
-  },
-  {
-    value: '后端', label: '后端'
-  }
-])
+const type2 = [
+  { label: "后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈", value: 1 },
+  { label: "移动开发工程师", value: 2 },
+  { label: "前端开发工程师", value: 3 },
+  { label: "测试工程师/软件测试", value: 4 },
+  { label: "运维/技术支持", value: 5 },
+  { label: "人工智能/算法", value: 6 },
+  { label: "销售技术支持", value: 7 },
+  { label: "大数据/数据分析/数据", value: 8 },
+  { label: "IT培训", value: 9 },
+  { label: "软件工程师", value: 10 },
+  { label: "硬件/电子/电气", value: 11 },
+  { label: "暂无分类", value: 12 }
+];
 
 const options = ref([
-  {
-    value: "不限",
-    label: "不限"
-  },
-  {
-    value: "大专",
-    label: "大专"
-  },
-  {
-    value: "本科",
-    label: "本科"
-  },
-  {
-    value: "硕士",
-    label: "硕士"
-  },
-  {
-    value: "博士",
-    label: "博士"
-  },
+  { value: 0, label: "不限" },
+  { value: 1, label: "大专" },
+  { value: 2, label: "本科" },
+  { value: 3, label: "硕士" },
+  { value: 4, label: "博士" },
 ])
-const formState = ref({
-  ZhiWeiName: '',//职位名称
-  GongSiName: '',//公司名称
-  job_description: '',//职位详情
-  job_lowestXueLi: '',//最低学历要求
-  SuYangKeyWorlds: ['热心', '爱学习'],//素养关键词
-  job_skills: '',//职业技术栈
-  job_type: '',//职业类型实习或全职
-  job_address: '',//岗位地址
-  job_address_detail: '',//详细地址
-  salary_range: [50, 70],
-  exp:3,
-  zhaopinzhe:'老杨',
-  salary_type: 0,//工资种类
-})
-
-const submitForm = () => {
-  console.log(formState.value)
-}
 
 const loading = ref(false)
 
 const songs = ref([
   {
-    value: "实习",
+    value: 1,
     label: "实习"
   },
   {
-    value: "全职",
+    value: 0,
     label: "全职"
   },
-
-].map((s) => {
-  s.value = s.value.toLowerCase();
-  return s;
-}))
-
-const value2 = ref(null);
+])
 
 let songs2 = [
   {
@@ -354,15 +356,10 @@ let songs2 = [
   {
     value: "15",
     label: "15薪"
-  },
-].map((s) => {
-  s.value = s.value.toLowerCase();
-  return s;
-});
+  }
+];
 
-const selectStack = (stack) => {
-  value.value = stack;
-};
+
 //生成穿梭框的假数据
 const techStacks = ['JavaScript', 'Vue', 'React', 'Angular', 'Python', 'Django', 'Flask', 'Java', 'Spring', 'Ruby', 'Rails'];
 
@@ -373,86 +370,34 @@ const createOptions = () => {
   }));
 }
 
-const options_skills = createOptions();
-
-
-
-const provinces = ["北京市", "天津市", "上海市", "重庆市", "河北省", "山西省", "辽宁省", "吉林省", "黑龙江省", "江苏省", "浙江省", "安徽省", "福建省", "江西省", "山东省", "河南省", "湖北省", "湖南省", "广东省", "海南省", "四川省", "贵州省", "云南省", "陕西省", "甘肃省", "青海省", "台湾省", "内蒙古自治区", "广西壮族自治区", "西藏自治区", "宁夏回族自治区", "新疆维吾尔自治区", "香港特别行政区", "澳门特别行政区"];
-
-function getOptions() {
-  const options = provinces.map(province => ({
-    value: province,
-    label: province,
-    children: getCityOptions(province)
-  }));
-  return options;
-}
-
-function getCityOptions(province) {
-  const fakeCities = ["城市1", "城市2", "城市3"];
-  return fakeCities.map(city => ({
-    value: city,
-    label: city
-  }));
-}
-
 const checkStrategyIsChild = ref(true);
 const showPath = ref(true);
 const hoverTrigger = ref(false);
 const filterable = ref(false);
 const value = ref(null);
-const options2 = getOptions();
 
-function handleUpdateValue(value, option) {
-  console.log(value, option);
-}
-
-async function handleLogin() {
-  loading.value = true
-  $message.loading('登录中...', {key: 'login'})
-  await sleep(2000)
-  $message.error('登录失败', {key: 'login'})
-  await sleep(500)
-  $message.loading('正在尝试重新登录...', {key: 'login'})
-  await sleep(2000)
-  $message.success('登录成功', {key: 'login'})
-  loading.value = false
-}
-
-function handleMultiMessage() {
-  $message.error(['用户名不能为空！', '密码不能为空！', '密码必须大于6位！'])
-}
-
-function notify(type) {
-  $notification[type]({
-    content: '说点啥呢',
-    meta: '想不出来',
-    duration: 2500,
-    keepAliveOnHover: true,
-  })
-}
 
 const exps = ref([
   {
-    value: "应届生", label: "应届生"
+    value: 0, label: "应届生"
   },
   {
-    value: "经验不限", label: "经验不限"
+    value: 1, label: "经验不限"
   },
   {
-    value: "1年以内", label: "1年以内"
+    value: 2, label: "1年以内"
   },
   {
-    value: "1-3年", label: "1-3年"
+    value: 3, label: "1-3年"
   },
   {
-    value: "3-5年", label: "3-5年"
+    value: 4, label: "3-5年"
   },
   {
-    value: "5-10年", label: "5-10年"
+    value: 5, label: "5-10年"
   },
   {
-    value: "10年以上", label: "10年以上"
+    value: 6, label: "10年以上"
   },
 ])
 

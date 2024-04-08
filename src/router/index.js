@@ -53,7 +53,7 @@ export async function initUserAndPermissions() {
       "show": true,
       "enable": true,
       "order": 0,
-      "path": "/",
+      "path": "/home",
     },
     {
       "id": 2,

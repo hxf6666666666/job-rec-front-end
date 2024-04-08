@@ -1,18 +1,87 @@
 <script setup>
-import { useUserStore } from '@/store/index.js'
+import { computed, defineProps, ref } from 'vue'
+const exps = ref([
+  { value: 0, label: "应届生" },
+  { value: 1, label: "经验不限" },
+  { value: 2, label: "1年以内" },
+  { value: 3, label: "1-3年" },
+  { value: 4, label: "3-5年" },
+  { value: 5, label: "5-10年" },
+  { value: 6, label: "10年以上" },
+]);
 
-const title = ref("网络工程师")
-const exp = ref('1-3年')
-const edu = ref('本科')
-const city = ref('北京')
-const type1 = ref('全职')
-const zhaopinzhe = ref('刘女士')
-const company = ref('汉博利特（北京）信息技术有限公司')
-const address = ref('北京通州区金融街园中园6号院53号楼')
+const type2 = [
+  { label: "后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈", value: 1 },
+  { label: "移动开发工程师", value: 2 },
+  { label: "前端开发工程师", value: 3 },
+  { label: "测试工程师/软件测试", value: 4 },
+  { label: "运维/技术支持", value: 5 },
+  { label: "人工智能/算法", value: 6 },
+  { label: "销售技术支持", value: 7 },
+  { label: "大数据/数据分析/数据", value: 8 },
+  { label: "IT培训", value: 9 },
+  { label: "软件工程师", value: 10 },
+  { label: "硬件/电子/电气", value: 11 },
+  { label: "暂无分类", value: 12 },
+];
 
-const knowledges = ref(['云计算', 'VPN'])
-const skills = ['HTML', 'CSS', 'JavaScript', 'Vue.js', 'React', 'Node.js']
-const characters = ref(['学习能力', '沟通', '合作', '抗压'])
+const types1 = [
+  { value: 0, label: "全职" },
+  { value: 1, label: "实习" },
+];
+
+const edus = ref([
+  { value: 0, label: "学历不限" },
+  { value: 1, label: "大专" },
+  { value: 2, label: "本科" },
+  { value: 3, label: "硕士" },
+  { value: 4, label: "博士" },
+]);
+
+const props = defineProps({
+  title: String,
+  exp: Number,
+  edu: Number,
+  city: String,
+  type1: Number,
+  company: String,
+  address: String,
+  skills: String,
+  discription: String,
+  characters: String,
+  industry: Number,
+  salaryLower: String,
+  salaryUpper: String,
+  salaryUnit: String,
+});
+
+// 定义计算属性来根据 value 值返回 label
+const getLabel = (value, array) => {
+  const item = array.find(item => item.value === value);
+  return item ? item.label : '未知';
+};
+
+const renderExp = computed(() => {
+  return getLabel(props.exp, exps.value);
+});
+
+const renderType = computed(() => {
+  return getLabel(props.type1, types1);
+});
+
+const renderEdu = computed(() => {
+  return getLabel(props.edu, edus.value);
+});
+
+const renderIndustry = computed(() => {
+  return getLabel(props.industry, type2);
+});
+
+// 分割字符串并转为数组
+const splitSkills = props.skills ? props.skills.split(',') : [];
+const splitCharacters = props.characters ? props.characters.split(',') : [];
+
+
 const majors = ref(['计算机科学与技术','软件工程','医学信息工程','人工智能','自动化'])
 
 
@@ -20,46 +89,38 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
 
 <template>
   <n-card id="job-detail" class="mt-5 w-720px" embedded hoverable>
-        <div class="mb-12 text-23" style="font-family: 华文中宋; font-weight: bold">C++开发工程师</div>
-        <n-space align="center" class="mb-12">
-          <div class="items-center">
-            <span class="text-18 color-error">7-12K</span>
-            <span class="text-18 ml-12">
-                  <n-tag :bordered="false">
-                    {{ exp }}
-                  </n-tag>
-                </span>
-            <span class="text-18 ml-12">
-                  <n-tag :bordered="false">
-                    {{ edu }}
-                  </n-tag>
-                </span>
-            <span class="text-18 ml-12">
-                  <n-tag :bordered="false" type="success">
-                    {{ city }}
-                  </n-tag>
-                </span>
-            <span class="text-18 ml-12">
-                  <n-tag :bordered="false" type="info">
-                    {{ type1 }}
-                  </n-tag>
-                 </span>
-          </div>
-        </n-space>
+    <div class="mb-12 text-23" style="font-family: 华文中宋; font-weight: bold">{{ props.title }}</div>
+    <n-space align="center" class="mb-12">
+      <div class="items-center">
+        <span class="text-18 color-error">{{ props.salaryLower }}-{{ props.salaryUpper }}K·{{ props.salaryUnit }}薪</span>
+        <span class="text-18 ml-12">
+            <n-tag :bordered="false">{{ renderExp }}</n-tag>
+          </span>
+        <span class="text-18 ml-12">
+            <n-tag :bordered="false">{{ renderEdu }}</n-tag>
+          </span>
+        <span class="text-18 ml-12">
+            <n-tag :bordered="false" type="info">{{ renderType }}</n-tag>
+          </span>
+        <span class="text-18 ml-12">
+            <n-tag v-show="props.city" :bordered="false" type="success">{{ props.city }}</n-tag>
+          </span>
+      </div>
+    </n-space>
 
-        <n-space align="center" class="mb-12">
-          <div class="items-center">
-            <n-tag v-for="skill in skills" :bordered="false" class="mr-4" round size="small" type="success">
-              {{ skill }}
-            </n-tag>
-            <n-tag v-for="knowledge in knowledges" :bordered="false" class="mr-4" round size="small" type="warning">
-              {{ knowledge }}
-            </n-tag>
-            <n-tag v-for="character in characters" :bordered="false" class="mr-4" round size="small" type="error">
-              {{ character }}
-            </n-tag>
-          </div>
-        </n-space>
+    <n-space align="center" class="mb-12">
+      <div class="items-center">
+        <n-tag class="mr-4" round size="small" type="primary">
+          {{ renderIndustry }}
+        </n-tag>
+        <n-tag v-for="skill in splitSkills" :key="skill" :bordered="false" class="mr-4 mt-4" round size="small" type="info">
+          {{ skill }}
+        </n-tag>
+        <n-tag v-for="character in splitCharacters" :key="character" :bordered="false" class="mr-4" round size="small" type="error">
+          {{ character }}
+        </n-tag>
+      </div>
+    </n-space>
 
         <n-space align="center">
           <img alt="" object-contain size="45" src="/src/assets/images/logo.png" />
@@ -82,24 +143,24 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
     <div class="flex mb-15">
       <div class="w-[50%]">
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">所开薪资:</span><span class="text-14 ml-12 font-extrabold color-red">7-12K</span>
+          <span class="text-14 opacity-80">所开薪资:</span><span class="text-14 ml-12 font-extrabold color-red">{{ props.salaryLower }}-{{ props.salaryUpper }}K·{{ props.salaryUnit }}薪</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">经验要求:</span><span class="text-14 ml-12 font-extrabold">1-3年</span>
+          <span class="text-14 opacity-80">经验要求:</span><span class="text-14 ml-12 font-extrabold">{{ renderExp }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">最低学历要求:</span><span class="text-14 ml-12 font-extrabold">本科</span>
+          <span class="text-14 opacity-80">最低学历要求:</span><span class="text-14 ml-12 font-extrabold">{{ renderEdu }}</span>
         </div>
       </div>
       <div class="w-[50%]">
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">职位类别:</span><span class="text-14 ml-12 font-extrabold">全职</span>
+          <span class="text-14 opacity-80">职位类别:</span><span class="text-14 ml-12 font-extrabold">{{ renderType }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">城市:</span><span class="text-14 ml-12 font-extrabold">北京</span>
+          <span class="text-14 opacity-80">城市:</span><span class="text-14 ml-12 font-extrabold">{{ props.city }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">职位类别:</span><span class="text-14 ml-12 font-extrabold">后端</span>
+          <span class="text-14 opacity-80">职位类别:</span><span class="text-14 ml-12 font-extrabold">{{ renderIndustry }}</span>
         </div>
       </div>
     </div>
@@ -112,26 +173,15 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
       <n-space class="mt-18">
         <div class="ml-15">
           <div class="mt-7 flex text-15">
-            岗位职责：<br>
-            1.负责公司电力系统自动化软件项目和产品的需求调研、分析；<br>
-            2.编写相应的技术文档，完成相关模块的设计、功能实现及测试。<br>
-            3.严格按公司规定的流程、标准及规范进行代码编写；<br>
-            4.积极负责进行单元测试，配合完成逻辑测试，性能调优，bug修改，完善功能；<br>
-            5.相关产品的说明书、介绍文档、安装文档等各类文档的编写。<br><br>
-            任职要求：<br>
-            1.本科及以上学历，自动化、通信、电子、信息工程、计算机等相关专业；<br>
-            2.熟悉电力、新能源等相关知识，至少二年以上C++研发经验；<br>
-            3.熟练使用oracle、Mysql、Mongodb等数据库；<br>
-            4.熟悉使用变电站综合自动化、配网自动化系统者优先考虑。
+            {{ props.discription }}
           </div>
         </div>
       </n-space>
     </div>
 
     <div class="ml-12 mt-15">
-      <span class="title text-20 font-extrabold">专业标签</span>
+      <span class="title text-20 font-extrabold">AI说职位</span>
     </div>
-
     <div class="mt-15">
       <div class="mt-15">
         <n-tag v-for="major in majors" :key="major" class="ml-12 mt-4" type="success">
@@ -146,7 +196,7 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
 
     <div class="mt-15">
       <div class="mt-15">
-        <n-tag v-for="skill in skills" :key="skill" class="ml-12 mt-4" type="info">
+        <n-tag v-for="skill in splitSkills" :key="skill" class="ml-12 mt-4" type="info">
           {{ skill }}
         </n-tag>
       </div>
@@ -159,11 +209,12 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
 
     <div class="mt-15">
       <div class="mt-15">
-        <n-tag v-for="suyang in characters" :key="suyang" class="ml-12 mt-4" type="error">
+        <n-tag v-for="suyang in splitCharacters" :key="suyang" class="ml-12 mt-4" type="error">
           {{ suyang }}
         </n-tag>
       </div>
     </div>
+
   </n-card>
 </template>
 

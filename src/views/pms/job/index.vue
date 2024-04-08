@@ -18,9 +18,10 @@
 
       <MeQueryItem label="职位类别" :label-width="80">
         <n-select
-          v-model:value="queryItems.jobType"
+          v-model:value="queryItems.industryId"
           clearable
-          :options="types2"
+          placeholder="请选择职位大类"
+          :options="type2"
         />
       </MeQueryItem>
     </MeCrud>
@@ -36,6 +37,7 @@ import { MeCrud, MeQueryItem } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
 import { ref } from 'vue'
+import { useUserStore } from '@/store/index.js'
 
 defineOptions({ name: 'JobUpload' })
 
@@ -52,25 +54,37 @@ onMounted(() => {
 
 
 const columns = [
-  { title: '职位名称', key: 'jobName', width: 280, ellipsis: { tooltip: true } },
+  { title: '职位id', key: 'id', width: 80, ellipsis: { tooltip: true } },
+  { title: '职位名称', key: 'jobName', width: 200, ellipsis: { tooltip: true } },
   {
     title: '职位类别',
     key: 'jobType',
-    width: 120,
+    width: 330,
     ellipsis: { tooltip: true },
+    render(row) {
+      const category = type2.find(cat => cat.value === row.industryId);
+      return category ? category.label : '暂无分类';
+    }
   },
   {
     title: '职位薪资',
     key: 'jobSalary',
     width: 120,
     ellipsis: { tooltip: true },
+    render(row) {
+      const { salaryLower, salaryUpper, salaryUnit } = row;
+      const salaryString = `${salaryLower}-${salaryUpper}K·${salaryUnit}薪`;
+      return h('span', {
+        style: `color: red;`, // 设置红色字体样式
+      }, salaryString);
+    }
   },
   {
     title: '创建时间',
-    key: 'uploadTime',
-    width: 280,
+    key: 'createTime',
+    width: 250,
     render(row) {
-      return h('span', formatDateTime(row['uploadTime']))
+      return h('span', formatDateTime(row['createTime']))
     },
   },
   {
@@ -85,7 +99,6 @@ const columns = [
           {
             size: 'tiny',
             type: 'error',
-            style: 'margin-left: 12px;',
             onClick: () => handleDelete(row.id),
           },
           {
@@ -115,6 +128,7 @@ watch(copied, (val) => {
   val && $message.success('已复制到剪切板')
 })
 
+const userStore = useUserStore()
 
 const {
   modalRef,
@@ -127,63 +141,26 @@ const {
 } = useCrud({
   name: '职位',
   initForm: {  },
+  doCreate: api.create,
   doDelete: api.delete,
   refresh: () => $table.value?.handleSearch(),
 })
 
-const types2 = ref([
-  {
-    value: 'C++', label: 'C++'
-  },
-  {
-    value: 'Java', label: 'Java'
-  },
-  {
-    value: 'Python', label: 'Python'
-  },
-  {
-    value: '软件工程师', label: '软件工程师'
-  },
-  {
-    value: '前端', label: '前端'
-  },
-  {
-    value: '网络/系统安全', label: '网络/系统安全'
-  },
-  {
-    value: '运维/技术支持', label: '运维/技术支持'
-  },
-  {
-    value: '教师', label: '教师'
-  },
-  {
-    value: '算法', label: '算法'
-  },
-  {
-    value: '测试', label: '测试'
-  },
-  {
-    value: '硬件', label: '硬件'
-  },
-  {
-    value: '销售', label: '销售'
-  },
-  {
-    value: '电气', label: '电气'
-  },
-  {
-    value: '实施', label: '实施'
-  },
-  {
-    value: '移动端', label: '移动端'
-  },
-  {
-    value: '数据', label: '数据'
-  },
-  {
-    value: '后端', label: '后端'
-  }
-])
+const type2 = [
+  { label: "后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈", value: 1 },
+  { label: "移动开发工程师", value: 2 },
+  { label: "前端开发工程师", value: 3 },
+  { label: "测试工程师/软件测试", value: 4 },
+  { label: "运维/技术支持", value: 5 },
+  { label: "人工智能/算法", value: 6 },
+  { label: "销售技术支持", value: 7 },
+  { label: "大数据/数据分析/数据", value: 8 },
+  { label: "IT培训", value: 9 },
+  { label: "软件工程师", value: 10 },
+  { label: "硬件/电子/电气", value: 11 },
+  { label: "暂无分类", value: 12 }
+];
+
 
 const options = ref([
   {

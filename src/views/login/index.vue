@@ -68,7 +68,7 @@
         <div class="mt-20 flex items-center">
           <n-button
             class="h-40 flex-1 rounded-5 text-16"
-            type="primary"
+            type="warning"
             ghost
             @click="quickLogin()"
           >
@@ -77,7 +77,7 @@
 
           <n-button
             class="ml-32 h-40 flex-1 rounded-5 text-16"
-            type="primary"
+            type="warning"
             :loading="loading"
             @click="handleLogin()"
           >
@@ -121,8 +121,8 @@ if (localLoginInfo) {
 initCaptcha()
 
 function quickLogin() {
-  loginInfo.value.username = 'admin'
-  loginInfo.value.password = '123456'
+  loginInfo.value.username = 'baizhou'
+  loginInfo.value.password = 'baizhou'
   handleLogin(true)
 }
 
@@ -166,7 +166,7 @@ async function onLoginSuccess(data = {}) {
       router.push({ path, query: route.query })
       window.location.reload();
     } else {
-      router.push('/')
+      router.push('/home')
       window.location.reload();
     }
   } catch (error) {

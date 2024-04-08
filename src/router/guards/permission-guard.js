@@ -14,7 +14,7 @@ export function createPermissionGuard(router) {
       return true
     }
     // 有token的情况
-    if (to.path === '/login') return { path: '/' }
+    if (to.path === '/') return { path: '/home' }
     if (WHITE_LIST.includes(to.path)) return true
 
     const routes = router.getRoutes()

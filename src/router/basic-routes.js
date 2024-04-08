@@ -1,7 +1,7 @@
 export const basicRoutes = [
   {
     name: 'Login',
-    path: '/login',
+    path: '/',
     component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登录页',
@@ -11,7 +11,7 @@ export const basicRoutes = [
 
   {
     name: 'Home',
-    path: '/',
+    path: '/home',
     component: () => import('@/views/home/index.vue'),
     meta: {
       title: '首页',
