@@ -35,51 +35,227 @@ echarts.use([
 
 // 定义图表的配置项，你可以在此处设置你的图表配置
 const categories = [
-  { name: '实习或全职' },
   { name: '技能' },
-  { name: '职位名称' },
-  { name: '素养' },
-  { name: '公司' },
-  { name: '职位id' },
   { name: '职位类别' },
-  { name: '薪资' },
-  { name: '学历' },
-  { name: '城市' },
-  { name: '知识' }
+  { name: '素养' }
 ]
-// 生成模拟节点数据
-const nodes = [
-  { id: 1, name: '全职', category: 0 }, // 实习或全职
-  { id: 21, name: 'C++', category: 1 }, // 技能
-  { id: 22, name: 'Java', category: 1 }, // 技能
-  { id: 23, name: 'Python', category: 1 }, // 技能
-  { id: 3, name: '运维工程师', category: 2 }, // 职位名称
-  { id: 4, name: '管理', category: 3 }, // 素养
-  { id: 5, name: '武汉赢月网络科技有限公司', category: 4 }, // 公司
-  { id: 6, name: '职位4', category: 5 }, // 职位id
-  { id: 7, name: '运维/技术支持', category: 6 }, // 职位类别
-  { id: 8, name: '2-3K', category: 7 }, // 薪资
-  { id: 9, name: '大专', category: 8 }, // 学历
-  { id: 10, name: '武汉', category: 9 }, // 城市
-  { id: 11, name: '操作系统', category: 10 } // 知识
-]
+// 技能列表
+const skills = [
+  'C++', '计算机', '数据库', 'C', 'Java', 'Linux', '算法', 'Spring', 'SQL', '软件工程', '设计模式', '数据结构',
+  'Android', '调试', 'UI', 'APP', 'SDK', '面向对象', '动画',
+  'CSS', 'Vue', 'JavaScript', 'Web', 'HTML', 'HTML5', 'React', 'CSS3', 'JS', '小程序', 'Python', 'Shell', '部署', '英语', '办公软件', 'VPN', 'CCIE', '项目管理', 'Cisco', '网络协议', '网络通信',
+  'AI', '3D', 'Matlab', '控制', 'TensorFlow', 'NLP', 'pytorch', 'OpenCV', '数据分析', 'SLAM', '大数据', 'CUDA', 'OpenGL',
+  '销售', '营销', 'PPT', '客服', '项目经验', '微信', '物联网', 'Oracle', 'Excel',
+  'Hadoop', 'Spark', '机器人', '语言', '硬件', 'PS', '网络安全', '自动化', 'office', '安装', '电路', '通信', 'CAD', '监控', '操作系统', '优化', '嵌入式', 'ARM'
+];
 
-// 生成模拟边数据
+// 素养列表
+const qualities = [
+   '逻辑', '严谨', '沟通', '团队', '细致', '分析', '创新', '勤奋', '积极', '抗压', '敬业', '亲和力','执行力','总结','合作','热情','学习能力',
+];
+
+// 创建技能和素养节点
+const skillNodes = skills.map((skill, index) => ({
+  id: index + 1, // 技能节点ID从1开始
+  name: skill,
+  category: 0 // 技能类别
+}));
+
+const qualityNodes = qualities.map((quality, index) => ({
+  id: skills.length + index + 1, // 素养节点ID在技能节点之后
+  name: quality,
+  category: 2 // 素养类别
+}));
+
+// 创建职位类别节点
+const jobCategoryNodes = [
+  { id: skills.length + qualities.length + 1, name: '后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈', category: 1 },
+  { id: skills.length + qualities.length + 2, name: '移动开发工程师', category: 1 },
+  { id: skills.length + qualities.length + 3, name: '前端开发工程师', category: 1 },
+  { id: skills.length + qualities.length + 4, name: '测试工程师/软件测试', category: 1 },
+  { id: skills.length + qualities.length + 5, name: '运维/技术支持', category: 1 },
+  { id: skills.length + qualities.length + 6, name: '人工智能/算法', category: 1 },
+  { id: skills.length + qualities.length + 7, name: '销售技术支持', category: 1 },
+  { id: skills.length + qualities.length + 8, name: '大数据/数据分析/数据', category: 1 },
+  { id: skills.length + qualities.length + 9, name: 'IT培训', category: 1 },
+  { id: skills.length + qualities.length + 10, name: '软件工程师', category: 1 },
+  { id: skills.length + qualities.length + 11, name: '硬件/电子/电气', category: 1 },
+];
+
+// 合并节点列表
+const nodes = [...skillNodes, ...qualityNodes, ...jobCategoryNodes];
+
+// 定义职位类别及其对应的重要技能要求和素养要求
+const jobCategorySkills = {
+  '后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈': [
+    'C++', '计算机', '数据库', 'C', '优化', 'Java', 'Linux', '算法', 'Spring', 'SQL', '软件工程', '设计模式', '数据结构'
+  ],
+  '移动开发工程师': [
+    'Android', '设计模式', '调试', '通信', 'UI', 'APP', '数据结构', '算法', 'C', '数据库', 'Java', 'SDK', 'app', '面向对象', '动画'
+  ],
+  '前端开发工程师': [
+    '前端', '开发', '优化', 'CSS', 'Vue', 'JavaScript', 'Web', 'HTML', 'js', 'vue', 'HTML5', 'React', 'web', 'CSS3', 'UI', '小程序', 'JS'
+  ],
+  '测试工程师/软件测试': [
+    '自动化', '数据库', '优化', 'Python', '调试', 'Linux', 'app', 'C', 'C++', 'SQL', 'Java', '操作系统', 'web', '软件工程', '部署', '英语', 'Shell'
+  ],
+  '运维/技术支持': [
+    '安装', '调试', 'IP', '网络安全', '监控', '通信', '操作系统', 'TCP', '硬件', '部署', 'Linux', '数据库', '办公软件', 'VPN', 'CCIE', '项目管理', 'Cisco', '网络协议', '网络通信'
+  ],
+  '人工智能/算法': [
+    '算法', 'C++', 'Python', 'C语言', '自动化', 'AI', 'Linux', '部署', '数据结构', '3D', 'Matlab', '控制', '机器人', 'TensorFlow', 'NLP', 'pytorch', 'OpenCV', '数据分析', 'Pytorch', 'Tensorflow', 'SLAM', '大数据', 'PyTorch', 'tensorflow', '导航', 'MATLAB', 'GPU', 'CUDA', 'matlab', 'OpenGL'
+  ],
+  '销售技术支持': [
+    '销售', '计算机', '营销', '自动化', '办公软件', '通信', 'PPT', '数据分析', '案例', 'Word', '客服', '大数据', '项目经验', 'word', '软件工程', '微信', '物联网', 'office', 'Oracle', 'Excel'
+  ],
+  '大数据/数据分析/数据': [
+    '计算机', '开发', '数据库', '大数据', '算法', 'SQL', '数据分析', '优化', 'Python', 'C++', 'Hadoop', 'Spark'
+  ],
+  'IT培训': [
+    '计算机', '数据库', 'C语言', '办公软件', '机器人', '开发', '语言', '硬件', 'PS', 'python', 'Python', '安装', 'C++', '网络安全', '自动化', 'office'
+  ],
+  '软件工程师': [
+    'C++', '计算机', 'C', '调试', '自动化', '算法', '数据库', '优化', 'Linux', '嵌入式', '操作系统', '软件工程', 'SQL', '数据结构', 'ARM', 'TCP', 'Python', '英语', 'Java', 'DSP', 'QT', 'MCU', '开发环境'
+  ],
+  '硬件/电子/电气': [
+    '调试', '自动化', '硬件', '计算机', '开发', '安装', '电路', '通信', 'CAD', '办公软件', '监控', '控制', '操作系统', '优化', '英语', '嵌入式', 'ARM'
+  ],
+  // 可根据需要补充其他职位类别及其对应的技能要求
+};
+
+// 定义素养要求
+const jobCategoryQualities = {
+  '后端开发/Java/C/C++/PHP/Python/C#/Golang/全栈': ['学习能力', '逻辑', '严谨'],
+  '移动开发工程师': ['分析', '团队', '沟通', '学习能力'],
+  '前端开发工程师': ['学习能力', '总结'],
+  '测试工程师/软件测试': ['学习能力', '细致'],
+  '运维/技术支持': ['沟通', '严谨'],
+  '人工智能/算法': ['分析', '创新', '勤奋'],
+  '销售技术支持': ['沟通', '积极', '勤奋', '抗压', '敬业', '亲和力'],
+  '大数据/数据分析/数据': ['分析', '合作'],
+  'IT培训': ['亲和力', '创新', '热情'],
+  '软件工程师': ['学习能力', '逻辑', '严谨'],
+  '硬件/电子/电气': ['勤奋', '严谨', '执行力'],
+  // 可根据需要补充其他职位类别及其对应的素养要求
+};
+
+// 创建边
 const edges = [
-  { source: 7, target: 0, relationship: '' },
-  { source: 7, target: 1, relationship: '' },
-  { source: 7, target: 2, relationship: '' },
-  { source: 7, target: 3, relationship: '' },
-  { source: 7, target: 4, relationship: '' },
-  { source: 7, target: 5, relationship: '' },
-  { source: 7, target: 6, relationship: '' },
-  { source: 7, target: 8, relationship: '' },
-  { source: 7, target: 9, relationship: '' },
-  { source: 7, target: 10, relationship: '' },
-  { source: 7, target: 11, relationship: '' },
-  { source: 7, target: 12, relationship: '' }
-]
+  ...jobCategorySkills[jobCategoryNodes[0].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[0].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[0].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[0].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
 
+  ...jobCategorySkills[jobCategoryNodes[1].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[1].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[1].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[1].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+
+  ...jobCategorySkills[jobCategoryNodes[2].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[2].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[2].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[2].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[3].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[3].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[3].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[3].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[4].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[4].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[4].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[4].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[5].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[5].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[5].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[5].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[6].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[6].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[6].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[6].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[7].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[7].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[7].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[7].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+  ...jobCategorySkills[jobCategoryNodes[8].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[8].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[8].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[8].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+
+  ...jobCategorySkills[jobCategoryNodes[9].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[9].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[9].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[9].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  })),
+
+  ...jobCategorySkills[jobCategoryNodes[10].name].flatMap((skill, index) => ({
+    source: jobCategoryNodes[10].id - 1,
+    target: skills.indexOf(skill),
+    relationship: '重要技能'
+  })),
+  ...jobCategoryQualities[jobCategoryNodes[10].name].flatMap((quality, index) => ({
+    source: jobCategoryNodes[10].id - 1,
+    target: skills.length + qualities.indexOf(quality),
+    relationship: '所需素养'
+  }))
+];
 
 // 将生成的模拟数据组合成一个对象
 const data = {
@@ -108,7 +284,7 @@ const option = {
       }
     }
   },
-  color: ['#c12e34', '#e6b600', '#0098d9', '#2b821d', '#005eaa', '#339ca8', '#cda819', '#32a487', '#827d34', '#5e5e5e', '#e56360'],
+  color: ['#0098d9', '#e6b600', '#672e34'],
   textStyle: {
     fontFamily: 'sans-serif',
     fontSize: 12,
@@ -116,13 +292,13 @@ const option = {
     fontWeight: 'normal'
   },
   legend: {
-    data: ['实习或全职', '技能', '职位名称', '素养', '公司', '职位id', '职位类别', '薪资', '学历', '城市', '知识']
+    data: ['技能', '职位类别', '素养',]
   },
   series: [{
     type: 'graph',
     layout: 'force', // 力导图
     animation: false,
-    symbolSize: 60,
+    symbolSize: 50,
     label: {
       normal: {
         show: true,
@@ -139,8 +315,8 @@ const option = {
     roam: true,
     focusNodeAdjacency: true,
     force: {
-      edgeLength: 250, // 连线的长度
-      repulsion: 200, // 子节点之间的间距
+      edgeLength: 200, // 连线的长度
+      repulsion: 1000, // 子节点之间的间距
       gravity: 0.04
     },
     categories: categories,
@@ -165,7 +341,10 @@ const option = {
         width: 2,
         color: '#4b565b'
       }
-    }
+    },
+    // 设置初始缩放比例
+    zoom: 0.4, // 初始缩放比例，可以根据需要调整
+    roam: 'scale' // 开启鼠标缩放和平移漫游
   }]
 }
 
