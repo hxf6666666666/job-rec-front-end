@@ -1,8 +1,30 @@
 <script setup>
 
-import JobCard from '@/components/common/JobCard.vue'
 import { NButton, NRate } from 'naive-ui'
 import SeekerCard from '@/components/common/SeekerCard.vue'
+import api from './api.js'
+import { ref } from 'vue'
+
+const seekerList = ref([]);
+const performSearch = async () => {
+  // const params = {
+  //
+  // };
+  try {
+    const response = await api.getAll();
+    seekerList.value = response.data
+
+  } catch (error) {
+    console.error('Error', error);
+  }
+};
+
+onMounted(()=>{
+  performSearch()
+})
+
+
+
 const edu_options = ref([
   {
     value: "大专", label: "大专"
@@ -18,16 +40,12 @@ const edu_options = ref([
   },
 ])
 
-
 const school_options = ref([
   {
-    value: "双一流", label: "双一流"
+    value: "985", label: "985"
   },
   {
     value: "211", label: "211"
-  },
-  {
-    value: "985", label: "985"
   }
 ])
 
@@ -105,12 +123,30 @@ const exp_options = ref([
       </n-radio-group>
     </n-card>
 
-      <seeker-card></seeker-card>
-      <seeker-card></seeker-card>
-      <seeker-card></seeker-card>
-      <seeker-card></seeker-card>
-      <seeker-card></seeker-card>
-      <seeker-card></seeker-card>
+    <template v-for="seeker in seekerList" :key="seeker.id">
+      <seeker-card
+        :real-name="seeker.realName"
+        :avatar="seeker.avatar"
+        :gender="seeker.gender"
+        :age="seeker.age"
+        :date-of-birth="seeker.dateOfBirth"
+        :city="seeker.city"
+        :address="seeker.address"
+        :user-phone="seeker.userPhone"
+        :email="seeker.email"
+        :qq-number="seeker.qqNumber"
+        :wechat="seeker.wechat"
+        :skill-tag="seeker.skillTag"
+        :award-tag="seeker.awardTag"
+        :personality-tag="seeker.personalityTag"
+        :advantage="seeker.advantage"
+        :work-experience-year="seeker.workExperienceYear"
+        :english-tag="seeker.englishTag"
+        :create-time="seeker.createTime"
+        :update-time="seeker.updateTime"
+        :education-experiences="seeker.educationExperiences"
+      />
+    </template>
 
   </div>
 

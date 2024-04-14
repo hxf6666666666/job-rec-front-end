@@ -16,14 +16,6 @@
         />
       </MeQueryItem>
 
-      <MeQueryItem label="上传者" :label-width="80">
-        <n-input
-          v-model:value="queryItems.resumeOwner"
-          clearable
-          type="text"
-          placeholder="请输入上传者"
-        />
-      </MeQueryItem>
     </MeCrud>
   </CommonPage>
 </template>
@@ -52,7 +44,6 @@ onMounted(() => {
   $table.value?.handleSearch()
 })
 
-
 const columns = [
   { title: '文件名称', key: 'fileName', width: 280, ellipsis: { tooltip: true } },
   {
@@ -74,10 +65,13 @@ const columns = [
     },
   },
   {
-    title: '上传者',
-    key: 'resumeOwner',
+    title: '上传者ID（有时间再姓名）',
+    key: 'employeeId',
     width: 180,
     ellipsis: { tooltip: true },
+    render(row) {
+      return h('span', row.employeeId);
+    },
   },
   {
     title: '操作',

@@ -3,80 +3,260 @@ import { useUserStore } from '@/store/index.js'
 
 const userStore = useUserStore()
 
-const awards = [
-  '数学建模挑战赛一等奖',
-  '计算机设计大赛一等奖',
-  '人民奖学金',
-  '大学生创新创业大赛三等奖',
-  '蓝桥杯全国软件和信息技术专业人才大赛三等奖',
-  '江苏省普通高等学校第十七届高等数学竞赛二等奖',
-  '院级优秀干部'
-]
-const skills = ['HTML', 'CSS', 'JavaScript', 'Vue.js', 'React', 'Node.js']
-const suyangs = ['团队合作', '沟通能力', '解决问题的能力', '自我管理', '适应性强']
+const props = defineProps({
+  avatar: {
+    type: String,
+    default: ""
+  },
+  resumeIntegrity: {
+    type: Number,
+    default: 0.5
+  },
+  userId: {
+    type: Number,
+    default: 0
+  },
+  realName: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: Number,
+    required: true
+    // 1: 男性, 2: 女性
+  },
+  age: {
+    type: Number,
+    default: 0
+  },
+  dateOfBirth: {
+    type: String,
+    default: ""
+  },
+  city: {
+    type: String,
+    default: ""
+  },
+  address: {
+    type: String,
+    default: ""
+  },
+  userPhone: {
+    type: String,
+    default: ""
+  },
+  email: {
+    type: String,
+    default: ""
+  },
+  qqNumber: {
+    type: String,
+    default: ""
+  },
+  wechat: {
+    type: String,
+    default: ""
+  },
+  skillTag: {
+    type: String,
+    default: ""
+  },
+  awardTag: {
+    type: String,
+    default: ""
+  },
+  personalityTag: {
+    type: String,
+    default: ""
+  },
+  advantage: {
+    type: String,
+    default: ""
+  },
+  workExperienceYear: {
+    type: String,
+    default: 0
+  },
+  englishTag: {
+    type: String,
+    default: ""
+  },
+  createTime: {
+    type: String,
+    default: ""
+  },
+  updateTime: {
+    type: String,
+    default: ""
+  },
+  educationExperiences: {
+    type: Array,
+    default: () => [
+      {
+        schoolName: "",
+        majorName: "",
+        gpa: "",
+        beginYear: null,
+        endYear: null
+      }
+    ]
+  }
+});
+
+onMounted(()=>{
+})
+
+
+
+const awards = computed(()=>{
+  return props.awardTag ? String(props.awardTag).split(',') : []
+});
+
+const skills = computed(()=>{
+  return props.skillTag ? String(props.skillTag).split(',') : []
+});
+
+const suyangs = computed(()=>{
+  return props.personalityTag ? String(props.personalityTag).split(',') : []
+});
+
+const vImg = ref('data:image/png;base64,'+ props.avatar)
+
+// 计算属性：根据 educationType 返回对应的学历文字描述
+const formattedEducationType = computed(() => {
+  const educationType = props.educationExperiences[0]?.educationType || 0; // 获取第一个教育经历的学历类型
+  switch (educationType) {
+    case 1:
+      return '专科'; // 对应学历类型 1
+    case 2:
+      return '本科'; // 对应学历类型 2
+    case 3:
+      return '硕士'; // 对应学历类型 3
+    case 4:
+      return '博士'; // 对应学历类型 4
+    default:
+      return '未知'; // 其他未知类型
+  }
+});
+
 
 </script>
 
 <template>
-  <n-card id="resume" class="mt-5 w-720px" embedded hoverable>
+  <n-card class="mt-5 w-720px" embedded hoverable>
     <div class="flex">
       <div class="w-20%">
-        <n-avatar :size="90" :src="userStore.userAvatar" class="mt-15 ml-15" round />
+        <n-avatar fallback-src="https://q2.itc.cn/q_70/images03/20240312/519714591a8241b884f21e37b54d4319.jpeg"
+                  :size="100" :src="vImg" object-fit="fill" class="h-130 mt-15 ml-15" />
       </div>
+
+
       <div class="w-60% mt-15">
+
         <div>
-          <span class="text-23" style="font-family: 华文中宋; font-weight: bold">{{ userStore.userNickname }}</span>
-          <span class="ml-10">
-          <n-tag :bordered="false" size="small" type="info">
-            英语能力良好
-          </n-tag>
-        </span>
-          <span class="ml-10">
-          <n-tag :bordered="false" size="small" type="info">
-            技术达标
-          </n-tag>
-        </span>
+          <span class="text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.realName }}</span>
+          <span v-if="props.educationExperiences[0].schoolName" class="ml-15">
+            <n-tag :bordered="false" size="small" type="primary">
+              {{ props.educationExperiences[0].schoolName }}
+            </n-tag>
+          </span>
+
+          <span v-if="props.educationExperiences[0].majorName" class="ml-10">
+            <n-tag :bordered="false" size="small" type="default">
+              {{ props.educationExperiences[0].majorName }}
+            </n-tag>
+          </span>
+
+          <span v-if="props.englishTag.includes('4')&&!englishTag.includes('6')" class="ml-10">
+            <n-tag :bordered="false" size="small" type="info">
+              CET4
+            </n-tag>
+          </span>
+
+          <span v-if="englishTag.includes('6')" class="ml-10">
+            <n-tag :bordered="false" size="small" type="info">
+              CET6
+            </n-tag>
+          </span>
+
         </div>
+
         <div class="mt-10">
-        <span>
-          <n-tag :bordered="false" size="medium" type="success">
-            <template #icon>
+
+          <span v-if="skillTag.length>100&&skillTag.length<=150" class="mr-10">
+            <n-tag :bordered="false" size="medium" type="info">
+              <template #icon>
+              <i class="i-fe:airplay?mask"></i>
+              </template>
+              技能达标
+            </n-tag>
+          </span>
+
+          <span v-if="skillTag.length>150" class="mr-10">
+            <n-tag :bordered="false" size="medium" type="info">
+              <template #icon>
+              <i class="i-fe:airplay?mask"></i>
+              </template>
+              技能精湛
+            </n-tag>
+          </span>
+
+          <span v-if="awardTag.length>50" class="mr-10">
+            <n-tag :bordered="false" size="medium" type="warning">
+              <template #icon>
               <i class="i-fe:pen-tool"></i>
             </template>
-            硕士学历
-          </n-tag>
-        </span>
-          <span class="ml-10">
+              奖项丰富
+            </n-tag>
+          </span>
+
+          <span v-if="educationExperiences[0].gpa>4" class="mr-10">
           <n-tag :bordered="false" size="medium" type="error">
             <template #icon>
               <i class="i-fe:book"></i>
             </template>
             成绩优异
           </n-tag>
-        </span>
-          <span class="ml-10">
-          <n-tag :bordered="false" size="medium" type="warning">
-            <template #icon>
-              <i class="i-fe:airplay?mask"></i>
-            </template>
-            项目多
-          </n-tag>
-        </span>
+          </span>
+
         </div>
         <div class="mt-10">
-          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>15552510062</span>
-          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>635663114@qq.com</span>
-          <span class="text-14 ml-12 opacity-70"><i class="i-fe:book?mask mr-6"></i>0年经验</span>
+
+        <span v-if="educationExperiences.length>1">
+          <n-tag :bordered="false" size="small" type="success" class="mr-10">
+            研究生学历
+          </n-tag>
+        </span>
+
+          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')">
+          <n-tag :bordered="false" size="small" type="warning">
+            985院校
+          </n-tag>
+          </span>
+
+          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')">
+          <n-tag :bordered="false" size="small" type="warning">
+            211院校
+          </n-tag>
+          </span>
+
+        </div>
+        <div class="mt-10">
+          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>{{ props.userPhone.length==0?'暂无':props.userPhone }}</span>
+          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>{{ props.email.length==0?'暂无':props.email }}</span>
+          <span class="text-14 ml-12 opacity-70"><i class="i-fe:book?mask mr-6"></i>{{ props.workExperienceYear }}年经验</span>
         </div>
       </div>
+
       <div class="w-20% mt-84">
         <n-progress
           :height="12"
-          :percentage="80" processing
+          :percentage="Math.ceil(props.resumeIntegrity * 100)" processing
           type="line">
         </n-progress>
         <span class="text-14 ml-12">简历完善度</span>
       </div>
+
     </div>
     <n-divider></n-divider>
     <div class="mt-15 ml-12">
@@ -87,31 +267,31 @@ const suyangs = ['团队合作', '沟通能力', '解决问题的能力', '自�
     <div class="flex mb-15">
       <div class="w-[50%]">
         <div class="ml-15 mt-15">
-          <span class="text-14 opacity-80">姓名:</span><span class="text-14 ml-12 font-extrabold">魏中信</span>
+          <span class="text-14 opacity-80">姓名:</span><span class="text-14 ml-12 font-extrabold">{{ props.realName }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">性别:</span><span class="text-14 ml-12 font-extrabold">男</span>
+          <span class="text-14 opacity-80">性别:</span><span class="text-14 ml-12 font-extrabold">{{ props.gender==null?'未知':(props.gender==0?'女':'男') }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">出生年月:</span><span class="text-14 ml-12 font-extrabold">2003-02</span>
+          <span class="text-14 opacity-80">出生年月:</span><span class="text-14 ml-12 font-extrabold">{{ props.dateOfBirth.length==0?'暂无':props.dateOfBirth }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">QQ:</span><span class="text-14 ml-12 font-extrabold">123456789</span>
+          <span class="text-14 opacity-80">QQ:</span><span class="text-14 ml-12 font-extrabold">{{ props.qqNumber.length==0?'暂无':props.qqNumber }}</span>
         </div>
       </div>
       <div class="w-[50%]">
         <div class="ml-15 mt-15">
           <span class="text-14 opacity-80">地址:</span><span
-          class="text-14 ml-12 font-extrabold">江苏省南京市栖霞区仙林大道138号</span>
+          class="text-14 ml-12 font-extrabold">{{ props.address.length==0?'暂无':props.address }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">电话:</span><span class="text-14 ml-12 font-extrabold">123456789</span>
+          <span class="text-14 opacity-80">电话:</span><span class="text-14 ml-12 font-extrabold">{{ props.userPhone.length==0?'暂无':props.userPhone }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">邮箱:</span><span class="text-14 ml-12 font-extrabold">0987654321@njucm.edu.cn</span>
+          <span class="text-14 opacity-80">邮箱:</span><span class="text-14 ml-12 font-extrabold">{{ props.email.length==0?'暂无':props.email }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">微信:</span><span class="text-14 ml-12 font-extrabold">1987654321</span>
+          <span class="text-14 opacity-80">微信:</span><span class="text-14 ml-12 font-extrabold">{{ props.wechat.length==0?'暂无':props.wechat }}</span>
         </div>
       </div>
     </div>
@@ -124,52 +304,21 @@ const suyangs = ['团队合作', '沟通能力', '解决问题的能力', '自�
       <n-space class="mt-18">
         <div class="ml-15">
           <div class="flex text-16">
-            <span class="text-[#09b2fdff] font-extrabold">南京中医药大学</span>
-            <!--            <span class="ml-12"><n-tag :bordered="false" type="error" size="small">985院校</n-tag></span>-->
-            <!--            <span class="ml-12"><n-tag :bordered="false" type="info" size="small">211院校</n-tag></span>-->
-            <span class="ml-12"><n-tag :bordered="false" size="small" type="success">双一流院校</n-tag></span>
+            <span class="text-[#09b2fdff] font-extrabold">{{ props.educationExperiences[0].schoolName }}</span>
+            <span class="ml-12"><n-tag v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')" :bordered="false" type="error" size="small">985院校</n-tag></span>
+            <span class="ml-12"><n-tag v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')" :bordered="false" type="info" size="small">211院校</n-tag></span>
           </div>
           <div class="mt-15 flex text-15">
-            <span class="opacity-60">2021-2025</span>
-            <span class="ml-12 font-extrabold">信息管理与信息系统</span>
-            <span class="ml-12 font-extrabold">本科</span>
-            <span class="ml-12">GPA: 4.7</span>
+            <span class="opacity-60">{{ props.educationExperiences[0].beginYear }}-{{ props.educationExperiences[0].endYear }}</span>
+            <span class="ml-12 font-extrabold">{{ props.educationExperiences[0].majorName }}</span>
+            <span class="ml-12 font-extrabold">{{ formattedEducationType }}</span>
+            <span class="ml-12">GPA : {{ props.educationExperiences[0].gpa }}</span>
           </div>
           <div class="mt-7 flex text-15">
-            主修课程：概率论与数理统计，数字图像处理，计算机网络，数据结构，离散数学，线性代数，数据挖掘，操作系统，高等数学
+            主修课程：{{ props.educationExperiences[0].activity }}
           </div>
         </div>
       </n-space>
-      <n-space class="mt-18">
-        <div class="ml-15">
-          <div class="flex text-16">
-            <span class="text-[#09b2fdff] font-extrabold">南京大学</span>
-            <span class="ml-12"><n-tag :bordered="false" size="small" type="error">985院校</n-tag></span>
-            <span class="ml-12"><n-tag :bordered="false" size="small" type="info">211院校</n-tag></span>
-            <span class="ml-12"><n-tag :bordered="false" size="small" type="success">双一流院校</n-tag></span>
-          </div>
-          <div class="mt-15 flex text-15">
-            <span class="opacity-60">2025-2027</span>
-            <span class="ml-12 font-extrabold">计算机科学与技术</span>
-            <span class="ml-12 font-extrabold">硕士</span>
-          </div>
-          <div class="mt-7 flex text-15">
-            主修课程：数据库原理与应用，数据结构，程序设计，操作系统
-          </div>
-        </div>
-      </n-space>
-    </div>
-
-    <div class="ml-12 mt-15">
-      <span class="title text-20 font-extrabold">所获奖项</span>
-    </div>
-
-    <div class="mt-15">
-      <div class="mt-15">
-        <n-tag v-for="award in awards" :key="award" class="ml-12 mt-4" type="success">
-          {{ award }}
-        </n-tag>
-      </div>
     </div>
 
     <div class="ml-12 mt-15">
@@ -178,7 +327,7 @@ const suyangs = ['团队合作', '沟通能力', '解决问题的能力', '自�
 
     <div class="mt-15">
       <div class="mt-15">
-        <n-tag v-for="skill in skills" :key="skill" class="ml-12 mt-4" type="info">
+        <n-tag v-for="skill in skills" :key="skill" class="ml-12 mt-6" type="info">
           {{ skill }}
         </n-tag>
       </div>
@@ -191,8 +340,20 @@ const suyangs = ['团队合作', '沟通能力', '解决问题的能力', '自�
 
     <div class="mt-15">
       <div class="mt-15">
-        <n-tag v-for="suyang in suyangs" :key="suyang" class="ml-12 mt-4" type="error">
+        <n-tag v-for="suyang in suyangs" :key="suyang" class="ml-12 mt-6" type="error">
           {{ suyang }}
+        </n-tag>
+      </div>
+    </div>
+
+    <div class="ml-12 mt-15">
+      <span class="title text-20 font-extrabold">所获奖项</span>
+    </div>
+
+    <div class="mt-15">
+      <div class="mt-15">
+        <n-tag v-for="award in awards" :key="award" class="ml-12 mt-6" type="success">
+          {{ award }}
         </n-tag>
       </div>
     </div>

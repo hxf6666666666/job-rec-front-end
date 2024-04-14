@@ -1,17 +1,73 @@
 <script setup>
-
-import ResumeCard from '@/components/common/ResumeCard.vue'
 import { AppPage } from '@/components/index.js'
-import ResumeForm from '@/components/common/ResumeForm.vue'
-import JobRec from '@/components/common/JobRec.vue'
-import CompetencyAssess from '@/components/common/CompetencyAssess.vue'
 import SeekerRec from '@/components/common/SeekerRec.vue'
 import JobDetailCard from '@/components/common/JobDetailCard.vue'
-import JobCard2 from '@/components/common/JobCard2.vue'
-import JobCard from '@/components/common/JobCard.vue'
 import SeekerCard from '@/components/common/SeekerCard.vue'
+import api from '@/components/common/api.js'
+import submitForm from '@/components/common/JobForm.vue'
 
-const currentRef = ref(1)
+const route = useRoute()
+
+const jobId = ref(parseInt(route.params.id, 10))
+
+const job = reactive({
+  title: String,
+  exp: Number,
+  edu: Number,
+  city: String,
+  type1: Number,
+  company: String,
+  address: String,
+  skills: String,
+  description: String,
+  characters: String,
+  industry: Number,
+  salaryLower: String,
+  salaryUpper: String,
+  salaryUnit: String,
+  link: String
+});
+
+
+onMounted(async() => {
+  try {
+    const response = await api.getJobById(jobId.value)
+    const row = response.data
+    job.title = row.jobName;
+    job.exp = row.workTimeType;
+    job.edu = row.educationType;
+    job.city = row.city;
+    job.type1 = row.jobType;
+    job.company = row.companyName;
+    job.address = row.jobAddress;
+    job.skills = row.jobSkills;
+    job.description = row.jobDescription;
+    job.characters = row.jobPersonality;
+    job.industry = row.industryId;
+    job.salaryLower = row.salaryLower;
+    job.salaryUpper = row.salaryUpper;
+    job.salaryUnit = row.salaryUnit;
+    job.link = row.link;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+// 初始的 tabs value 值
+const initialTabsValue = '职位卡片'; // 这里需要设置初始的 tabs value
+
+// 创建一个 ref 来存储 tabs 的 value
+const tabsValue = ref(initialTabsValue);
+
+// 尝试从 localStorage 恢复 tabs value 数据
+const savedTabsValue = localStorage.getItem('tabsValue');
+if (savedTabsValue) {
+  tabsValue.value = savedTabsValue;
+}
+
+// 使用 watch 监听 tabsValue 的变化，并将其保存到 localStorage
+watch(tabsValue, (newValue) => {
+  localStorage.setItem('tabsValue', newValue);
+});
 
 </script>
 
@@ -21,12 +77,12 @@ const currentRef = ref(1)
       <n-tabs :bar-width="100" animated class="items-center" default-value="职位卡片" tab-style="font-size:17px; font-weight:bold;"
               type="bar">
 
-
         <!--  一个问题是，boss直聘似乎不允许使用iframe嵌入他们的页面(code 400)，智联招聘、猎聘网可以，但数据集都是boss直聘 -->
         <n-tab-pane name="原始链接" tab="原始链接">
-          <div class="flex justify-center w-1000 mt-15">
+          <n-alert type="warning">BOSS直聘不允许嵌入显示（故仅展示主页），智联招聘、猎聘网等可以正常显示！</n-alert>
+          <div class="flex justify-center w-1100 mt-15">
             <iframe
-              src="https://www.liepin.com/job/1919898383.shtml"
+              :src="job.link.includes('zhipin') ? 'https://www.zhipin.com/' : job.link"
               width="100%"
               height="600"
               frameborder="0"
@@ -36,11 +92,25 @@ const currentRef = ref(1)
         </n-tab-pane>
 
         <n-tab-pane name="修改职位" tab="修改职位">
-          <div class="button-container">
-            <n-button v-print="'#resume'" size="tiny" type="warning">提交修改</n-button>
-          </div>
           <n-card embedded>
-            <job-form></job-form>
+            <job-form
+              :id="jobId"
+              :title="job.title"
+              :exp="job.exp"
+              :edu="job.edu"
+              :city="job.city"
+              :type1="job.type1"
+              :industry="job.industry"
+              :company="job.company"
+              :address="job.address"
+              :skills="job.skills"
+              :link="job.link"
+              :description="job.description"
+              :characters="job.characters"
+              :salaryLower="job.salaryLower"
+              :salaryUpper="job.salaryUpper"
+              :salaryUnit="job.salaryUnit"
+            ></job-form>
           </n-card>
         </n-tab-pane>
 
@@ -49,10 +119,24 @@ const currentRef = ref(1)
           <div class="button-container">
             <n-button v-print="'#job-detail'" size="tiny" type="info">导出为PDF</n-button>
           </div>
-          <job-detail-card></job-detail-card>
+          <job-detail-card
+            v-if="job"
+            :title="job.title"
+            :exp="job.exp"
+            :edu="job.edu"
+            :city="job.city"
+            :type1="job.type1"
+            :industry="job.industry"
+            :company="job.company"
+            :address="job.address"
+            :skills="job.skills"
+            :description="job.description"
+            :characters="job.characters"
+            :salaryLower="job.salaryLower"
+            :salaryUpper="job.salaryUpper"
+            :salaryUnit="job.salaryUnit">
+          </job-detail-card>
         </n-tab-pane>
-
-
 
         <n-tab-pane name="人才推荐" tab="人才推荐">
           <div class="button-container">

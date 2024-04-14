@@ -1,8 +1,10 @@
 <script setup>
 import { ref, defineProps, computed } from 'vue';
 import JobDetailCard from '@/components/common/JobDetailCard.vue';
+import api from './api.js'
 
 const props = defineProps({
+  id: Number,
   title: String,
   exp: Number,
   edu: Number,
@@ -60,6 +62,50 @@ const edus = ref([
 const isApplied = ref(false);
 const show = ref(false);
 
+const handleOpenJobCard = async (id)=>{
+  try {
+    const response = await api.getJobById(id)
+    const row = response.data
+    show.value = !show.value
+    // 使用解构赋值将row中的值赋给job
+    job.title = row.jobName;
+    job.exp = row.workTimeType;
+    job.edu = row.educationType;
+    job.city = row.city;
+    job.type1 = row.jobType;
+    job.company = row.companyName;
+    job.address = row.jobAddress;
+    job.skills = row.jobSkills;
+    job.description = row.jobDescription;
+    job.characters = row.jobPersonality;
+    job.industry = row.industryId;
+    job.salaryLower = row.salaryLower;
+    job.salaryUpper = row.salaryUpper;
+    job.salaryUnit = row.salaryUnit;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+const job = {
+  title: String,
+  exp: Number,
+  edu: Number,
+  city: String,
+  type1: Number,
+  company: String,
+  address: String,
+  skills: String,
+  description: String,
+  characters: String,
+  industry: Number,
+  salaryLower: String,
+  salaryUpper: String,
+  salaryUnit: String,
+};
+
+
+
 // 定义计算属性来根据 value 值返回 label
 const getLabel = (value, array) => {
   const item = array.find(item => item.value === value);
@@ -83,13 +129,13 @@ const renderIndustry = computed(() => {
 });
 
 // 分割字符串并转为数组
-const splitSkills = props.skills ? props.skills.split(',') : [];
-const splitCharacters = props.characters ? props.characters.split(',') : [];
+const splitSkills = ref(props.skills ? String(props.skills).split(',') : []);
+const splitCharacters = ref(props.characters ? String(props.characters).split(',') : []);
 </script>
 
 <template>
   <div class="flex" style="width: 1000px">
-    <n-card :title="props.title" size="small" class="mt-20 w-[100%]" embedded hoverable @click="handleOpenJobCard">
+    <n-card :header-style="{ fontSize: '20px' }" :title="props.title" size="small" class="mt-20 w-[100%]" embedded hoverable @click="handleOpenJobCard(props.id)">
       <template #header-extra>
         <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="isApplied = !isApplied" class="mr-12">
           {{ isApplied ? '取消' : '投递' }}
@@ -132,7 +178,7 @@ const splitCharacters = props.characters ? props.characters.split(',') : [];
 
       <n-space align="center">
         <img alt="" object-contain size="45" src="/src/assets/images/logo.png" />
-        <div class="ml-20">
+        <div class="ml-5">
           <div class="items-center">
             <span class="text-16 mr-12">{{ props.company }}</span>
             <p class="opacity-60">{{ props.address }}</p>
@@ -143,7 +189,22 @@ const splitCharacters = props.characters ? props.characters.split(',') : [];
 
     <n-drawer v-model:show="show" :width="760" show-mask="true">
       <n-drawer-content :native-scrollbar="false">
-        <job-detail-card></job-detail-card>
+        <job-detail-card
+          :title="job.title"
+          :exp="job.exp"
+          :edu="job.edu"
+          :city="job.city"
+          :type1="job.type1"
+          :industry="job.industry"
+          :company="job.company"
+          :address="job.address"
+          :skills="job.skills"
+          :description="job.description"
+          :characters="job.characters"
+          :salaryLower="job.salaryLower"
+          :salaryUpper="job.salaryUpper"
+          :salaryUnit="job.salaryUnit">
+        </job-detail-card>
       </n-drawer-content>
     </n-drawer>
   </div>

@@ -6,7 +6,6 @@ import api from './api.js'
 defineOptions({ name: 'JobSearch' })
 
 import { ref } from 'vue';
-import axios from 'axios';
 
 const searchName = ref();
 const city_value = ref();
@@ -159,6 +158,7 @@ onMounted(()=>{
     </div>
     <div v-for="(job, index) in jobList" :key="index">
       <job-card
+        :id="job.id"
         :title="job.jobName"
         :exp="job.workTimeType"
         :edu="job.educationType"

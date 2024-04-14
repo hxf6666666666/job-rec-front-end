@@ -4,7 +4,7 @@ import { setupInterceptors } from './interceptors'
 export function createAxios(options = {}) {
   const defaultOptions = {
     baseURL: '/api',
-    timeout: 12000,
+    timeout: 120000,
   }
   const service = axios.create({
     ...defaultOptions,

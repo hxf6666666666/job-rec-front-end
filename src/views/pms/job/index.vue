@@ -25,6 +25,27 @@
         />
       </MeQueryItem>
     </MeCrud>
+
+    <n-drawer v-model:show="show" :width="760" show-mask="true">
+      <n-drawer-content class="m-0" :native-scrollbar="false">
+        <job-detail-card
+          :title="job.title"
+          :exp="job.exp"
+          :edu="job.edu"
+          :city="job.city"
+          :type1="job.type1"
+          :industry="job.industry"
+          :company="job.company"
+          :address="job.address"
+          :skills="job.skills"
+          :description="job.description"
+          :characters="job.characters"
+          :salaryLower="job.salaryLower"
+          :salaryUpper="job.salaryUpper"
+          :salaryUnit="job.salaryUnit">
+        </job-detail-card>
+      </n-drawer-content>
+    </n-drawer>
   </CommonPage>
 </template>
 
@@ -38,6 +59,7 @@ import { useCrud } from '@/composables'
 import api from './api'
 import { ref } from 'vue'
 import { useUserStore } from '@/store/index.js'
+import JobDetailCard from '@/components/common/JobDetailCard.vue'
 
 defineOptions({ name: 'JobUpload' })
 
@@ -51,11 +73,53 @@ const queryItems = ref({})
 onMounted(() => {
   $table.value?.handleSearch()
 })
-
+const show = ref(false)
+const handleOpenJobCard = (row)=>{
+  show.value = !show.value
+  // 使用解构赋值将row中的值赋给job
+  job.title = row.jobName;
+  job.exp = row.workTimeType;
+  job.edu = row.educationType;
+  job.city = row.city;
+  job.type1 = row.jobType;
+  job.company = row.companyName;
+  job.address = row.jobAddress;
+  job.skills = row.jobSkills;
+  job.description = row.jobDescription;
+  job.characters = row.jobPersonality;
+  job.industry = row.industryId;
+  job.salaryLower = row.salaryLower;
+  job.salaryUpper = row.salaryUpper;
+  job.salaryUnit = row.salaryUnit;
+}
+const job = {
+  title: String,
+  exp: Number,
+  edu: Number,
+  city: String,
+  type1: Number,
+  company: String,
+  address: String,
+  skills: String,
+  description: String,
+  characters: String,
+  industry: Number,
+  salaryLower: String,
+  salaryUpper: String,
+  salaryUnit: String,
+};
 
 const columns = [
-  { title: '职位id', key: 'id', width: 80, ellipsis: { tooltip: true } },
-  { title: '职位名称', key: 'jobName', width: 200, ellipsis: { tooltip: true } },
+  { title: '职位id', key: 'id', width: 60, ellipsis: { tooltip: true } },
+  {
+    title: '职位名称',
+    key: 'jobName',
+    width: 250,
+    ellipsis: { tooltip: true },
+    render(row) {
+      return h('span', { style: 'font-weight: bold' }, row.jobName);
+    }
+  },
   {
     title: '职位类别',
     key: 'jobType',
@@ -63,7 +127,16 @@ const columns = [
     ellipsis: { tooltip: true },
     render(row) {
       const category = type2.find(cat => cat.value === row.industryId);
-      return category ? category.label : '暂无分类';
+      const label = category ? category.label : '暂无分类';
+      return h(
+        NTag,
+        {
+          type: 'primary',
+          size: 'small',
+          round: true
+        },
+        label
+      );
     }
   },
   {
@@ -80,12 +153,13 @@ const columns = [
     }
   },
   {
-    title: '创建时间',
+    title: '发布时间',
     key: 'createTime',
-    width: 250,
+    width: 200,
     render(row) {
       return h('span', formatDateTime(row['createTime']))
     },
+    sortOrder: false,
   },
   {
     title: '操作',
@@ -112,7 +186,7 @@ const columns = [
             size: 'tiny',
             type: 'success',
             style: 'margin-left: 12px;',
-            onClick: () => handleOpenRolesSet(row),
+            onClick: () => handleOpenJobCard(row),
           },
           {
             default: () => '查看',

@@ -102,7 +102,7 @@
           </n-form-item>
 
           <n-form-item label="岗位地址">
-            <n-input v-model:value="modalForm.job_address_detail" placeholder="输入城市名"/>
+            <n-input v-model:value="modalForm.city" placeholder="输入城市名"/>
             <n-input class="ml-15" v-model:value="modalForm.jobAddress" placeholder="输入详细地址"/>
           </n-form-item>
 
@@ -122,7 +122,7 @@
           :company="job.company"
           :address="job.address"
           :skills="job.skills"
-          :discription="job.discription"
+          :description="job.description"
           :characters="job.characters"
           :salaryLower="job.salaryLower"
           :salaryUpper="job.salaryUpper"
@@ -145,7 +145,8 @@ import api from './api'
 import { defineProps, ref } from 'vue'
 import { useUserStore } from '@/store/index.js'
 import JobDetailCard from '@/components/common/JobDetailCard.vue'
-import JobCard from '@/components/common/JobCard.vue'
+import { RouterLink } from 'vue-router'
+
 
 defineOptions({ name: 'JobUpload' })
 
@@ -172,12 +173,13 @@ const handleOpenJobCard = (row)=>{
   job.company = row.companyName;
   job.address = row.jobAddress;
   job.skills = row.jobSkills;
-  job.discription = row.jobDescription;
+  job.description = row.jobDescription;
   job.characters = row.jobPersonality;
   job.industry = row.industryId;
   job.salaryLower = row.salaryLower;
   job.salaryUpper = row.salaryUpper;
   job.salaryUnit = row.salaryUnit;
+  job.link = row.link;
 }
 const job = {
   title: String,
@@ -188,18 +190,27 @@ const job = {
   company: String,
   address: String,
   skills: String,
-  discription: String,
+  description: String,
   characters: String,
   industry: Number,
   salaryLower: String,
   salaryUpper: String,
   salaryUnit: String,
+  link: String,
 };
 
 
 const columns = [
-  { title: '职位id', key: 'id', width: 80, ellipsis: { tooltip: true } },
-  { title: '职位名称', key: 'jobName', width: 200, ellipsis: { tooltip: true } },
+  { title: '职位id', key: 'id', width: 60, ellipsis: { tooltip: true } },
+  {
+    title: '职位名称',
+    key: 'jobName',
+    width: 220,
+    ellipsis: { tooltip: true },
+    render(row) {
+      return h('span', { style: 'font-weight: bold' }, row.jobName);
+    }
+  },
   {
     title: '职位类别',
     key: 'jobType',
@@ -207,7 +218,16 @@ const columns = [
     ellipsis: { tooltip: true },
     render(row) {
       const category = type2.find(cat => cat.value === row.industryId);
-      return category ? category.label : '暂无分类';
+      const label = category ? category.label : '暂无分类';
+      return h(
+        NTag,
+        {
+          type: 'primary',
+          size: 'small',
+          round: true
+        },
+        label
+      );
     }
   },
   {
@@ -252,16 +272,24 @@ const columns = [
           }
         ),
         h(
-          NButton,
+          RouterLink,
           {
-            size: 'tiny',
-            type: 'info',
-            style: 'margin-left: 12px;'
+            to: `/jobDetail/${row.id}`, // 使用动态参数row.id构建职位详情页面的路由
           },
-          {
-            default: () => '招人',
-            icon: () => h('i', { class: 'i-fe:users text-14' }),
-          }
+          [
+            h(
+              NButton,
+              {
+                size: 'tiny',
+                type: 'info',
+                style: 'margin-left: 12px;',
+              },
+              {
+                default: () => '招人',
+                icon: () => h('i', { class: 'i-fe:users text-14' }),
+              }
+            ),
+          ]
         ),
         h(
           NButton,

@@ -91,6 +91,7 @@ function handleSelect(key) {
           }
           authStore.logout()
           $message.success('已退出登录')
+          history.go(0)
         },
       })
       break

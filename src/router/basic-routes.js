@@ -117,7 +117,7 @@ export const basicRoutes = [
   },
   {
     name: 'JobDetail',
-    path: '/JobDetail',
+    path: '/JobDetail/:id',
     component: () => import('@/views/base/JobDetail.vue'),
     meta: {
       title: '职位详情',

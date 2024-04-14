@@ -47,7 +47,7 @@ const props = defineProps({
   company: String,
   address: String,
   skills: String,
-  discription: String,
+  description: String,
   characters: String,
   industry: Number,
   salaryLower: String,
@@ -78,9 +78,12 @@ const renderIndustry = computed(() => {
 });
 
 // 分割字符串并转为数组
-const splitSkills = props.skills ? props.skills.split(',') : [];
-const splitCharacters = props.characters ? props.characters.split(',') : [];
-
+const splitSkills = computed(()=>{
+  return props.skills ? String(props.skills).split(',') : []
+});
+const splitCharacters = computed(()=>{
+  return props.characters ? String(props.characters).split(',') : []
+});
 
 const majors = ref(['计算机科学与技术','软件工程','医学信息工程','人工智能','自动化'])
 
@@ -89,13 +92,13 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
 
 <template>
   <n-card id="job-detail" class="mt-5 w-720px" embedded hoverable>
-    <div class="mb-12 text-23" style="font-family: 华文中宋; font-weight: bold">{{ props.title }}</div>
+    <div class="mb-12 text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.title }}</div>
     <n-space align="center" class="mb-12">
       <div class="items-center">
         <span class="text-18 color-error">{{ props.salaryLower }}-{{ props.salaryUpper }}K·{{ props.salaryUnit }}薪</span>
         <span class="text-18 ml-12">
             <n-tag :bordered="false">{{ renderExp }}</n-tag>
-          </span>
+        </span>
         <span class="text-18 ml-12">
             <n-tag :bordered="false">{{ renderEdu }}</n-tag>
           </span>
@@ -124,10 +127,9 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
 
         <n-space align="center">
           <img alt="" object-contain size="45" src="/src/assets/images/logo.png" />
-          <div class="ml-20">
+          <div class="ml-5">
             <div class="items-center">
               <span class="text-16 mr-12">{{ company }}</span>
-              <span class="text-14">{{ zhaopinzhe }}</span>
               <p class="opacity-60">{{ address }}</p>
             </div>
           </div>
@@ -173,22 +175,22 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
       <n-space class="mt-18">
         <div class="ml-15">
           <div class="mt-7 flex text-15">
-            {{ props.discription }}
+            {{ props.description }}
           </div>
         </div>
       </n-space>
     </div>
 
-    <div class="ml-12 mt-15">
-      <span class="title text-20 font-extrabold">AI说职位</span>
-    </div>
-    <div class="mt-15">
-      <div class="mt-15">
-        <n-tag v-for="major in majors" :key="major" class="ml-12 mt-4" type="success">
-          {{ major }}
-        </n-tag>
-      </div>
-    </div>
+<!--    <div class="ml-12 mt-15">-->
+<!--      <span class="title text-20 font-extrabold">AI说职位</span>-->
+<!--    </div>-->
+<!--    <div class="mt-15">-->
+<!--      <div class="mt-15">-->
+<!--        <n-tag v-for="major in majors" :key="major" class="ml-12 mt-4" type="success">-->
+<!--          {{ major }}-->
+<!--        </n-tag>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <div class="ml-12 mt-15">
       <span class="title text-20 font-extrabold">技能标签</span>
