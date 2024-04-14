@@ -82,7 +82,7 @@ watch(tabsValue, (newValue) => {
           <n-alert type="warning">BOSS直聘不允许嵌入显示（故仅展示主页），智联招聘、猎聘网等可以正常显示！</n-alert>
           <div class="flex justify-center w-1100 mt-15">
             <iframe
-              :src="job.link.includes('zhipin') ? 'https://www.zhipin.com/' : job.link"
+              :src="job.link?.includes('zhipin') ? 'https://www.zhipin.com/' : job.link"
               width="100%"
               height="600"
               frameborder="0"

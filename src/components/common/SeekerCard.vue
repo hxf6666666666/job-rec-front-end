@@ -74,14 +74,6 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  createTime: {
-    type: String,
-    default: ""
-  },
-  updateTime: {
-    type: String,
-    default: ""
-  },
   educationExperiences: {
     type: Array,
     default: () => [
@@ -89,15 +81,16 @@ const props = defineProps({
         schoolName: "",
         majorName: "",
         gpa: "",
-        beginYear: null,
-        endYear: null
+        beginYear: "",
+        endYear: "",
+        activity: "",
+        educationType: 2,
+        ranking: "",
+        schoolType: "",
       }
     ]
   }
 });
-
-onMounted(()=>{
-})
 
 
 
@@ -157,25 +150,25 @@ const show = ref(false)
 
         <div>
           <span class="text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.realName }}</span>
-          <span v-if="props.educationExperiences[0].schoolName" class="ml-15">
+          <span v-if="props.educationExperiences[0]?.schoolName" class="ml-15">
             <n-tag :bordered="false" size="small" type="primary">
               {{ props.educationExperiences[0].schoolName }}
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences[0].majorName" class="ml-10">
+          <span v-if="props.educationExperiences[0]?.majorName" class="ml-10">
             <n-tag :bordered="false" size="small" type="default">
               {{ props.educationExperiences[0].majorName }}
             </n-tag>
           </span>
 
-          <span v-if="props.englishTag.includes('4')&&!englishTag.includes('6')" class="ml-10">
+          <span v-if="props.englishTag?.includes('4')&&!englishTag.includes('6')" class="ml-10">
             <n-tag :bordered="false" size="small" type="info">
               CET4
             </n-tag>
           </span>
 
-          <span v-if="englishTag.includes('6')" class="ml-10">
+          <span v-if="props.englishTag?.includes('6')" class="ml-10">
             <n-tag :bordered="false" size="small" type="info">
               CET6
             </n-tag>
@@ -212,7 +205,7 @@ const show = ref(false)
             </n-tag>
           </span>
 
-          <span v-if="educationExperiences[0].gpa>4" class="mr-10">
+          <span v-if="educationExperiences[0]?.gpa>4" class="mr-10">
           <n-tag :bordered="false" size="medium" type="error">
             <template #icon>
               <i class="i-fe:book"></i>
@@ -230,13 +223,13 @@ const show = ref(false)
           </n-tag>
         </span>
 
-          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')">
+          <span class="mr-10" v-if="educationExperiences[0]?.schoolType!=null&&educationExperiences[0].schoolType.includes('985')">
           <n-tag :bordered="false" size="small" type="warning">
             985院校
           </n-tag>
           </span>
 
-          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')">
+          <span class="mr-10" v-if="educationExperiences[0]?.schoolType!=null&&educationExperiences[0].schoolType.includes('211')">
           <n-tag :bordered="false" size="small" type="warning">
             211院校
           </n-tag>
@@ -253,8 +246,8 @@ const show = ref(false)
           </n-tag>
         </div>
         <div class="mt-10">
-          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>{{ props.userPhone.length==0?'暂无':props.userPhone }}</span>
-          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>{{ props.email.length==0?'暂无':props.email }}</span>
+          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>{{ props.userPhone?.length==0?'暂无':props.userPhone }}</span>
+          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>{{ props.email?.length==0?'暂无':props.email }}</span>
           <span class="text-14 ml-12 opacity-70"><i class="i-fe:book?mask mr-6"></i>{{ props.workExperienceYear }}年经验</span>
         </div>
       </div>

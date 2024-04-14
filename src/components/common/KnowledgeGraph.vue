@@ -284,7 +284,7 @@ const option = {
       }
     }
   },
-  color: ['#0098d9', '#e6b600', '#672e34'],
+  color: ['#0098d9', '#e6b600', '#c12e34'],
   textStyle: {
     fontFamily: 'sans-serif',
     fontSize: 12,

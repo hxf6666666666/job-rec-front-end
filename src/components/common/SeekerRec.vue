@@ -5,7 +5,45 @@ import SeekerCard from '@/components/common/SeekerCard.vue'
 import api from './api.js'
 import { ref } from 'vue'
 
-const seekerList = ref([]);
+const seekerList = ref([
+  {
+    id: 2,
+    avatar: '',
+    resumeIntegrity: 0,
+    userId: 0,
+    realName: '',
+    gender: 0,
+    age: 0,
+    dateOfBirth: '',
+    city: '',
+    address: '',
+    userPhone: '',
+    email: '',
+    qqNumber: '',
+    wechat: '',
+    skillTag: '',
+    awardTag: '',
+    personalityTag: '',
+    advantage: '',
+    workExperienceYear: 0,
+    englishTag: '',
+    createTime: '',
+    updateTime: '',
+    educationExperiences: [
+      {
+        schoolName: '',
+        majorName: '',
+        gpa: '',
+        beginYear: '',
+        endYear: '',
+        activity: '',
+        educationType: 2,
+        ranking: '',
+        schoolType: '',
+      }
+    ]
+  }
+]);
 const performSearch = async () => {
   // const params = {
   //
@@ -125,6 +163,7 @@ const exp_options = ref([
 
     <template v-for="seeker in seekerList" :key="seeker.id">
       <seeker-card
+        v-if="seekerList && seekerList.length && seekerList[0].educationExperiences.length"
         :real-name="seeker.realName"
         :avatar="seeker.avatar"
         :gender="seeker.gender"
@@ -142,8 +181,6 @@ const exp_options = ref([
         :advantage="seeker.advantage"
         :work-experience-year="seeker.workExperienceYear"
         :english-tag="seeker.englishTag"
-        :create-time="seeker.createTime"
-        :update-time="seeker.updateTime"
         :education-experiences="seeker.educationExperiences"
       />
     </template>
