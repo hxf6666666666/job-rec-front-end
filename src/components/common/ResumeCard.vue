@@ -1,6 +1,6 @@
 <script setup>
 import { useUserStore } from '@/store/index.js'
-
+import api from '@/views/demo/CVDetail/api.js'
 const userStore = useUserStore()
 
 const props = defineProps({
@@ -103,7 +103,13 @@ const props = defineProps({
   }
 });
 
-onMounted(()=>{
+onMounted(async ()=>{
+  try {
+    const response = await api.getByUserId(userStore.userId);
+    vImg.value = 'data:image/png;base64,'+ response.data.avatar;
+  } catch (error) {
+    $message.error('失败：' + error.message);
+  }
 })
 
 
