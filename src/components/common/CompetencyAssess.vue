@@ -98,12 +98,10 @@
     </div>
 
     <div class="flex mt-15">
-      <n-card class="w-100%" size="small" title="职位大类图谱">
+      <n-card class="w-100%" size="small" title="职位图谱">
         <KnowledgeGraph></KnowledgeGraph>
       </n-card>
     </div>
-
-
   </div>
 </template>
 

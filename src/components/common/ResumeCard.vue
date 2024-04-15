@@ -1,7 +1,6 @@
 <script setup>
 import { useUserStore } from '@/store/index.js'
 import api from '@/views/demo/CVDetail/api.js'
-
 const userStore = useUserStore()
 
 const props = defineProps({
@@ -97,12 +96,8 @@ const props = defineProps({
         schoolName: "",
         majorName: "",
         gpa: "",
-        beginYear: "",
-        endYear: "",
-        activity: "",
-        educationType: 2,
-        ranking: "",
-        schoolType: "",
+        beginYear: null,
+        endYear: null
       }
     ]
   }
