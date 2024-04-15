@@ -61,6 +61,27 @@ const edus = ref([
 
 const isApplied = ref(false);
 const show = ref(false);
+const rate = ref(0)
+
+
+
+const handleApply = ()=>{
+  isApplied.value = !isApplied.value
+  if(isApplied.value){
+    $message.success('投递成功！')
+  }else{
+    $message.info('已取消投递！')
+  }
+}
+
+const handleRate = ()=>{
+  if(rate.value==1){
+    $message.success('收藏成功！')
+  }else{
+    $message.info('已取消收藏！')
+  }
+}
+
 
 const handleOpenJobCard = async (id)=>{
   try {
@@ -128,20 +149,19 @@ const renderIndustry = computed(() => {
   return getLabel(props.industry, type2);
 });
 
-// 分割字符串并转为数组
-const splitSkills = ref(props.skills ? String(props.skills).split(',') : []);
-const splitCharacters = ref(props.characters ? String(props.characters).split(',') : []);
+const splitSkills = computed(() => props.skills ? String(props.skills).split(',') : []);
+const splitCharacters = computed(() => props.characters ? String(props.characters).split(',') : []);
 </script>
 
 <template>
   <div class="flex" style="width: 1000px">
     <n-card :header-style="{ fontSize: '20px' }" :title="props.title" size="small" class="mt-20 w-[100%]" embedded hoverable @click="handleOpenJobCard(props.id)">
       <template #header-extra>
-        <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="isApplied = !isApplied" class="mr-12">
+        <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="handleApply" class="mr-12">
           {{ isApplied ? '取消' : '投递' }}
         </n-button>
         <div @click.stop>
-          <n-rate size="large" count="1" clearable/>
+          <n-rate size="large" v-model:value="rate" @click.stop="handleRate" count="1" clearable/>
         </div>
       </template>
       <n-space align="center" class="mb-12">

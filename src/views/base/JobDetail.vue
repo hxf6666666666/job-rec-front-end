@@ -140,8 +140,6 @@ watch(tabsValue, (newValue) => {
 
         <n-tab-pane name="人才推荐" tab="人才推荐">
           <div class="button-container">
-            <n-button class="mr-12" size="tiny" type="info">开始推荐人才</n-button>
-            <n-button size="tiny" type="success">导出为Excel</n-button>
             <div class="mt-8">
               当前推荐结果生成时间：
               <n-time :time="time" />

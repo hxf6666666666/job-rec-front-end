@@ -44,18 +44,18 @@ const getTagType = (userRole) => {
 
 
 const options = reactive([
-  {
-    label: '个人资料',
-    key: 'profile',
-    icon: () => h('i', { class: 'i-material-symbols:person-outline text-14' }),
-    show: computed(() => permissionStore.accessRoutes?.some((item) => item.path === '/profile')),
-  },
-  {
-    label: '切换角色',
-    key: 'toggleRole',
-    icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
-    show: computed(() => userStore.userRole),
-  },
+  // {
+  //   label: '个人资料',
+  //   key: 'profile',
+  //   icon: () => h('i', { class: 'i-material-symbols:person-outline text-14' }),
+  //   show: computed(() => permissionStore.accessRoutes?.some((item) => item.path === '/profile')),
+  // },
+  // {
+  //   label: '切换角色',
+  //   key: 'toggleRole',
+  //   icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
+  //   show: computed(() => userStore.userRole),
+  // },
   {
     label: '退出登录',
     key: 'logout',
@@ -91,7 +91,7 @@ function handleSelect(key) {
           }
           authStore.logout()
           $message.success('已退出登录')
-          history.go(0)
+          router.push('/')
         },
       })
       break

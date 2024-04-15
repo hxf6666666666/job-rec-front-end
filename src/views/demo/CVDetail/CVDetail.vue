@@ -105,6 +105,7 @@ onMounted(async ()=>{
     employee.createTime = response1.data.createTime;
     employee.updateTime = response1.data.updateTime;
     employee.educationExperiences = response1.data.educationExperiences;
+
     if(response2.data.length!=0){
       const filePath = response2.data.filePath;
       // 检查 filePath 的后缀是否为 .pdf（不区分大小写）
@@ -242,7 +243,6 @@ async function handleUpload({ file, onFinish }) {
           // 更新时间信息
           employee.createTime = new Date().toISOString(); // 更新创建时间为当前时间
           employee.updateTime = new Date().toISOString(); // 更新更新时间为当前时间
-
           console.log(employee)
 
           const response4 = api.uploadEmployee(userStore.userId, employee)
@@ -333,7 +333,7 @@ const access = async () => {
     pingjia.unmatchedSkills = result1.unmatchedSkills
     pingjia.matchedTraits = result2.matchedSkills
     pingjia.unmatchedTraits = result2.unmatchedSkills
-    $message.success('成功评价生成，页面将刷新', { key: 'access' })
+    $message.success('成功生成评价，页面将刷新', { key: 'access' })
     setTimeout(() => {
       history.go(0); // 刷新当前页面
     }, 1000); // 延迟1秒
@@ -746,7 +746,7 @@ watch(tabsValue, (newValue) => {
         <n-tab-pane name="简历上传" tab="简历上传">
           <div class="mt-12 f-c-c flex-col">
             <n-alert class="w-720" type="info" v-if="!isPdfFile">
-              PDF格式的简历支持在线预览哦~
+              初次登录需要先上传简历，PDF格式的简历支持在线预览哦~
             </n-alert>
           </div>
           <n-upload
@@ -871,14 +871,6 @@ watch(tabsValue, (newValue) => {
           ></CompetencyAssess>
         </n-tab-pane>
         <n-tab-pane name="职位推荐" tab="职位推荐">
-          <div class="button-container">
-            <n-button class="mr-12" size="tiny" type="info">开始推荐职位</n-button>
-            <n-button size="tiny" type="success">导出为Excel</n-button>
-            <div class="mt-8">
-              当前推荐结果生成时间：
-              <n-time :time="time" />
-            </div>
-          </div>
           <job-rec></job-rec>
         </n-tab-pane>
       </n-tabs>

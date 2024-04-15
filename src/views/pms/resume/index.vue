@@ -15,8 +15,35 @@
           clearable
         />
       </MeQueryItem>
-
     </MeCrud>
+    <n-drawer v-model:show="show" :width="760" show-mask="true">
+      <n-drawer-content class="m-0" :native-scrollbar="false">
+        <resume-card
+          :work-experience-year="employee.workExperienceYear"
+          :gender="employee.gender"
+          :id="employee.id"
+          :date-of-birth="employee.dateOfBirth"
+          :avatar="employee.avatar"
+          :resume-integrity="employee.resumeIntegrity"
+          :realName="employee.realName"
+          :age="employee.age"
+          :city="employee.city"
+          :address="employee.address"
+          :userPhone="employee.userPhone"
+          :email="employee.email"
+          :qqNumber="employee.qqNumber"
+          :wechat="employee.wechat"
+          :skillTag="employee.skillTag"
+          :awardTag="employee.awardTag"
+          :personalityTag="employee.personalityTag"
+          :advantage="employee.advantage"
+          :workExperience="employee.workExperienceYear"
+          :englishTag="employee.englishTag"
+          :createTime="employee.createTime"
+          :updateTime="employee.updateTime"
+          :educationExperiences="employee.educationExperiences"/>
+      </n-drawer-content>
+    </n-drawer>
   </CommonPage>
 </template>
 
@@ -24,11 +51,91 @@
 import { useClipboard } from '@vueuse/core'
 import { CommonPage } from '@/components/index.js'
 import { NButton, NTag } from 'naive-ui'
-import { formatDateTime } from '@/utils'
+import { formatDateTime, request } from '@/utils'
 import { MeCrud, MeQueryItem } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
+import JobDetailCard from '@/components/common/JobDetailCard.vue'
+import ResumeCard from '@/components/common/ResumeCard.vue'
+import api2 from '@/views/demo/CVDetail/api.js'
 
+
+const handleOpenResumeCard = async (row)=>{
+  show.value = !show.value
+  try {
+    const response2 = await api2.getResumeById(row.id)
+    console.log(response2.data)
+    const response1 = await api.getName(response2.data.employeeId)
+
+
+    console.log(response1.data)
+    // 更新 employee 对象的属性
+    employee.id = response1.data.id;
+    employee.realName = response1.data.realName;
+    employee.gender = response1.data.gender;
+    employee.dateOfBirth = response1.data.dateOfBirth;
+    employee.avatar = response1.data.avatar;
+    employee.resumeIntegrity = response1.data.resumeIntegrity;
+    employee.age = response1.data.age;
+    employee.city = response1.data.city;
+    employee.address = response1.data.address;
+    employee.userPhone = response1.data.userPhone;
+    employee.email = response1.data.email;
+    employee.qqNumber = response1.data.qqNumber;
+    employee.wechat = response1.data.wechat;
+    employee.skillTag = response1.data.skillTag;
+    employee.awardTag = response1.data.awardTag;
+    employee.personalityTag = response1.data.personalityTag;
+    employee.advantage = response1.data.advantage;
+    employee.workExperienceYear = response1.data.workExperienceYear;
+    employee.englishTag = response1.data.englishTag;
+    employee.createTime = response1.data.createTime;
+    employee.updateTime = response1.data.updateTime;
+    employee.educationExperiences = response1.data.educationExperiences;
+  }catch (e){
+    console.log(e)
+  }
+
+
+}
+
+const employee = reactive({
+  id: 2,
+  avatar: "",
+  resumeIntegrity: 0,
+  userId: 0,
+  realName: "",
+  gender: 0,
+  age: 0,
+  dateOfBirth: "",
+  city: "",
+  address: "",
+  userPhone: "",
+  email: "",
+  qqNumber: "",
+  wechat: "",
+  skillTag: "",
+  awardTag: "",
+  personalityTag: "",
+  advantage: "",
+  workExperienceYear: 0,
+  englishTag: "",
+  createTime: "",
+  updateTime: "",
+  educationExperiences: [
+    {
+      schoolName: "",
+      majorName: "",
+      gpa: "",
+      beginYear: "",
+      endYear: "",
+      activity: "",
+      educationType: 2,
+      ranking: "",
+      schoolType: "",
+    }
+  ]
+});
 
 defineOptions({ name: 'ResumeMgt' })
 
@@ -43,6 +150,8 @@ const queryItems = ref({})
 onMounted(() => {
   $table.value?.handleSearch()
 })
+
+const show = ref(false)
 
 const columns = [
   { title: '文件名称', key: 'fileName', width: 280, ellipsis: { tooltip: true } },
@@ -65,7 +174,7 @@ const columns = [
     },
   },
   {
-    title: '上传者ID（有时间再姓名）',
+    title: '上传者ID',
     key: 'employeeId',
     width: 180,
     ellipsis: { tooltip: true },
@@ -98,6 +207,7 @@ const columns = [
             size: 'tiny',
             type: 'success',
             style: 'margin-left: 12px;',
+            onClick: () => handleOpenResumeCard(row),
           },
           {
             default: () => '查看',

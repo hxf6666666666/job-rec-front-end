@@ -164,6 +164,10 @@ const submitForm = async () => {
   })
 };
 
+const handleUpdateValue = (value) => {
+  $message.info(value);
+}
+
 
 
 </script>
@@ -279,7 +283,18 @@ const submitForm = async () => {
 <!--          <n-input v-model:modelValue="employee.advantage" type="textarea" />-->
 <!--        </n-form-item>-->
 
-<!--        <n-divider></n-divider>-->
+        <n-divider></n-divider>
+        <n-form-item label="开放隐私信息" path="workExperienceYear">
+          <n-switch class="ml-20">
+            <template #checked>
+              <i class="i-fe:eye"></i>
+            </template>
+            <template #unchecked>
+              <i class="i-fe:eye-off"></i>
+            </template>
+          </n-switch>
+        </n-form-item>
+
 
       </n-form>
     </n-space>

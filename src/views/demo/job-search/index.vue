@@ -6,6 +6,7 @@ import api from './api.js'
 defineOptions({ name: 'JobSearch' })
 
 import { ref } from 'vue';
+import { NButton } from 'naive-ui'
 
 const searchName = ref();
 const city_value = ref();
@@ -80,7 +81,13 @@ const cities = [
 ];
 
 const searchQuery = ref('');
+const currentPage = ref(1); // 当前页码，默认为第一页
+const pageSize = 15; // 每页显示的数据条数
+
+// 其他数据及选项省略...
+
 const jobList = ref([]);
+const totalJobs = ref(10);
 
 // 执行搜索操作
 const performSearch = async () => {
@@ -92,10 +99,13 @@ const performSearch = async () => {
     workTimeType: exp_value.value,
     salary: salary_value.value,
     educationType: edu_value.value,
+    page: currentPage.value, // 将当前页码作为参数传递给后端
+    pageSize: pageSize, // 每页数据条数也作为参数传递给后端
   };
   try {
     const response = await api.read(params);
-    jobList.value = response.data
+    jobList.value = response.data.content;
+    totalJobs.value = response.data.totalElements; // 假设后端返回总数据条数
 
   } catch (error) {
     console.error('Error searching jobs:', error);
@@ -105,6 +115,22 @@ const performSearch = async () => {
 onMounted(()=>{
   performSearch()
 })
+
+// 监听分页控件的事件，切换当前页码
+const handlePageChange = (newPage) => {
+  currentPage.value = newPage;
+  performSearch(); // 切换页码时重新搜索并获取新的数据
+};
+
+const clearSelection = ()=> {
+  type_value1.value = null; // 清空求职类型选中状态
+  city_value.value = null; // 清空城市和区域选中状态
+  searchName.value = '';
+  type_value2.value = null;
+  edu_value.value = null;
+  salary_value.value = null;
+  exp_value.value = null;
+}
 
 </script>
 
@@ -118,7 +144,10 @@ onMounted(()=>{
               <n-icon i-fe:search />
             </template>
           </n-input>
-          <n-button type="primary" round size="large" @click="performSearch">
+          <n-button type="error" round size="large" @click="clearSelection">
+            清空
+          </n-button>
+          <n-button type="info" round size="large" @click="performSearch">
             搜索
           </n-button>
         </n-input-group>
@@ -174,6 +203,14 @@ onMounted(()=>{
         :salaryUnit="job.salaryUnit"
       ></job-card>
     </div>
+    <n-pagination
+      class="mt-15"
+      v-if="totalJobs > 0"
+      v-model:page="currentPage"
+      :page-count="Math.ceil(totalJobs / pageSize)"
+      @update:page="performSearch"
+      simple
+    />
   </AppPage>
 </template>
 

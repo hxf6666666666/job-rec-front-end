@@ -2,6 +2,7 @@
 import { useUserStore } from '@/store/index.js'
 import JobDetailCard from '@/components/common/JobDetailCard.vue'
 import ResumeCard from '@/components/common/ResumeCard.vue'
+import { ref } from 'vue'
 const userStore = useUserStore()
 
 const props = defineProps({
@@ -126,17 +127,37 @@ const formattedEducationType = computed(() => {
 });
 const isApplied = ref(false)
 const show = ref(false)
+const rate = ref(0)
+
+const handleApply = ()=>{
+  isApplied.value = !isApplied.value
+  if(isApplied.value){
+    $message.success('发放offer成功！')
+  }else{
+    $message.info('已取消发放！')
+  }
+}
+
+const handleRate = ()=>{
+  if(rate.value==1){
+    $message.success('收藏成功！')
+  }else{
+    $message.info('已取消收藏！')
+  }
+}
+
+
 
 </script>
 
 <template>
   <n-card id="resume" title=" " class="mt-15" size="small" embedded hoverable @click="show=!show">
     <template #header-extra>
-      <n-button size="tiny" :type="isApplied ? 'error' : 'info'" @click.stop="isApplied = !isApplied" class="mr-12">
+      <n-button size="tiny" :type="isApplied ? 'error' : 'info'" @click.stop="handleApply" class="mr-12">
         {{ isApplied ? '取消' : '发放offer' }}
       </n-button>
       <div @click.stop>
-        <n-rate size="large" count="1" clearable/>
+        <n-rate v-model:value="rate" size="large" @click.stop="handleRate" count="1" clearable/>
       </div>
     </template>
     <div class="flex">

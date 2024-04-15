@@ -109,12 +109,7 @@ const props = defineProps({
 });
 
 onMounted(async ()=>{
-  try {
-    const response = await api.getByUserId(userStore.userId);
-    vImg.value = 'data:image/png;base64,'+ response.data.avatar;
-  } catch (error) {
-    $message.error('失败：' + error.message);
-  }
+  vImg.value = 'data:image/png;base64,'+ props.avatar
 })
 
 
@@ -157,7 +152,7 @@ const formattedEducationType = computed(() => {
   <n-card class="mt-5 w-720px" embedded hoverable>
     <div class="flex">
       <div class="w-20%">
-        <n-avatar fallback-src="https://q2.itc.cn/q_70/images03/20240312/519714591a8241b884f21e37b54d4319.jpeg"
+        <n-avatar fallback-src="https://5b0988e595225.cdn.sohucs.com/images/20171114/bc48840fb6904dd4bd8f6a8af8178af4.png"
                   :size="100" :src="vImg" object-fit="fill" class="h-130 mt-15 ml-15" />
       </div>
 

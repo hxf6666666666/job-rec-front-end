@@ -92,7 +92,7 @@
     <div class="flex mt-15">
       <n-card title="评价反馈" size="small">
         <n-alert type="info" title="该评价结果是否令您满意？">
-          <n-rate size="small" /><n-button class="ml-10" type="info" size="tiny">提交反馈</n-button>
+          <n-rate size="small" v-model:value="rate"/><n-button class="ml-10" type="info" size="tiny" @click="feedback">提交反馈</n-button>
         </n-alert>
       </n-card>
     </div>
@@ -112,6 +112,11 @@ import { ref } from 'vue'
 import KnowledgeGraph from '@/components/common/KnowledgeGraph.vue'
 import { h, defineComponent } from "vue";
 import { NTag, NButton,NRate } from "naive-ui";
+const rate = ref(0)
+const feedback = ()=>{
+  rate.value = 0;
+  $message.success('反馈成功，感谢您的支持！')
+}
 
 
 

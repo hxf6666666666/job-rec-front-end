@@ -7,5 +7,7 @@ export default {
   getResumeByUserId: (userId) => request.get(`/resume/getByUserId/${userId}`),
   getPdf: (params = {}) => request.get('bucket/getPdf', { params }),
   uploadEmployee: (userId, data) => request.post(`/employee/upload/${userId}`, data),
-  askXF: (data) => request.post('/xfModel/test', data)
+  askXF: (data) => request.post('/xfModel/test', data),
+  jobrec: (data) => request.get('/recruitment/recommend',data),
+  getResumeById: (id) => request.get(`/resume/getById/${id}`),
 }

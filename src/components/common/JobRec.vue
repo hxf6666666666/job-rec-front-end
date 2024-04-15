@@ -1,11 +1,13 @@
 <script setup>
 import JobCard from '@/components/common/JobCard.vue'
 import { NButton, NRate } from 'naive-ui'
-import api from '/src/views/demo/job-search/api.js'
+import api from './api.js'
 
 defineOptions({ name: 'JobSearch' })
 
 import { ref } from 'vue';
+import { useUserStore } from '@/store/index.js'
+const userStore = useUserStore()
 
 const searchName = ref();
 const city_value = ref();
@@ -79,11 +81,83 @@ const cities = [
   { value: "苏州", label: "苏州" }
 ];
 
-const searchQuery = ref('');
+const employee = reactive({
+  id: 2,
+  avatar: "",
+  resumeIntegrity: 0,
+  userId: 0,
+  realName: "",
+  gender: 0,
+  age: 0,
+  dateOfBirth: "",
+  city: "",
+  address: "",
+  userPhone: "",
+  email: "",
+  qqNumber: "",
+  wechat: "",
+  skillTag: "",
+  awardTag: "",
+  personalityTag: "",
+  advantage: "",
+  workExperienceYear: 0,
+  englishTag: "",
+  createTime: "",
+  updateTime: "",
+  educationExperiences: [
+    {
+      schoolName: "",
+      majorName: "",
+      gpa: "",
+      beginYear: "",
+      endYear: "",
+      activity: "",
+      educationType: 2,
+      ranking: "",
+      schoolType: "",
+    }
+  ]
+});
+// 其他数据及选项省略...
+
 const jobList = ref([]);
 
-// 执行搜索操作
-const performSearch = async () => {
+
+onMounted(async ()=>{
+  try {
+    const response1 = await api.getByUserId(userStore.userId);
+    // 更新响应式对象的属性
+    employee.id = response1.data.id;
+    employee.avatar = response1.data.avatar;
+    employee.resumeIntegrity = response1.data.resumeIntegrity;
+    employee.userId = response1.data.userId;
+    employee.realName = response1.data.realName;
+    employee.gender = response1.data.gender;
+    employee.age = response1.data.age;
+    employee.dateOfBirth = response1.data.dateOfBirth;
+    employee.city = response1.data.city;
+    employee.address = response1.data.address;
+    employee.userPhone = response1.data.userPhone;
+    employee.email = response1.data.email;
+    employee.qqNumber = response1.data.qqNumber;
+    employee.wechat = response1.data.wechat;
+    employee.skillTag = response1.data.skillTag;
+    employee.awardTag = response1.data.awardTag;
+    employee.personalityTag = response1.data.personalityTag;
+    employee.advantage = response1.data.advantage;
+    employee.workExperienceYear = response1.data.workExperienceYear;
+    employee.englishTag = response1.data.englishTag;
+    employee.createTime = response1.data.createTime;
+    employee.updateTime = response1.data.updateTime;
+    employee.educationExperiences = response1.data.educationExperiences;
+    performSearch()
+  } catch (error) {
+    $message.error('失败：' + error.message);
+  }
+})
+
+
+const performSearch = async ()=>{
   const params = {
     jobName: searchName.value,
     jobType: type_value1.value,
@@ -93,18 +167,34 @@ const performSearch = async () => {
     salary: salary_value.value,
     educationType: edu_value.value,
   };
+  $message.loading('生成推荐结果中，请稍候...', { key: 'access', duration: 200000 })
   try {
-    const response = await api.read(params);
-    jobList.value = response.data
-
+    const response = await api.jobrec(employee, params);
+    jobList.value = response.data;
+    $message.success('成功生成推荐结果，请查看', { key: 'access' })
   } catch (error) {
-    console.error('Error searching jobs:', error);
+    $message.destroy('access')
+    $message.error('失败：' + error.message);
   }
-};
+}
 
-onMounted(()=>{
-  performSearch()
-})
+
+const clearSelection = ()=> {
+  type_value1.value = null; // 清空求职类型选中状态
+  city_value.value = null; // 清空城市和区域选中状态
+  searchName.value = '';
+  type_value2.value = null;
+  edu_value.value = null;
+  salary_value.value = null;
+  exp_value.value = null;
+}
+
+const rate = ref(0)
+const feedback = ()=>{
+  rate.value = 0;
+  $message.success('反馈成功，感谢您的支持！')
+}
+
 </script>
 
 <template>
@@ -116,8 +206,11 @@ onMounted(()=>{
             <n-icon i-fe:search />
           </template>
         </n-input>
-        <n-button type="primary" round size="large" @click="performSearch">
-          推荐结果筛选
+        <n-button type="error" round size="large" @click="clearSelection">
+          清空
+        </n-button>
+        <n-button type="info" round size="large" @click="performSearch">
+          换一批
         </n-button>
       </n-input-group>
       <h3 class="mt-14 ml-12 color-primary underline">求职类型</h3>
@@ -174,7 +267,7 @@ onMounted(()=>{
   <div class="flex mt-15">
     <n-card title="推荐反馈" size="small">
       <n-alert type="info" title="该推荐结果是否令您满意？">
-        <n-rate size="small" /><n-button class="ml-10" type="info" size="tiny">提交反馈</n-button>
+        <n-rate size="small" v-model:value="rate"/><n-button class="ml-10" type="info" size="tiny" @click="feedback">提交反馈</n-button>
       </n-alert>
     </n-card>
   </div>

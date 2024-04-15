@@ -143,7 +143,7 @@ const word_option  = {
     },
     //data属性中的value值却大，权重就却大，展示字体就却大
     data: [
-      { name: '泰安', value: 952 },
+      { name: '北京', value: 952 },
       { name: '上海', value: 837 },
       { name: '广州', value: 754 },
       { name: '深圳', value: 680 },
@@ -265,7 +265,18 @@ const trendOption = {
   yAxis: [ // 修改为 yAxis
     {
       type: 'category', // 修改为 category
-      data: ['C++', 'Java', 'Python', '软件', '前端', '网络安全', '运维', '教师', '算法', '测试', '硬件', '其他'].reverse(),
+      data: [
+        "后端开发工程师",
+        "前端开发工程师",
+        "测试工程师/软件测试",
+        "软件工程师",
+        "人工智能/算法",
+        "大数据/数据分析/数据",
+        "运维/技术支持",
+        "IT培训",
+        "移动开发工程师",
+        "硬件/电子/电气",
+        "销售技术支持"].reverse(),
       axisLabel: {
         interval: 0, // 显示所有类别文字
       },

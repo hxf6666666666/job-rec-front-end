@@ -44,15 +44,20 @@ const seekerList = ref([
     ]
   }
 ]);
-const performSearch = async () => {
-  // const params = {
-  //
-  // };
-  try {
-    const response = await api.getAll();
-    seekerList.value = response.data
 
+const route = useRoute()
+
+
+
+const performSearch = async () => {
+  $message.loading('生成推荐结果中，请稍候...', { key: 'access', duration: 200000 })
+  try {
+    const response = await api.seekerrec(parseInt(route.params.id, 10))
+    seekerList.value = response.data
+    console.log(seekerList.value);
+    $message.success('成功生成推荐结果，请查看', { key: 'access' })
   } catch (error) {
+    $message.destroy('access')
     console.error('Error', error);
   }
 };
@@ -61,6 +66,11 @@ onMounted(()=>{
   performSearch()
 })
 
+const rate = ref(0)
+const feedback = ()=>{
+  rate.value = 0;
+  $message.success('反馈成功，感谢您的支持！')
+}
 
 
 const edu_options = ref([
@@ -114,56 +124,20 @@ const exp_options = ref([
 </script>
 
 <template>
+  <div class="button-container">
+    <n-button size="tiny" type="success">换一批推荐</n-button>
+  </div>
   <div style="width: 900px">
     <n-card class="mt-10 mr-10" embedded hoverable title="">
       <div class="flex justify-center mt-15">
         <n-alert type="info" :bordered="false">
-          由职位信息自动生成推荐人选，可进行筛选和反馈，也可修改职位信息重新推荐！
+          由职位信息自动生成推荐人选，可进行反馈并换一批推荐，也可修改职位信息重新推荐！
         </n-alert>
       </div>
-
-      <h3 class="mt-14 ml-12 color-primary underline">学历</h3>
-
-      <n-radio-group class="mt-10 ml-12" size="small" v-model:value="type_value1" default-value="">
-        <n-radio-button
-          v-for="edu in edu_options"
-          :key="edu.value"
-          :value="edu.value"
-          :label="edu.label"
-        >
-        </n-radio-button>
-      </n-radio-group>
-
-
-      <h3 class="mt-14 ml-12 color-primary underline">学校</h3>
-      <n-radio-group class="mt-10 ml-12" size="small" v-model:value="type_value1" default-value="">
-        <n-radio-button
-          v-for="school in school_options"
-          :key="school.value"
-          :value="school.value"
-          :label="school.label"
-        >
-        </n-radio-button>
-      </n-radio-group>
-
-
-
-      <h3 class="mt-14 ml-12 color-primary underline">工作经验</h3>
-
-      <n-radio-group class="mt-10 ml-12" size="small" v-model:value="type_value1" default-value="">
-        <n-radio-button
-          v-for="exp in exp_options"
-          :key="exp.value"
-          :value="exp.value"
-          :label="exp.label"
-        >
-        </n-radio-button>
-      </n-radio-group>
     </n-card>
 
     <template v-for="seeker in seekerList" :key="seeker.id">
       <seeker-card
-        v-if="seekerList && seekerList.length && seekerList[0].educationExperiences.length"
         :real-name="seeker.realName"
         :avatar="seeker.avatar"
         :gender="seeker.gender"
@@ -190,7 +164,7 @@ const exp_options = ref([
   <div class="flex mt-15">
     <n-card title="推荐反馈" size="small">
       <n-alert type="info" title="该推荐结果是否令您满意？">
-        <n-rate size="small" /><n-button class="ml-10" type="info" size="tiny">提交反馈</n-button>
+        <n-rate size="small" v-model:value="rate"/><n-button class="ml-10" type="info" size="tiny" @click="feedback">提交反馈</n-button>
       </n-alert>
     </n-card>
   </div>
@@ -202,4 +176,9 @@ const exp_options = ref([
   text-decoration-skip-ink: auto; /* 这将使下划线避开字母的降部，从而增加与文字的距离 */
   text-underline-offset: 8px; /* 这是增加下划线与文字之间垂直距离的方法 */
 }
+.button-container {
+  text-align: right;
+  margin-bottom: 10px; /* 根据需要调整间隔 */
+}
+
 </style>
