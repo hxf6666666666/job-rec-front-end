@@ -283,7 +283,7 @@ const handleUpdateValue = (value) => {
 <!--          <n-input v-model:modelValue="employee.advantage" type="textarea" />-->
 <!--        </n-form-item>-->
 
-        <n-divider></n-divider>
+        <!-- <n-divider></n-divider>
         <n-form-item label="开放隐私信息" path="workExperienceYear">
           <n-switch class="ml-20">
             <template #checked>
@@ -293,7 +293,7 @@ const handleUpdateValue = (value) => {
               <i class="i-fe:eye-off"></i>
             </template>
           </n-switch>
-        </n-form-item>
+        </n-form-item> -->
 
 
       </n-form>

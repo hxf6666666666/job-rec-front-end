@@ -2,6 +2,8 @@
 import { ref, defineProps, computed } from 'vue';
 import JobDetailCard from '@/components/common/JobDetailCard.vue';
 import api from './api.js'
+import { useUserStore } from '@/store/index.js'
+const userStore = useUserStore()
 
 const props = defineProps({
   id: Number,
@@ -65,25 +67,73 @@ const rate = ref(0)
 
 
 
-const handleApply = ()=>{
-  isApplied.value = !isApplied.value
-  if(isApplied.value){
-    $message.success('投递成功！')
-  }else{
-    $message.info('已取消投递！')
+// const handleApply = () => {
+//   isApplied.value = !isApplied.value
+//   if (isApplied.value) {
+//     $message.success('投递成功！')
+//   } else {
+//     $message.info('已取消投递！')
+//   }
+// }
+const handleApply = async (id) => {
+  try {
+    if (isApplied.value == false) {
+      const response = await api.addApplications(userStore.userId, id)
+      console.log("投递：" + response.data)
+      if ('操作成功' == response.data) {
+        isApplied.value = !isApplied.value
+        $message.success('投递成功！')
+      } else {
+        $message.info('投递失败！原因:'+response.data)
+      }
+    } else {
+      const response = await api.deleteApplications(userStore.userId, id)
+      console.log("取消投递：" + response.data)
+      if ('操作成功' == response.data) {
+        isApplied.value = !isApplied.value
+        $message.success('已取消投递！')
+      } else {
+        $message.info('取消投递原因:'+response.data)
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+const handleRate = async (id) => {
+  try {
+    if (rate.value == 1) {
+      const response = await api.addFavorites(userStore.userId, id)
+      console.log("添加收藏：" + response.data)
+      if ('操作成功' == response.data) {
+        $message.success('收藏成功！')
+      } else {
+        $message.info('收藏失败！')
+      }
+    } else {
+      const response = await api.deleteFavorites(userStore.userId, id)
+      console.log("取消收藏：" + response.data)
+      if ('操作成功' == response.data) {
+        $message.success('已取消收藏！')
+      } else {
+        $message.info('取消收藏失败！')
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
   }
 }
 
-const handleRate = ()=>{
-  if(rate.value==1){
-    $message.success('收藏成功！')
-  }else{
-    $message.info('已取消收藏！')
-  }
-}
+// const handleRate = () => {
+//   if (rate.value == 1) {
+//     $message.success('收藏成功！')
+//   } else {
+//     $message.info('已取消收藏！')
+//   }
+// }
 
 
-const handleOpenJobCard = async (id)=>{
+const handleOpenJobCard = async (id) => {
   try {
     const response = await api.getJobById(id)
     const row = response.data
@@ -103,6 +153,7 @@ const handleOpenJobCard = async (id)=>{
     job.salaryLower = row.salaryLower;
     job.salaryUpper = row.salaryUpper;
     job.salaryUnit = row.salaryUnit;
+    api.addHistory(userStore.userId, id)
   } catch (error) {
     console.error('Error:', error);
   }
@@ -125,6 +176,27 @@ const job = {
   salaryUnit: String,
 };
 
+const handleIsApplied = async () => {
+  try {
+    const response = await api.isApplications(userStore.userId, props.id)
+    if(response.data == '已投递'){
+      isApplied.value = true
+    }else isApplied.value = false
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+const handleIsFavorited = async () => {
+  try {
+    const response = await api.isFavorites(userStore.userId, props.id)
+    if(response.data == '已收藏'){
+      rate.value =1
+    }else rate.value =0
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 
 // 定义计算属性来根据 value 值返回 label
@@ -151,22 +223,28 @@ const renderIndustry = computed(() => {
 
 const splitSkills = computed(() => props.skills ? String(props.skills).split(',') : []);
 const splitCharacters = computed(() => props.characters ? String(props.characters).split(',') : []);
+onMounted(() => {
+  handleIsApplied()
+  handleIsFavorited()
+});
 </script>
 
 <template>
   <div class="flex" style="width: 1000px">
-    <n-card :header-style="{ fontSize: '20px' }" :title="props.title" size="small" class="mt-20 w-[100%]" embedded hoverable @click="handleOpenJobCard(props.id)">
+    <n-card :header-style="{ fontSize: '20px' }" :title="props.title" size="small" class="mt-20 w-[100%]" embedded
+      hoverable @click="handleOpenJobCard(props.id)">
       <template #header-extra>
-        <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="handleApply" class="mr-12">
+        <n-button size="tiny" :type="isApplied ? 'error' : 'success'" @click.stop="handleApply(props.id)" class="mr-12">
           {{ isApplied ? '取消' : '投递' }}
         </n-button>
         <div @click.stop>
-          <n-rate size="large" v-model:value="rate" @click.stop="handleRate" count="1" clearable/>
+          <n-rate size="large" v-model:value="rate" @click.stop="handleRate(props.id)" count="1" clearable />
         </div>
       </template>
       <n-space align="center" class="mb-12">
         <div class="items-center">
-          <span class="text-18 color-error">{{ props.salaryLower }}-{{ props.salaryUpper }}K·{{ props.salaryUnit }}薪</span>
+          <span class="text-18 color-error">{{ props.salaryLower }}-{{ props.salaryUpper }}K·{{ props.salaryUnit
+            }}薪</span>
           <span class="text-18 ml-12">
             <n-tag :bordered="false">{{ renderExp }}</n-tag>
           </span>
@@ -187,10 +265,12 @@ const splitCharacters = computed(() => props.characters ? String(props.character
           <n-tag class="mr-4" round size="small" type="primary">
             {{ renderIndustry }}
           </n-tag>
-          <n-tag v-for="skill in splitSkills" :key="skill" :bordered="false" class="mr-4 mt-4" round size="small" type="info">
+          <n-tag v-for="skill in splitSkills" :key="skill" :bordered="false" class="mr-4 mt-4" round size="small"
+            type="info">
             {{ skill }}
           </n-tag>
-          <n-tag v-for="character in splitCharacters" :key="character" :bordered="false" class="mr-4" round size="small" type="error">
+          <n-tag v-for="character in splitCharacters" :key="character" :bordered="false" class="mr-4" round size="small"
+            type="error">
             {{ character }}
           </n-tag>
         </div>
@@ -209,21 +289,10 @@ const splitCharacters = computed(() => props.characters ? String(props.character
 
     <n-drawer v-model:show="show" :width="760" show-mask="true">
       <n-drawer-content :native-scrollbar="false">
-        <job-detail-card
-          :title="job.title"
-          :exp="job.exp"
-          :edu="job.edu"
-          :city="job.city"
-          :type1="job.type1"
-          :industry="job.industry"
-          :company="job.company"
-          :address="job.address"
-          :skills="job.skills"
-          :description="job.description"
-          :characters="job.characters"
-          :salaryLower="job.salaryLower"
-          :salaryUpper="job.salaryUpper"
-          :salaryUnit="job.salaryUnit">
+        <job-detail-card :title="job.title" :exp="job.exp" :edu="job.edu" :city="job.city" :type1="job.type1"
+          :industry="job.industry" :company="job.company" :address="job.address" :skills="job.skills"
+          :description="job.description" :characters="job.characters" :salaryLower="job.salaryLower"
+          :salaryUpper="job.salaryUpper" :salaryUnit="job.salaryUnit">
         </job-detail-card>
       </n-drawer-content>
     </n-drawer>

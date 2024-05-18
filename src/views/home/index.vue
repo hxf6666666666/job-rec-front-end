@@ -16,17 +16,17 @@
       </n-card>
       <n-card class="ml-12 w-15% items-center" hoverable size="large" title="🔩在招职位">
         <n-statistic label="" tabular-nums>
-          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="8761" />
+          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="recruitmentCountAll" />
         </n-statistic>
       </n-card>
       <n-card class="ml-12 w-15% items-center" hoverable size="large" title="📑简历数量">
         <n-statistic label="" tabular-nums>
-          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="1761" />
+          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="employeeCountAll" />
         </n-statistic>
       </n-card>
       <n-card class="ml-12 w-15% items-center" hoverable size="large" title="⭐岗位类型">
         <n-statistic label="" tabular-nums>
-          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="17" />
+          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="11" />
         </n-statistic>
       </n-card>
       <n-card class="ml-12 w-15% items-center" hoverable size="large" title="🏙️城市数量">
@@ -89,6 +89,8 @@ import VChart from 'vue-echarts'
 import { AppPage } from '@/components/index.js'
 import { FunnelChart } from 'echarts/charts';
 import 'echarts-wordcloud';
+import api from '@/api'
+import { onMounted } from 'vue'
 
 const userStore = useUserStore()
 
@@ -560,6 +562,28 @@ const trendOption2 = {
     }
   ]
 };
+const recruitmentCountAll = ref(0)
+const getRecruitmentCountAll = async() =>{
+  try{
+    const res = await api.RecruitmentCountAll()
+    recruitmentCountAll.value = res.data
+  }catch (error) {
+    console.error('Error:', error);
+  }
+}
+const employeeCountAll = ref(0)
+const getEmployeeCountAll = async() =>{
+  try{
+    const res = await api.EmployeeCountAll()
+    employeeCountAll.value = res.data
+  }catch (error) {
+    console.error('Error:', error);
+  }
+}
+onMounted(() =>{
+  getRecruitmentCountAll()
+  getEmployeeCountAll()
+})
 
 </script>
 

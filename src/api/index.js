@@ -13,4 +13,6 @@ export default {
   getRolePermissions: () => axios.get('https://mock.apifox.com/m1/3776410-0-default/role/permissions/tree'),
   // 验证菜单路径
   validateMenuPath: (path) => axios.get(`https://mock.apifox.com/m1/3776410-0-default/permission/menu/validate?path=${path}`),
+  RecruitmentCountAll:() => request.get('/recruitment/countAll'),
+  EmployeeCountAll:() => request.get('/employee/countAll'),
 }

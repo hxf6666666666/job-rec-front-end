@@ -19,6 +19,7 @@
       :columns="columns"
       v-model:query-items="queryItems"
       :get-data="api.read"
+      :remote="true"
     >
       <MeQueryItem label="职位名称" :label-width="80">
         <n-input

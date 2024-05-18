@@ -234,7 +234,7 @@ const majors = ref(['计算机科学与技术','软件工程','医学信息工�
   bottom: -10px; /* 调整到span下方 */
   width: 100%; /* 宽度与span相同 */
   height: 4px; /* 高度根据需要调整 */
-  background-image: url('src/assets/images/line.png'); /* 替换为你的图片URL */
+  background-image: url('@/assets/images/line.png'); /* 替换为你的图片URL */
   background-repeat: repeat-x;
   background-size: 100% 100%; /* 背景图片大小填满整个伪元素 */
 }

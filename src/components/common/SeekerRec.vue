@@ -4,6 +4,8 @@ import { NButton, NRate } from 'naive-ui'
 import SeekerCard from '@/components/common/SeekerCard.vue'
 import api from './api.js'
 import { ref } from 'vue'
+const route = useRoute()
+const jobId = ref(parseInt(route.params.id, 10))
 
 const seekerList = ref([
   {
@@ -44,10 +46,6 @@ const seekerList = ref([
     ]
   }
 ]);
-
-const route = useRoute()
-
-
 
 const performSearch = async () => {
   $message.loading('生成推荐结果中，请稍候...', { key: 'access', duration: 200000 })
@@ -136,8 +134,11 @@ const exp_options = ref([
       </div>
     </n-card>
 
-    <template v-for="seeker in seekerList" :key="seeker.id">
+    <template v-for="seeker in seekerList" :key="seeker.id" v-if="seekerList.length>0">
       <seeker-card
+        :recruitment-id="jobId"
+        :id="seeker.id"
+        :user-id="seeker.userId"
         :real-name="seeker.realName"
         :avatar="seeker.avatar"
         :gender="seeker.gender"

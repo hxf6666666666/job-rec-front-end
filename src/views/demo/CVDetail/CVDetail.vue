@@ -14,7 +14,7 @@ const userStore = useUserStore()
 
 
 const employee = reactive({
-  id: 2,
+  // id: 2,
   avatar: "",
   resumeIntegrity: 0,
   userId: 0,
@@ -57,8 +57,8 @@ const isPdfFile = ref(false)
 
 
 // 准备请求的数据
-const userId = '5a6787e0-d0b0-11ee-b312-b94efab9309e';
-const secret = '3fc564f2-2494-430d-9a97-0540e578abdb';
+const userId = '1e46fb20-f8c8-11ee-b312-b94efab9309e';
+const secret = 'a8a16967-a812-4506-8433-41ef77f5f243';
 const apiUrl = 'https://api.xiaoxizn.com/v1/parser/parse_base';
 
 

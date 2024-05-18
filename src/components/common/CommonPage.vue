@@ -1,10 +1,3 @@
-<!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/04 22:51:21
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- --------------------------------->
 
 <template>
   <main class="h-full flex-1 overflow-hidden bg-[#e9e9e9bf] dark:bg-#121212">

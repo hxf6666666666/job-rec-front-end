@@ -4,8 +4,20 @@ import JobDetailCard from '@/components/common/JobDetailCard.vue'
 import ResumeCard from '@/components/common/ResumeCard.vue'
 import { ref } from 'vue'
 const userStore = useUserStore()
+import api from './api.js'
 
 const props = defineProps({
+  recruitmentId:{
+    type:Number,
+    default:0
+  },
+  id:{
+    type:Number,
+  },
+  userId:{
+    type:Number,
+    default:0
+  },
   avatar: {
     type: String,
     default: ""
@@ -97,8 +109,7 @@ const props = defineProps({
   }
 });
 
-onMounted(()=>{
-})
+
 
 
 
@@ -136,24 +147,93 @@ const isApplied = ref(false)
 const show = ref(false)
 const rate = ref(0)
 
-const handleApply = ()=>{
-  isApplied.value = !isApplied.value
-  if(isApplied.value){
-    $message.success('发放offer成功！')
-  }else{
-    $message.info('已取消发放！')
+const handleApply = async()=>{
+  // isApplied.value = !isApplied.value
+  // if(isApplied.value){
+  //   $message.success('发放offer成功！')
+  // }else{
+  //   $message.info('已取消发放！')
+  // }
+  try {
+    if (isApplied.value == false) {
+      const response = await api.distributeOffer(props.userId,props.recruitmentId)
+      console.log("发放offer：" + response.data)
+      if ('操作成功' == response.data) {
+        isApplied.value = !isApplied.value
+        $message.success('发放offer成功！')
+      } else {
+        $message.info('发放offer失败！原因:'+response.data)
+      }
+    } else {
+      const response = await api.cancelOffer(props.userId,props.recruitmentId)
+      console.log("取消发放offer：" + response.data)
+      if ('操作成功' == response.data) {
+        isApplied.value = !isApplied.value
+        $message.success('已取消发放offer！')
+      } else {
+        $message.info('取消发放offer失败原因:'+response.data)
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+const handleRate = async () => {
+  try {
+    if (rate.value == 1) {
+      const response = await api.addFavoritesRecruitment(props.userId,props.recruitmentId)
+      console.log("添加收藏：" + response.data)
+      if ('操作成功' == response.data) {
+        $message.success('收藏成功！')
+      } else {
+        $message.info('收藏失败！')
+      }
+    } else {
+      const response = await api.deleteFavoritesRecruitment(userStore.userId, id)
+      console.log("取消收藏：" + response.data)
+      if ('操作成功' == response.data) {
+        $message.success('已取消收藏！')
+      } else {
+        $message.info('取消收藏失败！')
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
   }
 }
 
-const handleRate = ()=>{
-  if(rate.value==1){
-    $message.success('收藏成功！')
-  }else{
-    $message.info('已取消收藏！')
+// const handleRate = ()=>{
+//   if(rate.value==1){
+//     $message.success('收藏成功！')
+//   }else{
+//     $message.info('已取消收藏！')
+//   }
+// }
+const handleIsDistributeOffer = async () => {
+  try {
+    const response = await api.isDistributeOffer(props.userId,props.recruitmentId)
+    if(response.data == '已发放'){
+      isApplied.value = true
+    }else isApplied.value = false
+  } catch (error) {
+    console.error('Error:', error);
   }
 }
-
-
+const handleIsFavoritesRecruitment = async () => {
+  try {
+    const response = await api.isFavoritesRecruitment(props.userId,props.recruitmentId)
+    if(response.data == '已收藏'){
+      console.log('已收藏')
+      rate.value=1
+    }else rate.value=0
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+onMounted(()=>{
+  handleIsDistributeOffer();
+  handleIsFavoritesRecruitment();
+})
 
 </script>
 
@@ -178,25 +258,25 @@ const handleRate = ()=>{
 
         <div>
           <span class="text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.realName }}</span>
-          <span v-if="props.educationExperiences[0].schoolName" class="ml-15">
+          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolName!=null" class="ml-15">
             <n-tag :bordered="false" size="small" type="primary">
               {{ props.educationExperiences[0].schoolName }}
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences[0].majorName" class="ml-10">
+          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].majorName!=null" class="ml-10">
             <n-tag :bordered="false" size="small" type="default">
               {{ props.educationExperiences[0].majorName }}
             </n-tag>
           </span>
 
-          <span v-if="props.englishTag.includes('4')&&!englishTag.includes('6')" class="ml-10">
+          <span v-if="props.englishTag!=null&&props.englishTag.includes('4')&&!englishTag.includes('6')" class="ml-10">
             <n-tag :bordered="false" size="small" type="info">
               CET4
             </n-tag>
           </span>
 
-          <span v-if="englishTag.includes('6')" class="ml-10">
+          <span v-if="englishTag!=null&&englishTag.includes('6')" class="ml-10">
             <n-tag :bordered="false" size="small" type="info">
               CET6
             </n-tag>
@@ -206,7 +286,7 @@ const handleRate = ()=>{
 
         <div class="mt-10">
 
-          <span v-if="skillTag.length>100&&skillTag.length<=150" class="mr-10">
+          <span v-if="skillTag!=null&&skillTag.length>100&&skillTag.length<=150" class="mr-10">
             <n-tag :bordered="false" size="medium" type="info">
               <template #icon>
               <i class="i-fe:airplay?mask"></i>
@@ -215,7 +295,7 @@ const handleRate = ()=>{
             </n-tag>
           </span>
 
-          <span v-if="skillTag.length>150" class="mr-10">
+          <span v-if="skillTag!=null&&skillTag.length>150" class="mr-10">
             <n-tag :bordered="false" size="medium" type="info">
               <template #icon>
               <i class="i-fe:airplay?mask"></i>
@@ -224,7 +304,7 @@ const handleRate = ()=>{
             </n-tag>
           </span>
 
-          <span v-if="awardTag.length>50" class="mr-10">
+          <span v-if="awardTag!=null&&awardTag.length>50" class="mr-10">
             <n-tag :bordered="false" size="medium" type="warning">
               <template #icon>
               <i class="i-fe:pen-tool"></i>
@@ -233,7 +313,7 @@ const handleRate = ()=>{
             </n-tag>
           </span>
 
-          <span v-if="educationExperiences[0].gpa>4" class="mr-10">
+          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].gpa>4" class="mr-10">
           <n-tag :bordered="false" size="medium" type="error">
             <template #icon>
               <i class="i-fe:book"></i>
@@ -245,19 +325,19 @@ const handleRate = ()=>{
         </div>
         <div class="mt-10">
 
-        <span v-if="educationExperiences.length>1">
+        <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].length>1">
           <n-tag :bordered="false" size="small" type="success" class="mr-10">
             研究生学历
           </n-tag>
         </span>
 
-          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('985')">
           <n-tag :bordered="false" size="small" type="warning">
             985院校
           </n-tag>
           </span>
 
-          <span class="mr-10" v-if="educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('211')">
           <n-tag :bordered="false" size="small" type="warning">
             211院校
           </n-tag>
@@ -285,6 +365,7 @@ const handleRate = ()=>{
     <n-drawer-content :native-scrollbar="false">
       <resume-card
         :avatar="props.avatar"
+        :id="props.id"
         :real-name="props.realName"
         :gender="props.gender"
         :age="props.age"

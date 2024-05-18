@@ -97,16 +97,22 @@ async function handleQuery() {
     let paginationParams = {}
     // 如果非分页模式或者使用前端分页,则无需传分页参数
     if (props.isPagination && props.remote) {
-      paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
+      // paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
+      paginationParams = { page: pagination.page, pageSize: pagination.pageSize }
     }
 
     const { data } = await props.getData({
       ...props.queryItems,
       ...paginationParams,
     })
-
-    tableData.value = data
-    pagination.itemCount = data.length
+    if(props.isPagination && props.remote){
+      tableData.value = data.content
+      pagination.itemCount = data.totalElements
+    }else{
+      tableData.value = data
+      pagination.itemCount = data.length
+    }
+    
   } catch (error) {
     tableData.value = []
     pagination.itemCount = 0

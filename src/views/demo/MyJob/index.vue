@@ -57,11 +57,30 @@ const getMyOffers = async () => {
     console.error('Error get applications:', error);
   }
 };
+// 定义处理更新值的方法
+let handleUpdateValue = (value) => {
+  console.log(value);
+  if(value === "浏览过"){
+    getHistory();
+  }else if(value === "收藏过"){
+    getFavorites();
+  }else if(value === "投递过"){
+    getApplications();
+  }else if(value === "我的offer"){
+    getMyOffers();
+  }
+};
+
+// 定义处理点击事件的方法
+const handleBrowseTabClick = async () => {
+  console.log("点击了浏览过标签");
+  await getMyOffers();
+};
 onMounted(()=>{
   getHistory();
-  getFavorites();
-  getApplications();
-  getMyOffers();
+  // getFavorites();
+  // getApplications();
+  // getMyOffers();
 })
 </script>
 
@@ -69,7 +88,7 @@ onMounted(()=>{
   <AppPage>
     <n-card>
       <n-tabs :bar-width="100" animated class="items-center" default-value="浏览过" tab-style="font-size:17px; font-weight:bold;"
-              type="bar">
+              type="bar" @update:value="handleUpdateValue">
         <n-tab-pane name="浏览过" tab="浏览过">
           <n-alert type="info" :bordered="false">
             点击查看过的职位会显示在这里，仅显示最近浏览过的10条！

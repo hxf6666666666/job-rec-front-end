@@ -90,6 +90,7 @@ function handleSelect(key) {
             console.error(error)
           }
           authStore.logout()
+          localStorage.clear()
           $message.success('已退出登录')
           router.push('/')
         },
