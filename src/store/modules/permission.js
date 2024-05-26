@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { useUserStore } from './user'
+import { useRouterStore } from './router'
 
 export const usePermissionStore = defineStore('permission', {
   state: () => ({
@@ -9,6 +11,8 @@ export const usePermissionStore = defineStore('permission', {
   actions: {
     setPermissions(permissions) {
       this.permissions = permissions
+      const userRole = useUserStore().userRole
+      this.permissions = this.checkUserRole(this.permissions, userRole)
       this.menus = this.permissions
         .filter((item) => item.type === 'MENU')
         .map((item) => this.getMenuItem(item))
@@ -53,6 +57,24 @@ export const usePermissionStore = defineStore('permission', {
             .map((item) => ({ code: item.code, name: item.name })),
         },
       }
+    },
+    checkUserRole(permissions, userRole) {
+      let filteredPermissions;
+      switch (userRole) {
+        case '管理员':
+          filteredPermissions = permissions;
+          break;
+        case '求职者':
+          filteredPermissions = permissions.filter(item => item.name !== '我要招人' && item.name !=='系统管理');
+          break;
+        case '招聘者':
+          filteredPermissions = permissions.filter(item => item.name !== '我要求职'&& item.name !=='系统管理');
+          break;
+        default:
+          // 默认情况
+          filteredPermissions = permissions.filter(item => item.name !== '我要招人' && item.name !=='系统管理');
+      }
+      return filteredPermissions;
     },
     resetPermission() {
       this.$reset()

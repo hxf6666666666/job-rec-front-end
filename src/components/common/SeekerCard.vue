@@ -157,7 +157,6 @@ const handleApply = async()=>{
   try {
     if (isApplied.value == false) {
       const response = await api.distributeOffer(props.userId,props.recruitmentId)
-      console.log("发放offer：" + response.data)
       if ('操作成功' == response.data) {
         isApplied.value = !isApplied.value
         $message.success('发放offer成功！')
@@ -166,7 +165,6 @@ const handleApply = async()=>{
       }
     } else {
       const response = await api.cancelOffer(props.userId,props.recruitmentId)
-      console.log("取消发放offer：" + response.data)
       if ('操作成功' == response.data) {
         isApplied.value = !isApplied.value
         $message.success('已取消发放offer！')
@@ -182,7 +180,6 @@ const handleRate = async () => {
   try {
     if (rate.value == 1) {
       const response = await api.addFavoritesRecruitment(props.userId,props.recruitmentId)
-      console.log("添加收藏：" + response.data)
       if ('操作成功' == response.data) {
         $message.success('收藏成功！')
       } else {
@@ -190,7 +187,6 @@ const handleRate = async () => {
       }
     } else {
       const response = await api.deleteFavoritesRecruitment(userStore.userId, id)
-      console.log("取消收藏：" + response.data)
       if ('操作成功' == response.data) {
         $message.success('已取消收藏！')
       } else {
@@ -223,7 +219,6 @@ const handleIsFavoritesRecruitment = async () => {
   try {
     const response = await api.isFavoritesRecruitment(props.userId,props.recruitmentId)
     if(response.data == '已收藏'){
-      console.log('已收藏')
       rate.value=1
     }else rate.value=0
   } catch (error) {
@@ -258,13 +253,13 @@ onMounted(()=>{
 
         <div>
           <span class="text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.realName }}</span>
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolName!=null" class="ml-15">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolName!=null" class="ml-15">
             <n-tag :bordered="false" size="small" type="primary">
               {{ props.educationExperiences[0].schoolName }}
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].majorName!=null" class="ml-10">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].majorName!=null" class="ml-10">
             <n-tag :bordered="false" size="small" type="default">
               {{ props.educationExperiences[0].majorName }}
             </n-tag>
@@ -313,7 +308,7 @@ onMounted(()=>{
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].gpa>4" class="mr-10">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].gpa>4" class="mr-10">
           <n-tag :bordered="false" size="medium" type="error">
             <template #icon>
               <i class="i-fe:book"></i>
@@ -325,19 +320,19 @@ onMounted(()=>{
         </div>
         <div class="mt-10">
 
-        <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].length>1">
+        <span v-if="props.educationExperiences!=null&&props.educationExperiences.length>1">
           <n-tag :bordered="false" size="small" type="success" class="mr-10">
             研究生学历
           </n-tag>
         </span>
 
-          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('985')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('985')">
           <n-tag :bordered="false" size="small" type="warning">
             985院校
           </n-tag>
           </span>
 
-          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('211')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('211')">
           <n-tag :bordered="false" size="small" type="warning">
             211院校
           </n-tag>
@@ -354,8 +349,8 @@ onMounted(()=>{
           </n-tag>
         </div>
         <div class="mt-10">
-          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>{{ props.userPhone.length==0?'暂无':props.userPhone }}</span>
-          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>{{ props.email.length==0?'暂无':props.email }}</span>
+          <span class="text-14 opacity-70"><i class="i-fe:phone mr-6"></i>{{ props.userPhone==null?'暂无':props.userPhone }}</span>
+          <span class="text-14 ml-12 opacity-70"><i class="i-fe:mail mr-6"></i>{{ props.email==null?'暂无':props.email }}</span>
           <span class="text-14 ml-12 opacity-70"><i class="i-fe:book?mask mr-6"></i>{{ props.workExperienceYear }}年经验</span>
         </div>
       </div>

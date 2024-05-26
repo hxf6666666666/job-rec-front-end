@@ -164,7 +164,7 @@ onMounted(()=>{
           <seeker-rec></seeker-rec>
         </n-tab-pane>
 
-        <n-tab-pane name="收藏过" tab="收藏过">
+        <n-tab-pane name="收藏过" tab="收藏过" style="width: 900px;">
           <n-alert type="info" :bordered="false">
             该职位下，点击收藏过的简历会显示在这里！
           </n-alert>
@@ -198,7 +198,7 @@ onMounted(()=>{
           </div>
         </n-tab-pane>
 
-        <n-tab-pane name="投递者" tab="投递者">
+        <n-tab-pane name="投递者" tab="投递者" style="width: 900px;">
           <n-alert type="info" :bordered="false">
             该职位下，投递者的简历会显示在这里，你可以选择是否发放offer！
           </n-alert>
@@ -232,7 +232,7 @@ onMounted(()=>{
           </div>
         </n-tab-pane>
 
-        <n-tab-pane name="入选人员" tab="入选人员">
+        <n-tab-pane name="入选人员" tab="入选人员" style="width: 900px;">
           <n-alert type="info" :bordered="false">
             发放offer的简历都会显示在这里哦！
           </n-alert>

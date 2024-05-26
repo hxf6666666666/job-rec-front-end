@@ -6,7 +6,7 @@
         <n-progress type="circle" :percentage="overallScore" color="#FF8C00" />
       </n-card>
       <n-card class="w-80% ml-25" embedded hoverable size="small">
-        <div class="explanation-text">{{ explanationOverall }}</div>
+        <div class="explanation-text">{{ props.explanationOverall }}</div>
       </n-card>
     </div>
 
@@ -139,35 +139,30 @@ const props = defineProps({
 });
 
 // 处理默认值
-const {
-  overallScore = 88,
-  educationMatch = 100,
-  majorMatch = 100,
-  skillScore = 81,
-  personalityScore = 89,
-  explanationOverall = "这是综合得分的解释说明。",
-  explanationEducation = "这是学历匹配度的解释说明。",
-  explanationMajor = "这是专业匹配度的解释说明。",
-  explanationSkill = "这是技能得分的解释说明。",
-  explanationPersonality = "这是素养得分的解释说明。",
-  matchedSkills = ref(['Java', 'Python', 'JavaScript', 'HTML', 'CSS']),
-  unmatchedSkills = ref(['C++', 'Ruby', 'PHP', 'Swift']),
-  matchedTraits = ref(['合作', '沟通能力', '责任心', '领导力']),
-  unmatchedTraits = ref(['学习能力', '适应能力', '创新能力', '决策能力']),
-  advantages = [
-    "熟练掌握了HTML、CSS、JavaScript等基础技术，为前端开发打下了坚实的基础。",
-    "具备良好的团队合作能力和沟通能力，能够有效地与团队成员合作，推动项目的顺利进行。"
-  ],
-  suggestions = [
-    "尽管已熟悉React.js等主流框架，但缺乏对其他前端框架的了解，建议扩展技术视野，学习更多前端框架。",
-    "缺乏对前端工程化和性能优化的深入了解，建议深入学习Webpack、Babel等工具，并掌握性能优化的最佳实践。"
-  ]
-} = props;
-
-
-
-
-
+// const {
+//   overallScore = 88,
+//   educationMatch = 100,
+//   majorMatch = 100,
+//   skillScore = 81,
+//   personalityScore = 89,
+//   explanationOverall = "这是综合得分的解释说明。",
+//   explanationEducation = "这是学历匹配度的解释说明。",
+//   explanationMajor = "这是专业匹配度的解释说明。",
+//   explanationSkill = "这是技能得分的解释说明。",
+//   explanationPersonality = "这是素养得分的解释说明。",
+//   matchedSkills = ref(['Java', 'Python', 'JavaScript', 'HTML', 'CSS']),
+//   unmatchedSkills = ref(['C++', 'Ruby', 'PHP', 'Swift']),
+//   matchedTraits = ref(['合作', '沟通能力', '责任心', '领导力']),
+//   unmatchedTraits = ref(['学习能力', '适应能力', '创新能力', '决策能力']),
+//   advantages = [
+//     "熟练掌握了HTML、CSS、JavaScript等基础技术，为前端开发打下了坚实的基础。",
+//     "具备良好的团队合作能力和沟通能力，能够有效地与团队成员合作，推动项目的顺利进行。"
+//   ],
+//   suggestions = [
+//     "尽管已熟悉React.js等主流框架，但缺乏对其他前端框架的了解，建议扩展技术视野，学习更多前端框架。",
+//     "缺乏对前端工程化和性能优化的深入了解，建议深入学习Webpack、Babel等工具，并掌握性能优化的最佳实践。"
+//   ]
+// } = props;
 
 </script>
 

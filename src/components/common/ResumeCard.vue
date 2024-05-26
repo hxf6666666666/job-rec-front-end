@@ -103,7 +103,11 @@ const props = defineProps({
         endYear: null
       }
     ]
-  }
+  },
+  isEncryption:{
+    type: Boolean,
+    default: false
+  },
 });
 
 onMounted(async ()=>{
@@ -151,7 +155,7 @@ const formattedEducationType = computed(() => {
 </script>
 
 <template>
-  <n-card class="mt-5 w-720px" embedded hoverable>
+  <n-card class="mt-5 w-720px" embedded hoverable id="resume">
     <div class="flex">
       <div class="w-20%">
         <n-avatar fallback-src="https://5b0988e595225.cdn.sohucs.com/images/20171114/bc48840fb6904dd4bd8f6a8af8178af4.png"
@@ -163,13 +167,13 @@ const formattedEducationType = computed(() => {
 
         <div>
           <span class="text-23" style="font-family: 微软雅黑; font-weight: bold">{{ props.realName }}</span>
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolName" class="ml-15">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolName" class="ml-15">
             <n-tag :bordered="false" size="small" type="primary">
               {{ props.educationExperiences[0].schoolName }}
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].majorName" class="ml-10">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].majorName" class="ml-10">
             <n-tag :bordered="false" size="small" type="default">
               {{ props.educationExperiences[0].majorName }}
             </n-tag>
@@ -218,7 +222,7 @@ const formattedEducationType = computed(() => {
             </n-tag>
           </span>
 
-          <span v-if="props.educationExperiences!=null&&props.educationExperiences[0].gpa>4" class="mr-10">
+          <span v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].gpa>4" class="mr-10">
           <n-tag :bordered="false" size="medium" type="error">
             <template #icon>
               <i class="i-fe:book"></i>
@@ -236,13 +240,13 @@ const formattedEducationType = computed(() => {
           </n-tag>
         </span>
 
-          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('985')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('985')">
           <n-tag :bordered="false" size="small" type="warning">
             985院校
           </n-tag>
           </span>
 
-          <span class="mr-10" v-if="props.educationExperiences!=null&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('211')">
+          <span class="mr-10" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&props.educationExperiences[0].schoolType!=null&&props.educationExperiences[0].schoolType.includes('211')">
           <n-tag :bordered="false" size="small" type="warning">
             211院校
           </n-tag>
@@ -275,31 +279,31 @@ const formattedEducationType = computed(() => {
     <div class="flex mb-15">
       <div class="w-[50%]">
         <div class="ml-15 mt-15">
-          <span class="text-14 opacity-80">姓名:</span><span class="text-14 ml-12 font-extrabold">{{ props.realName }}</span>
+          <span class="text-14 opacity-80">姓名:</span><span class="text-14 ml-12 font-extrabold">{{ props.realName==null?'未知':props.realName }}</span>
         </div>
         <div class="ml-15 mt-10">
           <span class="text-14 opacity-80">性别:</span><span class="text-14 ml-12 font-extrabold">{{ props.gender==null?'未知':(props.gender==0?'女':'男') }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">出生年月:</span><span class="text-14 ml-12 font-extrabold">{{ props.dateOfBirth!=null?'暂无':props.dateOfBirth }}</span>
+          <span class="text-14 opacity-80">出生年月:</span><span class="text-14 ml-12 font-extrabold">{{ (props.dateOfBirth==null || props.dateOfBirth =='暂无')?'暂无':props.dateOfBirth }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">QQ:</span><span class="text-14 ml-12 font-extrabold">{{ props.qqNumber!=null?'暂无':props.qqNumber }}</span>
+          <span class="text-14 opacity-80">QQ:</span><span class="text-14 ml-12 font-extrabold">{{ (props.qqNumber==null || props.qqNumber =='暂无')?'暂无':props.qqNumber }}</span>
         </div>
       </div>
       <div class="w-[50%]">
         <div class="ml-15 mt-15">
           <span class="text-14 opacity-80">地址:</span><span
-          class="text-14 ml-12 font-extrabold">{{ props.address!=null?'暂无':props.address }}</span>
+          class="text-14 ml-12 font-extrabold">{{ (props.address==null || props.address =='暂无')?'暂无':props.address }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">电话:</span><span class="text-14 ml-12 font-extrabold">{{ props.userPhone!=null?'暂无':props.userPhone }}</span>
+          <span class="text-14 opacity-80">电话:</span><span class="text-14 ml-12 font-extrabold">{{ (props.userPhone==null || props.userPhone =='暂无')?'暂无':props.userPhone }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">邮箱:</span><span class="text-14 ml-12 font-extrabold">{{ props.email!=null?'暂无':props.email }}</span>
+          <span class="text-14 opacity-80">邮箱:</span><span class="text-14 ml-12 font-extrabold">{{ (props.email==null || props.email =='暂无')?'暂无':props.email }}</span>
         </div>
         <div class="ml-15 mt-10">
-          <span class="text-14 opacity-80">微信:</span><span class="text-14 ml-12 font-extrabold">{{ props.wechat!=null?'暂无':props.wechat }}</span>
+          <span class="text-14 opacity-80">微信:</span><span class="text-14 ml-12 font-extrabold">{{ (props.wechat==null || props.wechat =='暂无')?'暂无':props.wechat }}</span>
         </div>
       </div>
     </div>
@@ -312,17 +316,17 @@ const formattedEducationType = computed(() => {
       <n-space class="mt-18">
         <div class="ml-15">
           <div class="flex text-16">
-            <span class="text-[#09b2fdff] font-extrabold" v-if="props.educationExperiences!=null">{{ props.educationExperiences[0].schoolName }}</span>
-            <span class="ml-12"><n-tag v-if="props.educationExperiences!=null&&educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')" :bordered="false" type="error" size="small">985院校</n-tag></span>
-            <span class="ml-12"><n-tag v-if="props.educationExperiences!=null&&educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')" :bordered="false" type="info" size="small">211院校</n-tag></span>
+            <span class="text-[#09b2fdff] font-extrabold" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0">{{ props.educationExperiences[0].schoolName }}</span>
+            <span class="ml-12"><n-tag v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('985')" :bordered="false" type="error" size="small">985院校</n-tag></span>
+            <span class="ml-12"><n-tag v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0&&educationExperiences[0].schoolType!=null&&educationExperiences[0].schoolType.includes('211')" :bordered="false" type="info" size="small">211院校</n-tag></span>
           </div>
           <div class="mt-15 flex text-15">
-            <span class="opacity-60" v-if="props.educationExperiences!=null">{{ props.educationExperiences[0].beginYear }}-{{ props.educationExperiences[0].endYear }}</span>
-            <span class="ml-12 font-extrabold" v-if="props.educationExperiences!=null">{{ props.educationExperiences[0].majorName }}</span>
+            <span class="opacity-60" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0">{{ props.educationExperiences[0].beginYear }}-{{ props.educationExperiences[0].endYear }}</span>
+            <span class="ml-12 font-extrabold" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0">{{ props.educationExperiences[0].majorName }}</span>
             <span class="ml-12 font-extrabold">{{ formattedEducationType }}</span>
-            <span class="ml-12" v-if="props.educationExperiences!=null">GPA : {{ props.educationExperiences[0].gpa }}</span>
+            <span class="ml-12" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0">GPA : {{ props.educationExperiences[0].gpa }}</span>
           </div>
-          <div class="mt-7 flex text-15" v-if="props.educationExperiences!=null">
+          <div class="mt-7 flex text-15" v-if="props.educationExperiences!=null&& props.educationExperiences.length > 0">
             主修课程：{{ props.educationExperiences[0].activity }}
           </div>
         </div>

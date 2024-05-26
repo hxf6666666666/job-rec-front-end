@@ -62,7 +62,6 @@ export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     }
 
     action = action || actions[modalAction.value]
-
     try {
       okLoading.value = true
       const data = await action.api()
